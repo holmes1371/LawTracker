@@ -18,12 +18,12 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 3 — commit 3 of 3, code complete)**
+**2026-04-25 (roadmap pivot for data-scout pilot)**
 
-- DOJ FCPA actions adapter (source #5) landed at `src/lawtracker/sources/doj_fcpa_actions.py` with a live 2026 fixture (`tests/fixtures/doj_fcpa_actions.html`) and three adapter tests. Full suite (9 tests) + ruff + mypy all green.
-- During fixture capture: ROADMAP-quoted URL was 404; DOJ restructured paths, and the corrected landing is a navigation hub rather than a case list. Adapter targets the per-year subpage `/criminal/criminal-fraud/case/related-enforcement-actions/2026`; the year in the URL rolls over each January. `design/sources.md` source #5 and `design/source-adapter-framework.md` updated with the findings.
-- Item 3 stays `[~]`. Per ROADMAP discipline: Tom pulls / runs the suite / sanity-checks adapter output, then a future session flips to `[x]` with the closing SHA preserved.
-- Next item is 4 (storage + change detection — SQLAlchemy models, Alembic from day one, set-reconcile against `EventRecord.dedup_key`).
+- Plan pivoted: items 16 (data scout CLI + Excel export), 17 (pilot adapters + DOJ link-following enrichment), 18 (scout review checkpoint) inserted with priority *before* items 4–15. Goal: validate the data shape via a one-shot scout before investing in storage / poll loop / web app. See priority note above item 16. No hourly-polling concern at this stage.
+- Tom approved option (b) for DOJ FCPA actions: scout-time link-following enrichment (industry / defendant / penalty / resolution_type from each press-release page). Lands with item 17. Excel chosen over CSV; `openpyxl` will be added as a runtime dep with item 16.
+- Item 3 still `[~]` — code complete (`d75d1b9`), pending Tom's manual signoff. Next session can flip to `[x]` once Tom confirms.
+- Next: plan-and-wait cycle for item 16 (data scout CLI). Plan posted in the same turn as this commit; awaiting approval before writing code.
 
 ## For future agents
 
@@ -108,6 +108,47 @@ Magic-link email login. User-level subscription model: pick which sources to fol
 ### 15. [ ] Trusted third-party sources
 
 Add adapters for Tom's approved third-party trackers (law-firm client-alert pages, Stanford FCPA Clearinghouse, paid aggregators like Global Investigations Review, Harvard Anticorruption Blog, etc.) once Tom provides the list. Pure adapter work — schema unchanged from the framework established in item 3. (FCPA Blog was originally listed here; moved into pilot inventory on 2026-04-25.)
+
+---
+
+**Priority note (2026-04-25):** items 16–18 below land **before** items 4–15. The pilot was reframed from "build storage + poll loop + UI sequentially" to "validate the data shape via a one-shot scout before investing in storage / poll loop / web app." Items keep their numbers per the no-renumber discipline; the order is logical, not numeric. Effective working order: 3 (in flight) → 16 → 17 → 18 → 4 → 5 → 6 → … No hourly polling concern at this stage; the scout runs on demand.
+
+---
+
+### 16. [ ] Data scout CLI + Excel export
+
+One-shot data scout: a `lawtracker scout` CLI that runs every configured adapter, collects `EventRecord`s, and writes them to disk for Tom + Ellen to review. No DB, no scheduling, no state between runs — each invocation is a fresh snapshot.
+
+Outputs under `data/scout/`:
+
+- `events.xlsx` — flat tabular (openpyxl). Universal columns first (`event_date`, `source_id`, `country`, `title`, `primary_actor`, `summary`, `url`); then per-source metadata keys as additional columns, sparse where a source doesn't populate them. Ellen can pivot, sort, filter without dev tooling.
+- `events.jsonl` — full-fidelity backup; preserves the `metadata` dict shape for cases where Excel flattening loses something.
+- `summary.txt` — counts directed at the trend questions Tom called out: events per month per source (last 24 months) for "more or less prosecutions over the last 6 months than the prior 6"; events per country; events per source; top 20 industries; top 20 primary_actors; per-source `last_event_date` and total count.
+
+Adds `openpyxl` to runtime deps. List-page-only initial scope; per-source extraction depth lands with the adapters in item 17 (DOJ specifically gets link-following enrichment there).
+
+### 17. [ ] Pilot adapters + DOJ link-following enrichment
+
+Build the breadth needed for a meaningful first scout:
+
+- **Source 16 (FCPA Blog)** — RSS adapter; walks archive pagination back ~12 months for trend depth.
+- **Source 10 (AFP foreign-bribery media releases)** — non-US English-language agency. Depth limited by what AFP publishes on the recent-releases page.
+- **Source 12 (Fiscalía Nacional Chile)** — Spanish-language extraction with cohecho / corrupción / soborno / Ley 20.393 keyword filter.
+- **DOJ FCPA actions: historical-year support** — extend `DojFcpaActionsAdapter` with a `poll_year(year)` method (or equivalent); scout iterates 24 months back.
+- **DOJ FCPA actions: link-following enrichment** (option (b) approved by Tom 2026-04-25). For each list-page entry, fetch the linked press-release / case-detail page and extract `industry`, `defendant`, `defendant_type`, `penalty_usd`, `disgorgement_usd`, `resolution_type` (DPA / NPA / plea / etc.) where parseable. Industry is needed for the "cases focused on a particular industry" trend question. Brittleness expected; tests use committed press-release fixture(s) under `tests/fixtures/`.
+
+Each adapter follows the framework from item 3 (subclass `SourceAdapter`, parse the live page, commit a fixture, write parser tests).
+
+### 18. [ ] Scout review checkpoint
+
+Tom + Ellen review `data/scout/events.xlsx` and `summary.txt` produced by items 16 + 17. Decisions to surface:
+
+- Are the universal `EventRecord` fields the right ones? (`primary_actor`, `summary`, `country` populated correctly across sources?)
+- Are the per-source metadata blobs giving the right detail?
+- Are the right sources in the inventory? Anything to add or remove? Any source that's pure noise?
+- Is signal-to-noise acceptable for Ellen's use?
+
+Adjustments fall out as new items (schema changes, source list edits, adapter refinements). Item 4 (storage) lands after this checkpoint; on landing, item 4's scope expands to include a one-shot `lawtracker ingest-scout` to load the JSONL files from the pilot into the new DB so pilot data isn't lost. Items 5 (poll loop), 6+ (web app) follow item 4 as before.
 
 ## Descoped / on hold
 
