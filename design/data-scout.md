@@ -109,6 +109,55 @@ Single commit: scout module + CLI extension + tests + pyproject update + design 
 - **AFP general news has zero foreign-bribery signal.** The originally-listed `/news-media/media-releases` returns 30+ pages of mostly domestic crime; zero hits on bribery / corruption / FCPA keywords. Switched the adapter target to AFP's site search (`/search?keys=foreign+bribery`) which yields ~12 actual foreign-bribery media releases on page 0.
 - **Fiscalía Chile URL was wrong.** `/Fiscalia/sala_prensa` is a 404; the press section is now under `/actualidad/noticias/nacionales`. Anti-corruption signal is sparse on the front page — keyword filter (`cohecho`, `corrupción`, `soborno`, `lavado`, `fraude al fisco`, `Ley 20.393`, `funcionario público`) usually returns zero matches per page. Tom + Ellen will see this in the scout output and can decide whether to pursue regional pages, broader keyword set, or a different Chilean source.
 
+## Keyword filters in use (for Ellen's review)
+
+All filter regexes live in `src/lawtracker/sources/_filters.py` so they can
+be tweaked without touching adapter code. Two are in active use:
+
+**`ANTI_CORRUPTION_EN`** — applied to law-firm blogs and any English-language
+broad-topic feed. Matches (case-insensitive):
+
+- FCPA / FEPA
+- foreign corrupt (practices), foreign bribery, foreign briber, foreign bribing
+- anti-bribery, anti-bribe, anti-corruption, anti-corrupt
+- bribery / bribe / briber / bribing
+- kleptocracy
+- foreign official, public official
+- AML, anti-money-laundering, money laundering
+- OFAC, SDN list, sanctions, sanctions enforcement
+- ITAR, export controls
+
+Currently used by: `GibsonDunnAdapter`. Volkov Law and Global Anticorruption
+Blog are single-topic outlets (every post is on-topic), so they run *without*
+the filter.
+
+**`ANTI_CORRUPTION_ES`** — applied to Spanish-language broad-topic feeds.
+Matches:
+
+- cohecho (bribery)
+- corrupción / corrupcion
+- soborno / sobornos
+- lavado de activos / lavado de dinero (money laundering)
+- fraude al fisco (fraud against the state)
+- delitos económicos (economic crimes)
+- Ley 20.393 (Chile's corporate criminal liability statute)
+- funcionario público (public official)
+
+Currently used by: `FiscaliaChileAdapter`.
+
+**Adapters running without a keyword filter:**
+
+- `DojFcpaActionsAdapter` — source is *already* the DOJ-curated FCPA case list, no filter needed.
+- `AfpForeignBriberyAdapter` — uses AFP's own `?keys=foreign+bribery` site search; AFP filters server-side.
+- `ConsejoTransparenciaClAdapter` — single-topic outlet (Chilean transparency / probity).
+- `VolkovLawAdapter` — single-topic blog ("Corruption, Crime & Compliance").
+- `GlobalAnticorruptionBlogAdapter` — single-topic academic blog.
+
+If Ellen sees noise (irrelevant items) in the Excel for a particular source,
+the fix is either to add a filter or tighten the existing one in
+`_filters.py`. If she sees missing items (relevant cases that didn't make
+it through), loosen the regex or add new keywords there.
+
 ## Findings during item 17 wave 2 (2026-04-25, possibleSources.txt expansion)
 
 - **Generic `RssFeedAdapter` landed** as the reuse mechanism Tom asked about. New WordPress / Atom RSS sources are now ~5-line subclass declarations (URL + source_id + country, plus optional keyword regex). Used by Volkov Law and Consejo para la Transparencia in this wave.
@@ -121,3 +170,15 @@ Single commit: scout module + CLI extension + tests + pyproject update + design 
   - **Contraloría Chile** — reachable but Liferay news-portlet structure is heavy; deferred for now (lower priority than Consejo / Fiscalía coverage).
 - **Production environment will need a different access strategy** for the blocked sources: residential proxy, headless browser (Playwright), API access where available, or running from a different network. Captured for the scout-review session — Tom + Ellen decide which sources matter enough to invest in alternative access.
 - **Scout state at end of wave 2:** 5 working adapters, 35 events end-to-end. DOJ 6, AFP 9, Fiscalía 0 (sparse signal), Consejo Transparencia 10, Volkov Law 10.
+
+## Findings during item 17 wave 3 (2026-04-25, law-firm RSS expansion)
+
+- **Probed ~60 law-firm RSS URLs across the firms in `possibleSources.txt`.** Direct results:
+  - Working: **Gibson Dunn** (`/feed/`, WordPress, RSS 2.0). One firm out of ~20.
+  - 404 / no exposed feed: Miller & Chevalier, WilmerHale, Paul Weiss, Latham, Cleary Gottlieb, Hogan Lovells, Freshfields, Allens, Clayton Utz, A&O Shearman, King Spalding, Lexology.
+  - 403 (CDN bot block, even with browser User-Agent): Sidley, Skadden, Debevoise, Dentons, Herbert Smith Freehills, Foley LLP, Foley Hoag, Covington, Ropes & Gray, Harvard CorpGov Forum.
+  - 429 (rate-limited): DLA Piper.
+- **Gibson Dunn is intermittent** — returns 200 + RSS to curl but 403 to httpx in some test runs. Cloudflare appears to fingerprint TLS / connection style; httpx doesn't always pass. To make this reliable in production we'd need a TLS-fingerprint-spoofing client (`curl_cffi`) or Playwright. For pilot, keep it in `PILOT_ADAPTERS` so the scout reports the failure mode.
+- **Found one academic blog beyond `possibleSources.txt`**: **Global Anticorruption Blog** (Matthew Stephenson at Harvard, `globalanticorruptionblog.com/feed/`). Single-topic, runs without keyword filter, 10 items per refresh.
+- **Pattern**: most large law firms host on enterprise CMS (Sitecore / Vignette / custom) without standard RSS, OR sit behind aggressive bot protection. Subscription via firm email or scraping HTML pages directly with a headless browser are the realistic alternatives — defer for now and prioritize at item 18 review based on which firms Ellen actually wants to follow.
+- **Scout state at end of wave 3:** 6–7 working adapters depending on Gibson Dunn's mood. 45 events on this run. DOJ 6, AFP 9, Fiscalía 0, Consejo 10, Volkov 10, Gibson Dunn 0 (CF blocked this run), GAB 10.

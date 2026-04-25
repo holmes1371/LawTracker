@@ -60,6 +60,21 @@ URLs marked **(approximate)** were not verified during inventory drafting; the a
     - **BLOCKER (2026-04-25):** all candidate URLs (`/`, `/feed/`, `/rss`, `/feed.xml`, `/atom.xml`, `/blog/`, www subdomain) return HTTP 401 with a Cloudflare "you have been blocked" page even from a realistic Chrome User-Agent. The site appears to require auth or has hardened CDN bot protection. No adapter built in this round; revisit options at scout review (item 18) — possibilities: subscribe / acquire a credentialed feed, replace with a different aggregator (Harvard Anticorruption Blog, GIR if subscription is available), or scrape via a headless browser if the access is genuinely public from interactive sessions.
 17. **Volkov Law — Corruption, Crime & Compliance blog** (event_list, RSS) — Michael Volkov's practitioner blog on FCPA / AML / sanctions. WordPress; standard RSS 2.0; English; multi-jurisdictional commentary so `country = None`. Built via `RssFeedAdapter`.
     - Adapter URL: https://blog.volkovlaw.com/feed/
+18. **Gibson, Dunn & Crutcher — publications feed** (event_list, RSS, English) — major US law firm; `/feed/` returns ALL publications across practice areas, so `keyword_filter = ANTI_CORRUPTION_EN` keeps only FCPA / AML / sanctions items. **Intermittent**: served 200 to curl during fixture capture but Cloudflare returned 403 to httpx on a subsequent run. Production reliability would need a TLS-fingerprint-aware client (`curl_cffi`) or headless browser.
+    - Adapter URL: https://www.gibsondunn.com/feed/
+19. **Global Anticorruption Blog (GAB)** (event_list, RSS, English) — Matthew Stephenson at Harvard Law School. Academic, single-topic, multi-jurisdictional. No keyword filter — every post is on-topic. Built via `RssFeedAdapter`.
+    - Adapter URL: https://globalanticorruptionblog.com/feed/
+
+### Law-firm RSS feeds that could not be added (audited 2026-04-25)
+
+These firms appeared in `possibleSources.txt` but offered no usable RSS from this environment:
+
+- **404 / no exposed feed**: Miller & Chevalier, WilmerHale, Paul Weiss, Latham & Watkins, Cleary Gottlieb, Hogan Lovells, Freshfields, Allens, Clayton Utz, King & Wood Mallesons (HTML, not RSS), Gilbert + Tobin (HTML, not RSS), A&O Shearman, King & Spalding.
+- **CDN bot block (HTTP 403, even with browser UA)**: Sidley, Skadden, Debevoise, Dentons, Herbert Smith Freehills, Foley LLP, Foley Hoag, Covington & Burling, Ropes & Gray, Harvard CorpGov Forum.
+- **Rate-limited (HTTP 429)**: DLA Piper.
+- **JS-rendered (no inline data)**: ASIC.
+
+Path forward at item 18 review: subscription via firm email distribution lists, headless-browser scraping (Playwright), or a TLS-fingerprint-spoofing client (`curl_cffi`). Whichever path is chosen, the new adapters slot into `RssFeedAdapter` (or its document-kind sibling) without changing the framework.
 
 ## Out of scope — pilot
 

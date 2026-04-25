@@ -18,14 +18,14 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 wave 2 + item 11 CI; possibleSources.txt expansion)**
+**2026-04-25 (item 17 wave 3: law-firm RSS audit + 2 new adapters)**
 
-- Item 11 (CI) pulled forward and `[~]`: GitHub Actions at `.github/workflows/ci.yml` runs ruff → mypy → pytest on Python 3.11 + 3.12 for every push and PR.
-- Generic `RssFeedAdapter` landed as the reuse mechanism — adding a new RSS source = ~5-line subclass. Volkov Law and Consejo para la Transparencia (Chile) wired in via this base; both fetch live and emit records. Default browser User-Agent on `SourceAdapter` (Chrome on Windows) — httpx default UA was getting 403'd by WordPress nginx.
-- Live scout end-to-end with 5 adapters: 35 events (DOJ 6, AFP 9, Fiscalía 0 sparse, Consejo Transparencia 10, Volkov Law 10). Suite: 31 passing. Ruff + mypy clean.
-- Sources from `possibleSources.txt` blocked from this environment (captured in `design/data-scout.md` "Findings wave 2" for scout-review): SEC FCPA cases (403), OECD WGB (403), CDPP/NACC/AUSTRAC (timeouts — likely AU geo-block), ASIC (JS-rendered, no inline data), FCPA Blog (401, prior). Production environment may need residential proxy / headless browser / API access.
+- Audited ~60 law-firm RSS URLs from `possibleSources.txt` plus alternates. Only **Gibson Dunn** had working RSS (intermittent — Cloudflare blocks httpx in some runs). Most firms hide behind enterprise CMS without RSS, or behind CDN bot rules (Sidley, Skadden, Debevoise, Dentons, HSF, Foley, Covington, Ropes & Gray, etc.).
+- Added: `GibsonDunnAdapter` (with `ANTI_CORRUPTION_EN` keyword filter, since the firm's `/feed/` is mixed-topic) and `GlobalAnticorruptionBlogAdapter` (Harvard's academic blog, no filter — single-topic).
+- Centralized keyword filters at `src/lawtracker/sources/_filters.py` so Ellen can review/tweak in one place without touching adapter code. Two regexes — `ANTI_CORRUPTION_EN` (FCPA/FEPA/bribery/anti-corruption/AML/OFAC/sanctions/ITAR) and `ANTI_CORRUPTION_ES` (cohecho/corrupción/soborno/lavado/Ley 20.393/funcionario público) — documented in `design/data-scout.md` "Keyword filters in use" section.
+- Live scout: 45 events (DOJ 6, AFP 9, Fiscalía 0, Consejo 10, Volkov 10, Gibson Dunn 0 CF-blocked this run, GAB 10). Suite: 33 passing. Ruff + mypy clean. CI workflow already in place.
 - Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff. Items 4 / 5 / 6+ still queued behind item 18 (scout review).
-- Next: Tom runs `python -m lawtracker scout`, opens `data/scout/events.xlsx`, decides at item 18 which sources are worth investing access in vs. dropping vs. replacing.
+- Next: Ellen reviews the Excel + the keyword-filters section in `design/data-scout.md`. Adjustments either tweak `_filters.py` or add new RSS subclasses; firms on the blocked list need a different access strategy (headless browser, `curl_cffi`, email subscriptions).
 
 ## For future agents
 

@@ -26,6 +26,8 @@ from lawtracker.sources.afp_foreign_bribery import AfpForeignBriberyAdapter
 from lawtracker.sources.consejo_transparencia_cl import ConsejoTransparenciaClAdapter
 from lawtracker.sources.doj_fcpa_actions import DojFcpaActionsAdapter
 from lawtracker.sources.fiscalia_chile import FiscaliaChileAdapter
+from lawtracker.sources.gibson_dunn import GibsonDunnAdapter
+from lawtracker.sources.global_anticorruption_blog import GlobalAnticorruptionBlogAdapter
 from lawtracker.sources.volkov_law import VolkovLawAdapter
 
 PILOT_ADAPTERS: list[type[SourceAdapter]] = [
@@ -34,10 +36,16 @@ PILOT_ADAPTERS: list[type[SourceAdapter]] = [
     FiscaliaChileAdapter,
     ConsejoTransparenciaClAdapter,
     VolkovLawAdapter,
-    # Sources flagged blocked / JS-rendered: FCPA Blog (CDN 401), SEC FCPA
-    # cases (CDN 403), OECD WGB (CDN 403), AUSTRAC / NACC / CDPP (timeout
-    # from this environment), ASIC (JS-rendered, no inline data). See
-    # design/sources.md and design/data-scout.md "Findings" sections.
+    GibsonDunnAdapter,
+    GlobalAnticorruptionBlogAdapter,
+    # Sources flagged blocked / JS-rendered / no-RSS: FCPA Blog (CDN 401),
+    # SEC FCPA cases (CDN 403), OECD WGB (CDN 403), AUSTRAC / NACC / CDPP
+    # (timeout — likely AU geo-block), ASIC (JS-rendered, no inline data),
+    # WilmerHale / Sidley / Skadden / Debevoise / Latham / Cleary / Hogan
+    # Lovells / Freshfields / Herbert Smith Freehills / DLA Piper /
+    # Foley LLP / Foley Hoag / Covington / Ropes & Gray (no exposed RSS or
+    # CDN 403/404). See design/sources.md and design/data-scout.md
+    # "Findings" sections for the full audit.
 ]
 
 DEFAULT_OUTPUT_DIR = Path("data/scout")

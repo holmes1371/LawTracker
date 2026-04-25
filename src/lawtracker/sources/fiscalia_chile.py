@@ -22,21 +22,16 @@ an `<h4 class="title">` containing an `<a href="/actualidad/noticias/...">` whos
 text is the headline, and a `<div class="field--name-body">` body summary.
 """
 
-import re
 from datetime import date, datetime
 from urllib.parse import urljoin
 
 import httpx
 from bs4 import BeautifulSoup, Tag
 
+from lawtracker.sources._filters import ANTI_CORRUPTION_ES
 from lawtracker.sources.base import EventRecord, SourceAdapter
 
-KEYWORDS = re.compile(
-    r"\b(?:cohecho|corrupci[oó]n|soborn|lavado de activos|"
-    r"lavado de dinero|fraude al fisco|delitos econ[oó]micos|"
-    r"ley\s*20\.?393|funcionario p[uú]blico)\b",
-    re.IGNORECASE,
-)
+KEYWORDS = ANTI_CORRUPTION_ES
 
 
 class FiscaliaChileAdapter(SourceAdapter):
