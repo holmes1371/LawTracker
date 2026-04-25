@@ -98,6 +98,8 @@ def run(
         if result.status == "ok":
             all_events.extend(result.events)
 
+    all_events = _enrich_summaries(all_events, output_dir)
+
     _write_xlsx(all_events, output_dir / "events.xlsx")
     _write_jsonl(all_events, output_dir / "events.jsonl")
     _write_summary(all_events, poll_log, output_dir / "summary.txt")
@@ -114,6 +116,19 @@ def _write_analysis(events: list[EventRecord], path: Path) -> None:
     from lawtracker.analysis import build_analysis
 
     path.write_text(build_analysis(events), encoding="utf-8")
+
+
+def _enrich_summaries(events: list[EventRecord], output_dir: Path) -> list[EventRecord]:
+    """Per-event summary enrichment with disk-backed cache.
+
+    Cache lives under `output_dir/.cache/summaries.json` so it shares the
+    same gitignored data tree as everything else the scout produces.
+    """
+    from lawtracker.article_summary import enrich_summaries
+    from lawtracker.llm_cache import JsonCache
+
+    cache = JsonCache(output_dir / ".cache" / "summaries.json")
+    return enrich_summaries(events, cache=cache)
 
 
 def _write_xlsx(events: list[EventRecord], path: Path) -> None:

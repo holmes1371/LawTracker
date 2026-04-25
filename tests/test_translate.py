@@ -17,9 +17,16 @@ _REAL_TRANSLATE = translate_mod.translate
 
 
 @pytest.fixture(autouse=True)
-def _restore_real_translate(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Undo the conftest auto-mock so we can exercise the real translate fn."""
+def _restore_real_translate(
+    monkeypatch: pytest.MonkeyPatch, tmp_path
+) -> None:
+    """Undo the conftest auto-mock so we can exercise the real translate fn.
+
+    Also points the disk-cache at a fresh tmp path so each test starts with
+    an empty cache and no leakage from a real `data/scout/.cache/...`.
+    """
     monkeypatch.setattr(translate_mod, "translate", _REAL_TRANSLATE)
+    monkeypatch.setenv("LAWTRACKER_TRANSLATE_CACHE", str(tmp_path / "translations.json"))
 
 
 def _patch_httpx_get(

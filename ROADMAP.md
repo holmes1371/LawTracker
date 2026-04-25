@@ -18,15 +18,15 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 wave 9 + item 19 stub-mode landing)**
+**2026-04-25 (item 17 wave 10 — Ellen feedback wave 3 + per-event summaries)**
 
-- Tom's call: build the LLM-using features (analysis + SEC adapter) but with stub responses by default to avoid API spend during design iteration. Live calls flip on later via `LAWTRACKER_LLM_MODE=anthropic` or `--llm-mode=anthropic`; `anthropic` SDK lazy-imported then.
-- **`src/lawtracker/llm.py`** landed: `complete(system, user, stub)` function with three modes (stub / anthropic / off).
-- **`src/lawtracker/analysis.py`** landed: post-scout `build_analysis(events)` produces `data/scout/analysis.md` with deterministic source / country / industry counts + LLM narrative + collapsible prompt preview for design iteration. Ellen's questions baked into the prompt template (volume trend, industry concentration, what compliance pros / risk+audit boards should know).
-- **`src/lawtracker/sources/sec_fcpa_cases.py`** landed: SEC FCPA cases adapter. Fetches via `use_curl_cffi`; auto-detects the most recent N years present on the page (default 2) and slices that narrative for the LLM; parses JSON response into `EventRecord`s. Stub mode emits 2 placeholder records.
-- CLI: `lawtracker scout --llm-mode {stub,anthropic,off}` (default `stub`). Tests forced to stub mode via `tests/conftest.py` autouse fixture.
-- Live scout: 108 events from 8 working adapters (DOJ 6, SEC 2 stub, AFP 9, Consejo 10, Volkov 10, GD 1, GAB 10, M&C 60). Suite: 68 tests passing. Ruff + mypy clean.
-- Items 3, 11, 16, 17, 19 all `[~]`-or-better pending Tom's manual signoff after Ellen reviews `analysis.md`.
+- Ellen's wave-2 feedback addressed across two commits this turn:
+  - **Translation cache + email param**: MyMemory was silently rate-limiting (5K chars/day per IP) so Spanish translation stopped firing. Disk cache at `data/scout/.cache/translations.json` plus a `de` email param (50K/day) fix it. Live: Consejo entries arrive in English again with Spanish in `metadata.title_es` / `summary_es`.
+  - **Event-noise filter**: `EVENT_NOISE` regex in `_filters.py` matches webinar / podcast / networking / speaking-engagement / register / save-the-date / CLE / etc. Applied as `SourceAdapter.exclude_filter` ClassVar (default ON; per-adapter override). Plus M&C drops the `event` content type entirely. Live drop: 108 → 83 events.
+  - **Per-event summaries with disk cache**: `src/lawtracker/llm_cache.py` (generic JsonCache) + `src/lawtracker/article_summary.py` (enrich_summaries). Stub mode synthesizes deterministic placeholders; anthropic mode fetches the article via curl_cffi and asks Claude for 1-2 sentences. Cache keyed by `mode|dedup_key` so stub and anthropic don't mix. Verified: second run produces 0 LLM regenerations across all 83 events (full cache hit).
+- CI mypy fix bundled: `anthropic.*` added to `ignore_missing_imports` overrides (lazy-imported in llm.py was failing CI mypy).
+- Live scout: 83 events from 8 working adapters; Spanish back in English; conference/webinar ads dropped; per-event summary placeholders cached. Suite: 84 tests passing. Ruff + mypy clean.
+- Items 3, 11, 16, 17, 19 still `[~]` pending Tom's signoff after Ellen's next review pass.
 
 ## For future agents
 

@@ -215,6 +215,44 @@ Trade-offs of LLM steps (across all of the above):
 - Latency — each call adds 1-3s; 50 events with summaries = ~1-2 min added to scout time.
 - Auditability — Ellen sees the LLM's output, not the raw source. Need to keep raw source preserved for verification.
 
+## Per-event summary + caching (2026-04-25, Ellen's wave-2 ask)
+
+Ellen: "The LLM will need to go into each of the articles and provide a
+summary - we should have a caching system so it doesn't have to
+reevaluate the same article multiple times and it knows to skip over
+articles that have already been analyzed."
+
+How it works:
+
+- `src/lawtracker/llm_cache.py` — generic disk-backed JSON cache
+  (`JsonCache`). One file per cache; loaded on construct, written
+  through after every put.
+- `src/lawtracker/article_summary.py` — `enrich_summaries(events, cache)`
+  iterates events, looks up `mode|dedup_key` in the cache, and either
+  reuses the cached summary or generates a fresh one.
+- Cache file: `data/scout/.cache/summaries.json` (gitignored).
+- Cache keys are mode-stamped (`stub|...` vs `anthropic|...`) so
+  switching between stub and live LLM doesn't reuse stub placeholders
+  as if they were real analyses.
+
+Per-mode behavior:
+
+- **stub**: synthesizes a deterministic placeholder summary from event
+  metadata (no HTTP fetch, no API spend). Visible at a glance — every
+  stub starts with `[STUB summary]`.
+- **anthropic**: fetches the article URL via curl_cffi (handles both
+  plain sites and Cloudflare-protected ones), strips chrome, sends
+  title + body to Claude. ~1-2 sentence summaries, FCPA-practitioner
+  framing.
+- **off**: leaves existing summaries untouched. Cache untouched.
+
+When the LLM replaces an existing adapter-provided summary (e.g. an RSS
+description), the original is preserved at `metadata.summary_source` for
+reference — no information lost.
+
+Cache verification on a second run: 0 stub regenerations across 83
+events; cache lookup is the path for everything.
+
 ## LLM mode (2026-04-25, stub-first per Tom)
 
 The scout calls Claude in two places: post-aggregation analysis (writes `analysis.md`) and the SEC FCPA cases adapter (extracts structured records from a narrative page). Both go through `src/lawtracker/llm.py`.
