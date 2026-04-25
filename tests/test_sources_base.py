@@ -197,6 +197,58 @@ def test_event_noise_filter_drops_conference_webinar_podcast_networking():
     assert not any("Networking" in t for t in titles)
 
 
+class _ConferenceyAdapter(SourceAdapter):
+    """Tom 2026-04-25: filter must apply to ALL adapters, not just M&C.
+    Tests the title-prefix and `summit` / `annual forum` patterns."""
+
+    source_id = "fake_confy"
+    kind = "event_list"
+    url = "https://example.test/confy"
+
+    def parse(self, html: str, client) -> list[EventRecord]:
+        items = [
+            "Acme Corp pleads guilty in $50M FCPA scheme",  # keep
+            "Conference: 2026 Anti-Corruption Forum",  # drop (prefix)
+            "Forum: Compliance Trends in LATAM",  # drop (prefix)
+            "Annual FCPA Summit — Save the Date",  # drop
+            "Join us for our Quarterly FCPA Roundtable",  # drop
+            "RSVP: Spring Compliance Conference",  # drop
+            "Tickets available for the ABA Symposium",  # drop
+            "DAG Lisa Monaco delivers keynote at ABA Conference",  # keep — substantive content
+        ]
+        return [
+            EventRecord(
+                dedup_key=f"k{i}",
+                source_id="fake_confy",
+                event_date=None,
+                title=t,
+                primary_actor=None,
+                summary=None,
+                url=f"https://example.test/{i}",
+                country="US",
+            )
+            for i, t in enumerate(items)
+        ]
+
+
+def test_event_noise_filter_applies_to_every_adapter_not_just_m_and_c():
+    """Tom 2026-04-25: drop-event-content guidance is universal."""
+    with _client(_respond(200, "<html>ok</html>")) as client:
+        result = _ConferenceyAdapter().poll(client=client)
+
+    titles = [e.title for e in result.events]
+    assert any("Acme Corp" in t for t in titles)
+    assert any("Lisa Monaco" in t for t in titles), (
+        "speeches AT conferences must survive — they're substantive"
+    )
+    assert not any(t.startswith("Conference:") for t in titles)
+    assert not any(t.startswith("Forum:") for t in titles)
+    assert not any("Summit" in t for t in titles)
+    assert not any("Roundtable" in t for t in titles)
+    assert not any(t.startswith("RSVP:") for t in titles)
+    assert not any("Tickets available" in t for t in titles)
+
+
 def test_translate_summary_from_swaps_title_and_summary(monkeypatch):
     translations = {
         "Título original": "Original title",

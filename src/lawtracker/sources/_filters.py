@@ -70,6 +70,8 @@ ANTI_CORRUPTION_EN = re.compile(
 # itself is policy content, not an ad. The patterns target the framing
 # (registration, panel discussion, save the date) rather than the venue.
 EVENT_NOISE = re.compile(
+    r"(?:"
+    # Plain event-format keywords (word-boundary).
     r"\b(?:"
     r"webinar|webcast|teleseminar"
     r"|podcast(?:\s+(?:episode|series))?"
@@ -79,10 +81,18 @@ EVENT_NOISE = re.compile(
     r"|save\s+the\s+date"
     r"|cle\s+(?:credit|webcast|seminar|program|hour)"
     r"|continuing\s+legal\s+education"
-    r"|workshop|roundtable|symposium"
+    r"|workshop|roundtable|symposium|summit"
+    r"|join\s+us|rsvp"
+    r"|tickets?\s+(?:available|on\s+sale)|limited\s+seats?"
+    r"|annual\s+(?:forum|conference|summit|symposium|meeting)"
     r"|seminario|webinario|charla\s+virtual"
-    r")\b",
-    re.IGNORECASE,
+    r")\b"
+    # Title-prefix-style ads — colon after an event-type word strongly
+    # signals the entry IS the event itself, not coverage of one.
+    # e.g. "Conference: ABA FCPA Forum" / "Forum: Anti-Corruption Trends"
+    r"|^(?:webinar|podcast|conference|forum|summit)\s*:"
+    r")",
+    re.IGNORECASE | re.MULTILINE,
 )
 
 
