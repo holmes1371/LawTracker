@@ -20,9 +20,9 @@ Strict rules for writing it:
 
 **2026-04-25**
 
-- Pilot scope locked with Tom: US anti-corruption *enforcement and government messaging* (not statutory text). FCPA and FEPA priority. Pilot user is Ellen.
-- Architecture and pilot-source inventory landed — `design/architecture.md` (Fly.io / FastAPI / Jinja+HTMX / SQLite-then-Postgres / APScheduler) and `design/sources.md` (9 sources across `document` and `event_list` shapes). Items 1–2 at `[~]` pending Tom's signoff.
-- Backlog items 3–15 filed; next pickup is item 3 (source adapter framework + first adapter) using DOJ FCPA enforcement actions list as the anchor.
+- Items 1 and 2 closed (`[x]` ceec7ec) — architecture + pilot source inventory signed off; full prose moved to `COMPLETED.md`.
+- New standing rule added under "For future agents": items requiring Tom to set up external services include a complete click-by-click setup walkthrough in the design note.
+- Next pickup is item 3 (source adapter framework + first adapter, anchored on the DOJ FCPA enforcement actions list). First code-touching session — load the `karpathy-guidelines` skill at start.
 - Nothing else in flight.
 
 ## For future agents
@@ -40,6 +40,7 @@ Session discipline:
 - **Closed items live in `COMPLETED.md`, not here.** When Tom signs off a `[~]` item, the next session moves its full prose into `COMPLETED.md` and leaves a one-line stub at the original item number in this file. Original numbers are stable — never renumber. When touching territory that overlaps a completed item, read its full entry in `COMPLETED.md` before re-deriving decisions.
 - Tests live in `tests/` and (once CI is wired) run on every push + PR. A red test check blocks merge; do not mark a feature done with tests failing.
 - Honor the standing order: deterministic work lives in Python modules; any agent/LLM step does only judgment and interpretation. If a feature tempts you to move mechanical work into agent-handled text, push back.
+- **Items that require Tom to set up an external service** (Fly.io account, Squarespace DNS records, GitHub Actions secrets, Resend / Postmark / Twilio accounts, etc.) include a step-by-step walkthrough in the design note: every screen Tom will see, every value to paste, every secret to copy where. Tom is doing this from scratch and a missed step blocks the whole item. Do not assume prior familiarity with any service. When a step requires a value only Tom can produce (account email, payment method, custom domain), call it out explicitly and pause until he confirms it is done before moving on.
 
 Status legend:
 
@@ -50,17 +51,9 @@ Status legend:
 
 ## Backlog (priority order)
 
-### 1. [~] Architecture + stack design note
+1\. [x] Architecture + stack design note — ceec7ec — see COMPLETED.md
 
-Capture the locked stack and product shape so every later item references one source of truth instead of re-deriving choices. Output: `design/architecture.md` covering pilot scope, the document-vs-event source distinction, the chosen stack (Fly.io / FastAPI / Jinja+HTMX / SQLite-then-Postgres / APScheduler), the conceptual data model (`Source` / `Snapshot` / `LawChange` / `LawEvent`), and repo layout additions.
-
-In progress: design note landed this commit. Pending Tom's signoff before flipping to `[x]`.
-
-### 2. [~] Pilot source inventory
-
-Lock the concrete URL list for the pilot so item 3 has a real target list, not a hypothetical. Output: `design/sources.md` enumerating the nine pilot sources (4 `document`, 5 `event_list`), out-of-scope statutes/jurisdictions, the future plug-in slot for Tom's trusted third-party trackers, and the implementation order (anchor adapter = DOJ FCPA enforcement actions list).
-
-In progress: source inventory landed this commit. Pending Tom's signoff before flipping to `[x]`.
+2\. [x] Pilot source inventory — ceec7ec — see COMPLETED.md
 
 ### 3. [ ] Source adapter framework + first adapter
 
