@@ -18,12 +18,12 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (later)**
+**2026-04-25 (item 3 — commit 1 of 3)**
 
-- Pilot scope widened from US-only to global: now covers US + Australia + Chile, plus multilateral indexes (OECD WGB, World Bank sanctions) and one curated aggregator (FCPA Blog). See updated `design/sources.md` and `design/architecture.md`.
-- Item 3 anchor unchanged — still DOJ FCPA enforcement actions (source 5); framework-proof decision was independent of jurisdictional scope. FCPA Blog moved out of item 15's "future" list and into the pilot inventory.
-- `EventRecord` schema settled in conversation: universal six fields (`dedup_key`, `source_id`, `event_date`, `title`, `primary_actor`, `summary`, `url`) + `metadata: dict`. `magnitude_usd` not promoted; `country` stays in metadata as a placeholder for non-US sources.
-- Pending: design note for item 3 still unwritten (plan-and-wait cycle ongoing); Tom to verify exact URLs for non-US primary sources (AFP, CDPP, Fiscalía, Contraloría) before those adapters are built.
+- Item 3 in flight: design note `design/source-adapter-framework.md` landed; status flipped `[ ]` → `[~]`.
+- `EventRecord` schema settled: eight first-class fields (`dedup_key`, `source_id`, `event_date`, `title`, `primary_actor`, `summary`, `url`, `country`) + `metadata: dict`. `country` promoted to first-class on Tom's call; `magnitude_usd` stays in `metadata`.
+- Anchor adapter is DOJ FCPA enforcement actions, list-page-only extraction for v1; tests use a committed HTML fixture (no live network in default suite).
+- Next commit: implement `SourceAdapter` ABC + `PollResult` + `EventRecord` in `src/lawtracker/sources/base.py` with base-contract tests, before touching the concrete adapter.
 
 ## For future agents
 
@@ -55,11 +55,11 @@ Status legend:
 
 2\. [x] Pilot source inventory — ceec7ec — see COMPLETED.md
 
-### 3. [ ] Source adapter framework + first adapter
+### 3. [~] Source adapter framework + first adapter
 
 Build the `SourceAdapter` ABC under `src/lawtracker/sources/base.py` plus the first concrete adapter — DOJ FCPA enforcement actions list — end to end. Adapter declares its kind (`document` | `event_list` | `both`) and emits Pydantic records the storage layer can persist. First adapter is the anchor that proves the `event_list` shape; items 6–9 in `design/sources.md` follow the same template.
 
-Design-note questions to resolve before coding: how the adapter signals "no change" vs. "transient fetch failure" so the poll loop can distinguish them; what the dedup key is for `event_list` entries (URL? URL + title hash? source-specific?); how to persist source-specific metadata without per-source columns.
+Plan approved 2026-04-25 — see `design/source-adapter-framework.md`. The three open questions (poll-result shape vs. fetch failure, dedup-key strategy, metadata persistence) are resolved in the design note. `country` promoted to a first-class `EventRecord` field on Tom's call.
 
 ### 4. [ ] Storage + change detection
 
