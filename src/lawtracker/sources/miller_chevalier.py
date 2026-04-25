@@ -39,7 +39,11 @@ _SEARCH_BASE = (
     + "/search?search_term=&related_practice=8965&related_professional=any"
     "&related_subject=any&related_region=any&date_from=&date_to=&view_more=1"
 )
-_CONTENT_TYPES: tuple[str, ...] = ("publication", "news", "event")
+# Per Ellen 2026-04-25: drop the `event` content type — those entries are
+# speaking-engagement ads ("Speaking Engagement: ABA FCPA Forum") and don't
+# belong in the analysis table. Publications (FCPA Reviews, client alerts)
+# and news mentions are kept.
+_CONTENT_TYPES: tuple[str, ...] = ("publication", "news")
 
 
 class MillerChevalierFcpaAdapter(SourceAdapter):

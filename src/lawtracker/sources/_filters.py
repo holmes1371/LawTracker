@@ -57,6 +57,35 @@ ANTI_CORRUPTION_EN = re.compile(
 #   - delitos económicos (economic crimes — Chile's umbrella term)
 #   - Ley 20.393 (corporate liability statute)
 #   - funcionario público (public official)
+# Event-noise exclusion regex.
+# Drops items advertising conferences, webinars, podcasts, networking events,
+# CLE webcasts, awards announcements, and the like — Ellen 2026-04-25 doesn't
+# want these polluting the table or being summarized by the LLM. Applied at
+# the SourceAdapter base class level, after parse() and before translation /
+# LLM enrichment, so all adapters benefit.
+#
+# Matches in title or summary. Keep patterns specific enough that substantive
+# policy speeches and "speech at conference" coverage aren't dropped — DOJ
+# senior-official speeches, for example, mention conferences but the entry
+# itself is policy content, not an ad. The patterns target the framing
+# (registration, panel discussion, save the date) rather than the venue.
+EVENT_NOISE = re.compile(
+    r"\b(?:"
+    r"webinar|webcast|teleseminar"
+    r"|podcast(?:\s+(?:episode|series))?"
+    r"|networking\s+(?:event|reception|lunch|breakfast|dinner|cocktail)"
+    r"|speaking\s+engagement|panelist|panel\s+discussion|fireside\s+chat"
+    r"|register\s+(?:now|today|here|at)|registration\s+(?:open|now)"
+    r"|save\s+the\s+date"
+    r"|cle\s+(?:credit|webcast|seminar|program|hour)"
+    r"|continuing\s+legal\s+education"
+    r"|workshop|roundtable|symposium"
+    r"|seminario|webinario|charla\s+virtual"
+    r")\b",
+    re.IGNORECASE,
+)
+
+
 ANTI_CORRUPTION_ES = re.compile(
     r"\b(?:"
     r"cohecho"

@@ -18,12 +18,14 @@ def _client_serving_fixture() -> httpx.Client:
     return httpx.Client(transport=httpx.MockTransport(handler))
 
 
-def test_urls_iterate_three_content_types():
+def test_urls_iterate_publications_and_news_only():
+    """Per Ellen 2026-04-25: events content type (speaking engagements)
+    is dropped — only substantive publications and news flow through."""
     urls = MillerChevalierFcpaAdapter().urls
-    assert len(urls) == 3
+    assert len(urls) == 2
     assert any("content_types%5B0%5D=publication" in u for u in urls)
     assert any("content_types%5B0%5D=news" in u for u in urls)
-    assert any("content_types%5B0%5D=event" in u for u in urls)
+    assert not any("content_types%5B0%5D=event" in u for u in urls)
 
 
 def test_parses_search_results_and_tags_content_type():
@@ -33,9 +35,9 @@ def test_parses_search_results_and_tags_content_type():
         result = MillerChevalierFcpaAdapter().poll(client=client)
 
     assert result.status == "ok"
-    # urls iterates 3 times; the mock returns the publications fixture for
-    # all of them, so we expect 3 × 20 = 60 records.
-    assert len(result.events) == 60
+    # urls iterates 2 times (publications, news); mock returns the
+    # publications fixture for both, so we expect 2 × 20 = 40 records.
+    assert len(result.events) == 40
 
     for event in result.events:
         assert event.source_id == "miller_chevalier_fcpa"

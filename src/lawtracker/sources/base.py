@@ -6,12 +6,15 @@ of HTTP fetching and converts errors into a `PollResult`; subclasses implement
 only the source-specific extraction in `parse()`.
 """
 
+import re
 from abc import ABC, abstractmethod
 from datetime import date
 from typing import Any, ClassVar, Literal
 
 import httpx
 from pydantic import BaseModel, Field
+
+from lawtracker.sources._filters import EVENT_NOISE
 
 PollStatus = Literal["ok", "transient_failure", "permanent_failure"]
 
@@ -98,6 +101,12 @@ class SourceAdapter(ABC):
 
     translate_summary_from: ClassVar[str | None] = None
 
+    # Drops events advertising conferences, webinars, podcasts, networking
+    # gatherings, CLE webcasts, etc. Per Ellen 2026-04-25 — these don't
+    # belong in the analysis table. Override with `None` on an adapter to
+    # disable, or with a different `re.Pattern` to use a custom rule.
+    exclude_filter: ClassVar[re.Pattern[str] | None] = EVENT_NOISE
+
     @property
     def urls(self) -> tuple[str, ...]:
         """URLs to fetch per poll. Override for paginated / multi-page sources."""
@@ -180,6 +189,8 @@ class SourceAdapter(ABC):
                 status="permanent_failure",
                 error=f"parse error: {type(exc).__name__}: {exc}",
             )
+        if self.exclude_filter is not None:
+            events = [e for e in events if not _matches(self.exclude_filter, e)]
         if self.translate_summary_from:
             events = [self._translate_event(e, self.translate_summary_from) for e in events]
         return PollResult(status="ok", events=events)
@@ -216,3 +227,9 @@ class SourceAdapter(ABC):
         parsing (e.g. fetching a press release per list-page entry for
         richer metadata). Adapters that don't need it ignore it.
         """
+
+
+def _matches(pattern: re.Pattern[str], event: EventRecord) -> bool:
+    """True if the pattern matches anywhere in title or summary."""
+    haystack = f"{event.title} {event.summary or ''}"
+    return bool(pattern.search(haystack))

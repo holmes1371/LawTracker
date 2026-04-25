@@ -119,6 +119,84 @@ class _SpanishAdapter(SourceAdapter):
         ]
 
 
+class _NoisyAdapter(SourceAdapter):
+    """Returns a mix of substantive + event-noise items."""
+
+    source_id = "fake_noisy"
+    kind = "event_list"
+    url = "https://example.test/noisy"
+
+    def parse(self, html: str, client) -> list[EventRecord]:
+        return [
+            EventRecord(
+                dedup_key="ev-1",
+                source_id="fake_noisy",
+                event_date=None,
+                title="DOJ resolves foreign bribery case with Acme Corp",
+                primary_actor="Acme Corp",
+                summary="Substantive enforcement news.",
+                url="https://example.test/case-1",
+                country="US",
+            ),
+            EventRecord(
+                dedup_key="ev-2",
+                source_id="fake_noisy",
+                event_date=None,
+                title="Webinar: 2026 FCPA Trends — Register Now",
+                primary_actor=None,
+                summary="Join us for a 60-minute webinar.",
+                url="https://example.test/webinar",
+                country="US",
+            ),
+            EventRecord(
+                dedup_key="ev-3",
+                source_id="fake_noisy",
+                event_date=None,
+                title="Podcast Episode 42: The CEP One Year Later",
+                primary_actor=None,
+                summary=None,
+                url="https://example.test/podcast",
+                country="US",
+            ),
+            EventRecord(
+                dedup_key="ev-4",
+                source_id="fake_noisy",
+                event_date=None,
+                title="Speaking Engagement: ABA FCPA Forum",
+                primary_actor=None,
+                summary=None,
+                url="https://example.test/forum",
+                country="US",
+            ),
+            EventRecord(
+                dedup_key="ev-5",
+                source_id="fake_noisy",
+                event_date=None,
+                title="Networking Reception at the Stanford FCPA Conference",
+                primary_actor=None,
+                summary=None,
+                url="https://example.test/networking",
+                country="US",
+            ),
+        ]
+
+
+def test_event_noise_filter_drops_conference_webinar_podcast_networking():
+    """Ellen 2026-04-25: ads for conferences / webinars / podcasts /
+    networking events should be dropped before reaching translation, the
+    LLM, or the final table."""
+    with _client(_respond(200, "<html>ok</html>")) as client:
+        result = _NoisyAdapter().poll(client=client)
+
+    assert result.status == "ok"
+    titles = [e.title for e in result.events]
+    assert any("Acme Corp" in t for t in titles), "substantive item must survive"
+    assert not any("Webinar" in t for t in titles)
+    assert not any("Podcast" in t for t in titles)
+    assert not any("Speaking Engagement" in t for t in titles)
+    assert not any("Networking" in t for t in titles)
+
+
 def test_translate_summary_from_swaps_title_and_summary(monkeypatch):
     translations = {
         "Título original": "Original title",

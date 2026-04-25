@@ -44,5 +44,5 @@ target-version = "py311"
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [[tool.mypy.overrides]]
-module = ["openpyxl.*", "curl_cffi.*"]
+module = ["openpyxl.*", "curl_cffi.*", "anthropic.*"]
 ignore_missing_imports = true
