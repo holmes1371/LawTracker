@@ -51,12 +51,22 @@ class SourceAdapter(ABC):
     """Per-source scraper.
 
     Subclasses declare class-level `source_id`, `kind`, and `url`, and implement
-    `parse(html)`. The base class handles HTTP and error classification:
+    `parse(html, client)`. The base class handles HTTP and error classification:
 
     - Transport errors and 5xx → `transient_failure` (poll loop retries on
       next cadence).
     - 4xx and parse errors → `permanent_failure` (loud log; surfaces in
       dashboard once that lands).
+
+    Subclasses that need to fetch multiple URLs per poll (e.g. paginated
+    archives, year-bucketed lists) override the `urls` property; the base
+    iterates them and concatenates events. The first non-ok status across
+    URLs becomes the result's status.
+
+    Subclasses that need to make extra HTTP requests during parsing (e.g.
+    DOJ FCPA actions following a link from each list-page entry to the
+    matching press release for richer metadata) accept the `client` argument
+    in `parse()`. Adapters that don't need it ignore it.
 
     Recommended dedup-key pattern for event_list subclasses: use the canonical
     detail URL when stable; otherwise hash a stable subset of fields (typically
@@ -68,6 +78,11 @@ class SourceAdapter(ABC):
     url: ClassVar[str]
 
     timeout_seconds: ClassVar[float] = 30.0
+
+    @property
+    def urls(self) -> tuple[str, ...]:
+        """URLs to fetch per poll. Override for paginated / multi-page sources."""
+        return (self.url,)
 
     def poll(self, *, client: httpx.Client | None = None) -> PollResult:
         """Fetch the source and return a PollResult.
@@ -83,8 +98,24 @@ class SourceAdapter(ABC):
         return self._do_poll(client)
 
     def _do_poll(self, client: httpx.Client) -> PollResult:
+        all_events: list[EventRecord] = []
+        worst_status: PollStatus = "ok"
+        first_error: str | None = None
+
+        for url in self.urls:
+            single = self._fetch_one(client, url)
+            if single.status != "ok":
+                if worst_status == "ok":
+                    worst_status = single.status
+                    first_error = single.error
+                continue
+            all_events.extend(single.events)
+
+        return PollResult(status=worst_status, events=all_events, error=first_error)
+
+    def _fetch_one(self, client: httpx.Client, url: str) -> PollResult:
         try:
-            response = client.get(self.url)
+            response = client.get(url)
         except httpx.RequestError as exc:
             return PollResult(
                 status="transient_failure", error=f"request error: {exc}"
@@ -102,7 +133,7 @@ class SourceAdapter(ABC):
             )
 
         try:
-            events = self.parse(response.text)
+            events = self.parse(response.text, client)
         except Exception as exc:
             return PollResult(
                 status="permanent_failure",
@@ -111,5 +142,10 @@ class SourceAdapter(ABC):
         return PollResult(status="ok", events=events)
 
     @abstractmethod
-    def parse(self, html: str) -> list[EventRecord]:
-        """Extract EventRecords from the source's raw page content."""
+    def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
+        """Extract EventRecords from the source's raw page content.
+
+        `client` is provided for adapters that need to follow links during
+        parsing (e.g. fetching a press release per list-page entry for
+        richer metadata). Adapters that don't need it ignore it.
+        """

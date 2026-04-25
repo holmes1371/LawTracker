@@ -24,6 +24,7 @@ and a `search-result__description` with a highlighted excerpt.
 from datetime import date, datetime
 from urllib.parse import urljoin
 
+import httpx
 from bs4 import BeautifulSoup, Tag
 
 from lawtracker.sources.base import EventRecord, SourceAdapter
@@ -34,7 +35,7 @@ class AfpForeignBriberyAdapter(SourceAdapter):
     kind = "event_list"
     url = "https://www.afp.gov.au/search?keys=foreign+bribery"
 
-    def parse(self, html: str) -> list[EventRecord]:
+    def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
         soup = BeautifulSoup(html, "html.parser")
         records: list[EventRecord] = []
         for row in soup.select("div.views-row"):

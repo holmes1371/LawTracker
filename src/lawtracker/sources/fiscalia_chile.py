@@ -26,6 +26,7 @@ import re
 from datetime import date, datetime
 from urllib.parse import urljoin
 
+import httpx
 from bs4 import BeautifulSoup, Tag
 
 from lawtracker.sources.base import EventRecord, SourceAdapter
@@ -43,7 +44,7 @@ class FiscaliaChileAdapter(SourceAdapter):
     kind = "event_list"
     url = "https://www.fiscaliadechile.cl/actualidad/noticias/nacionales"
 
-    def parse(self, html: str) -> list[EventRecord]:
+    def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
         soup = BeautifulSoup(html, "html.parser")
         records: list[EventRecord] = []
         for card in soup.select("div.card-new"):

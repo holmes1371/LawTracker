@@ -18,7 +18,7 @@ class _FakeAdapter(SourceAdapter):
     kind = "event_list"
     url = "https://example.test/list"
 
-    def parse(self, html: str) -> list[EventRecord]:
+    def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
         if html == "boom":
             raise ValueError("intentional parse failure")
         return [

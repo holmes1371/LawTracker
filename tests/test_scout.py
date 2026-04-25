@@ -48,7 +48,7 @@ class _OkAdapter(SourceAdapter):
             ],
         )
 
-    def parse(self, html: str) -> list[EventRecord]:
+    def parse(self, html: str, client=None) -> list[EventRecord]:
         return []
 
 
@@ -75,7 +75,7 @@ class _OtherOkAdapter(SourceAdapter):
             ],
         )
 
-    def parse(self, html: str) -> list[EventRecord]:
+    def parse(self, html: str, client=None) -> list[EventRecord]:
         return []
 
 
@@ -87,7 +87,7 @@ class _FailingAdapter(SourceAdapter):
     def poll(self, *, client=None) -> PollResult:  # type: ignore[override]
         return PollResult(status="permanent_failure", error="simulated failure")
 
-    def parse(self, html: str) -> list[EventRecord]:
+    def parse(self, html: str, client=None) -> list[EventRecord]:
         return []
 
 

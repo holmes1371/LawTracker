@@ -18,12 +18,13 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 — AFP + Fiscalía adapters landed; FCPA Blog blocked)**
+**2026-04-25 (item 17 — DOJ historical years + link-following enrichment landed; code complete)**
 
-- AFP and Fiscalía Chile adapters landed in `src/lawtracker/sources/`; both wired into `PILOT_ADAPTERS` in `scout.py`. Suite: 23 passing. Live smoke: AFP returns 9 real foreign-bribery cases; Fiscalía page 0 currently has 0 anti-corruption hits (sparse signal — captured as a finding for scout review).
-- **FCPA Blog blocked**: all candidate URLs return HTTP 401 (Cloudflare). No adapter built; logged in `design/sources.md` source #16 and `design/data-scout.md` for resolution at item 18 (scout review).
-- Discovery: original AFP and Fiscalía URLs in `design/sources.md` were wrong; both updated to live working paths. AFP needs site-search rather than the general-releases page; Fiscalía moved to `/actualidad/noticias/nacionales`.
-- Item 17 stays `[~]`. Next commits: (d) DOJ historical-year support — extend adapter with `poll_year(year)` so scout iterates 24 months; (e) DOJ link-following enrichment — fetch each press release for industry / defendant / penalty / resolution_type.
+- DOJ adapter now iterates `years` (default `(2025, 2026)`) via a base-class `urls` property; per-case enrichment fetches the case-detail page → press release for `topic`, `component`, `industry`, `resolution_type`, `amount_usd`, `press_release_url`. Enrichment is best-effort — silent fail-soft when a case-detail page lacks a press-release link or the press release has unexpected structure.
+- Live scout end-to-end: 15 events (DOJ 6, AFP 9, Fiscalía 0). Ferrera case shows full enrichment (industry=medical devices, resolution=declination, amount_usd=1.2M); other DOJ cases got partial enrichment, surfacing the brittleness Tom + Ellen will evaluate at item 18.
+- Base-class refactor: added `urls` property override hook; `parse(html, client)` now accepts the client so adapters can follow links during parsing. AFP / Fiscalía updated to the new signature (no behavior change). Suite: 25 passing.
+- Items 3, 16, 17 all `[~]` pending Tom's manual signoff. Item 17's only outstanding piece is the FCPA Blog 401 blocker — captured for resolution at item 18 (scout review).
+- Next: item 18 — Tom + Ellen review `data/scout/events.xlsx` and decide what to refine. No more code without their input.
 
 ## For future agents
 
