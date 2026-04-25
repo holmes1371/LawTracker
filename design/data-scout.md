@@ -215,6 +215,24 @@ Trade-offs of LLM steps (across all of the above):
 - Latency — each call adds 1-3s; 50 events with summaries = ~1-2 min added to scout time.
 - Auditability — Ellen sees the LLM's output, not the raw source. Need to keep raw source preserved for verification.
 
+## LLM mode (2026-04-25, stub-first per Tom)
+
+The scout calls Claude in two places: post-aggregation analysis (writes `analysis.md`) and the SEC FCPA cases adapter (extracts structured records from a narrative page). Both go through `src/lawtracker/llm.py`.
+
+Three modes via `LAWTRACKER_LLM_MODE` env var (or `--llm-mode` CLI flag):
+
+- **`stub`** (default) — returns the caller's `stub` argument verbatim. No API spend, no `anthropic` SDK required. Tom uses this during design iteration so prompts can be refined without burning tokens. The stub responses are obvious-but-plausible: analysis is a markdown placeholder with `[STUB LLM RESPONSE]` markers; SEC adapter emits 2 placeholder records labeled `[STUB] SEC v. ...`.
+- **`anthropic`** — calls the real Claude API. Lazy-imports the `anthropic` SDK (raises a clear `RuntimeError` if not installed). Reads `ANTHROPIC_API_KEY` from env.
+- **`off`** — returns `""`. Useful for measuring how the rest of the pipeline behaves without LLM contribution.
+
+When Tom is ready to flip on real Claude calls:
+
+1. `pip install anthropic` (and add to `pyproject.toml` runtime deps).
+2. `export ANTHROPIC_API_KEY=...`
+3. `lawtracker scout --llm-mode=anthropic`
+
+The stub-first design is preserved — tests use stub mode by default via `tests/conftest.py` so the suite never hits the API.
+
 ## Findings during item 17 wave 5 (2026-04-25, curl_cffi unlock)
 
 - **`curl_cffi` runtime dep approved by Tom.** Drop-in client that mimics Chrome's TLS handshake (JA3 hash) — beats Cloudflare fingerprint blocks. Wired into `SourceAdapter` as an opt-in `use_curl_cffi: ClassVar[bool] = False` flag plus `curl_cffi_impersonate: ClassVar[str] = "chrome120"`. When True, `poll()` builds a `curl_cffi.requests.Session` instead of an `httpx.Client`. The two duck-type the same `.get(url) → response.{status_code,text}` interface, so no other framework code changed.

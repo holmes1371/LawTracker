@@ -1,4 +1,5 @@
 import argparse
+import os
 from pathlib import Path
 
 from lawtracker import __version__
@@ -18,12 +19,25 @@ def main(argv: list[str] | None = None) -> int:
         "--output-dir",
         type=Path,
         default=Path("data/scout"),
-        help="Where to write events.xlsx, events.jsonl, summary.txt (default: data/scout/).",
+        help="Where to write events.xlsx, events.jsonl, summary.txt, analysis.md "
+        "(default: data/scout/).",
+    )
+    scout_parser.add_argument(
+        "--llm-mode",
+        choices=("stub", "anthropic", "off"),
+        default=None,
+        help="LLM behavior. `stub` (default) returns canned placeholders for the "
+        "analysis + LLM-extracted adapters (no API spend). `anthropic` calls the "
+        "real Claude API (needs the anthropic SDK + ANTHROPIC_API_KEY env var). "
+        "`off` skips the LLM entirely.",
     )
 
     args = parser.parse_args(argv)
 
     if args.command == "scout":
+        if args.llm_mode is not None:
+            os.environ["LAWTRACKER_LLM_MODE"] = args.llm_mode
+
         from lawtracker.scout import PILOT_ADAPTERS, _print_report, run
 
         report = run(PILOT_ADAPTERS, args.output_dir, source_filter=args.source)

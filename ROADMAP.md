@@ -18,16 +18,15 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 wave 8: Ellen's first review feedback applied)**
+**2026-04-25 (item 17 wave 9 + item 19 stub-mode landing)**
 
-- Ellen reviewed the scout output and sent five items. Four addressed this turn:
-  - **Country populated**: outlets that were previously `country=None` (Volkov, Gibson Dunn, GAB, M&C, Foley LLP, Harvard CorpGov) now set to `"US"` (their home jurisdiction). Excel column populates.
-  - **Filters tightened**: dropped AML / money laundering / OFAC / SDN / sanctions / ITAR / export controls from `ANTI_CORRUPTION_EN`; added `cartel(s)`. Doc updated in `design/data-scout.md` "Keyword filters in use".
-  - **Excel hyperlinks**: title column is now a clickable link to the source URL. Blue-underlined font, hyperlink target = event URL.
-  - **Item 19 reordered**: Ellen's primary LLM ask is post-aggregation trend analysis (what should compliance professionals / risk-and-audit committee boards care about?). Promoted to priority #1 in the item; SEC FCPA cases (her #5, scoped to last 1-2 years) is #2.
-- **Open ask for Tom**: SEC + Ellen's analysis use case both need the `anthropic` SDK. Proceeding with item 19 needs Tom's go-ahead the same way `curl_cffi` did.
-- Live scout: 96 events from working adapters (DOJ 6, AFP 9, Consejo 0 this run/intermittent, Volkov 10 US, GD 1 US, GAB 10 US, M&C 60 US, Foley 0, Harvard 0, Fiscalía 0). Country column fully populated for non-zero sources. Suite: 49 tests passing. Ruff + mypy clean.
-- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff after Ellen's full sign-off.
+- Tom's call: build the LLM-using features (analysis + SEC adapter) but with stub responses by default to avoid API spend during design iteration. Live calls flip on later via `LAWTRACKER_LLM_MODE=anthropic` or `--llm-mode=anthropic`; `anthropic` SDK lazy-imported then.
+- **`src/lawtracker/llm.py`** landed: `complete(system, user, stub)` function with three modes (stub / anthropic / off).
+- **`src/lawtracker/analysis.py`** landed: post-scout `build_analysis(events)` produces `data/scout/analysis.md` with deterministic source / country / industry counts + LLM narrative + collapsible prompt preview for design iteration. Ellen's questions baked into the prompt template (volume trend, industry concentration, what compliance pros / risk+audit boards should know).
+- **`src/lawtracker/sources/sec_fcpa_cases.py`** landed: SEC FCPA cases adapter. Fetches via `use_curl_cffi`; auto-detects the most recent N years present on the page (default 2) and slices that narrative for the LLM; parses JSON response into `EventRecord`s. Stub mode emits 2 placeholder records.
+- CLI: `lawtracker scout --llm-mode {stub,anthropic,off}` (default `stub`). Tests forced to stub mode via `tests/conftest.py` autouse fixture.
+- Live scout: 108 events from 8 working adapters (DOJ 6, SEC 2 stub, AFP 9, Consejo 10, Volkov 10, GD 1, GAB 10, M&C 60). Suite: 68 tests passing. Ruff + mypy clean.
+- Items 3, 11, 16, 17, 19 all `[~]`-or-better pending Tom's manual signoff after Ellen reviews `analysis.md`.
 
 ## For future agents
 
@@ -156,7 +155,7 @@ Tom + Ellen review `data/scout/events.xlsx` and `summary.txt` produced by items 
 
 Adjustments fall out as new items (schema changes, source list edits, adapter refinements). Item 4 (storage) lands after this checkpoint; on landing, item 4's scope expands to include a one-shot `lawtracker ingest-scout` to load the JSONL files from the pilot into the new DB so pilot data isn't lost. Items 5 (poll loop), 6+ (web app) follow item 4 as before.
 
-### 19. [ ] Anthropic-API-backed analysis + prose interpretation
+### 19. [~] Anthropic-API-backed analysis + prose interpretation
 
 Per Tom's standing rule (deterministic work in Python; LLM does judgment / interpretation), several places in the pipeline benefit from a Claude call. This item adds a small `src/lawtracker/llm.py` helper plus the `anthropic` SDK as a runtime dep, then wires LLM calls in priority order.
 

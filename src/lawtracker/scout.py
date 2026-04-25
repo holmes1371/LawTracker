@@ -31,10 +31,12 @@ from lawtracker.sources.gibson_dunn import GibsonDunnAdapter
 from lawtracker.sources.global_anticorruption_blog import GlobalAnticorruptionBlogAdapter
 from lawtracker.sources.harvard_corpgov_fcpa import HarvardCorpGovFcpaAdapter
 from lawtracker.sources.miller_chevalier import MillerChevalierFcpaAdapter
+from lawtracker.sources.sec_fcpa_cases import SecFcpaCasesAdapter
 from lawtracker.sources.volkov_law import VolkovLawAdapter
 
 PILOT_ADAPTERS: list[type[SourceAdapter]] = [
     DojFcpaActionsAdapter,
+    SecFcpaCasesAdapter,
     AfpForeignBriberyAdapter,
     FiscaliaChileAdapter,
     ConsejoTransparenciaClAdapter,
@@ -99,12 +101,19 @@ def run(
     _write_xlsx(all_events, output_dir / "events.xlsx")
     _write_jsonl(all_events, output_dir / "events.jsonl")
     _write_summary(all_events, poll_log, output_dir / "summary.txt")
+    _write_analysis(all_events, output_dir / "analysis.md")
 
     return {
         "events_collected": len(all_events),
         "poll_log": poll_log,
         "output_dir": output_dir,
     }
+
+
+def _write_analysis(events: list[EventRecord], path: Path) -> None:
+    from lawtracker.analysis import build_analysis
+
+    path.write_text(build_analysis(events), encoding="utf-8")
 
 
 def _write_xlsx(events: list[EventRecord], path: Path) -> None:
