@@ -18,11 +18,11 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-22**
+**2026-04-25**
 
-- Project scaffolded: `src/lawtracker/` package, pytest, ruff, mypy, baseline deps (httpx, beautifulsoup4, pydantic). Initial commit `d2abfab` pushed to `main`.
-- ROADMAP / COMPLETED / `design/` scaffolding landed this session, modeled on the kids-schedule project.
-- Backlog is empty — awaiting requirements from Tom (which jurisdictions, which source types, cadence, notification surface).
+- Pilot scope locked with Tom: US anti-corruption *enforcement and government messaging* (not statutory text). FCPA and FEPA priority. Pilot user is Ellen.
+- Architecture and pilot-source inventory landed — `design/architecture.md` (Fly.io / FastAPI / Jinja+HTMX / SQLite-then-Postgres / APScheduler) and `design/sources.md` (9 sources across `document` and `event_list` shapes). Items 1–2 at `[~]` pending Tom's signoff.
+- Backlog items 3–15 filed; next pickup is item 3 (source adapter framework + first adapter) using DOJ FCPA enforcement actions list as the anchor.
 - Nothing else in flight.
 
 ## For future agents
@@ -50,7 +50,71 @@ Status legend:
 
 ## Backlog (priority order)
 
-*No items yet. First backlog item will be numbered `1` and filed here once Tom provides initial requirements (which laws / jurisdictions / sources to track, detection cadence, notification surface).*
+### 1. [~] Architecture + stack design note
+
+Capture the locked stack and product shape so every later item references one source of truth instead of re-deriving choices. Output: `design/architecture.md` covering pilot scope, the document-vs-event source distinction, the chosen stack (Fly.io / FastAPI / Jinja+HTMX / SQLite-then-Postgres / APScheduler), the conceptual data model (`Source` / `Snapshot` / `LawChange` / `LawEvent`), and repo layout additions.
+
+In progress: design note landed this commit. Pending Tom's signoff before flipping to `[x]`.
+
+### 2. [~] Pilot source inventory
+
+Lock the concrete URL list for the pilot so item 3 has a real target list, not a hypothetical. Output: `design/sources.md` enumerating the nine pilot sources (4 `document`, 5 `event_list`), out-of-scope statutes/jurisdictions, the future plug-in slot for Tom's trusted third-party trackers, and the implementation order (anchor adapter = DOJ FCPA enforcement actions list).
+
+In progress: source inventory landed this commit. Pending Tom's signoff before flipping to `[x]`.
+
+### 3. [ ] Source adapter framework + first adapter
+
+Build the `SourceAdapter` ABC under `src/lawtracker/sources/base.py` plus the first concrete adapter — DOJ FCPA enforcement actions list — end to end. Adapter declares its kind (`document` | `event_list` | `both`) and emits Pydantic records the storage layer can persist. First adapter is the anchor that proves the `event_list` shape; items 6–9 in `design/sources.md` follow the same template.
+
+Design-note questions to resolve before coding: how the adapter signals "no change" vs. "transient fetch failure" so the poll loop can distinguish them; what the dedup key is for `event_list` entries (URL? URL + title hash? source-specific?); how to persist source-specific metadata without per-source columns.
+
+### 4. [ ] Storage + change detection
+
+SQLAlchemy models for `Source`, `Snapshot`, `LawChange`, `LawEvent`. Alembic migrations from day one. Change-detection logic: hash comparison for `document` sources (with a tolerance for whitespace / boilerplate noise); set-reconciliation for `event_list` sources. Defer "what counts as a meaningful diff" tuning until real snapshots are in hand.
+
+### 5. [ ] Hourly poll loop
+
+APScheduler in-process; per-source dispatch; structured logging; idempotent re-runs (a crashed mid-poll should not double-emit `LawEvent`s on retry). Configurable cadence per source (default hourly; some sources may justify slower).
+
+### 6. [ ] Web app skeleton
+
+FastAPI app with Jinja2 + HTMX + Tailwind. One route renders a "tracked sources" list with last-poll timestamps and most-recent change/event counts. No auth gate yet — pilot is locked behind basic auth or IP allowlist at the deploy layer.
+
+### 7. [ ] Dashboard view: recent changes and events
+
+Reverse-chronological feed combining `LawChange` and `LawEvent` rows across all active sources. Filter chips per source. This is Ellen's primary view.
+
+### 8. [ ] Detail view per source
+
+Snapshot history for `document` sources with a unified diff between any two versions; entry list for `event_list` sources with deep links to the source URL.
+
+### 9. [ ] Deployment: Fly.io
+
+Dockerfile, `fly.toml`, persistent volume for SQLite, secrets configuration, first deploy. Health check endpoint for Fly's load balancer.
+
+### 10. [ ] DNS: lawmasolutions.com → Fly
+
+`www` CNAME and apex A/AAAA records configured at Squarespace; Fly issues the HTTPS cert. Verify both `lawmasolutions.com` and `www.lawmasolutions.com` resolve and serve the app.
+
+### 11. [ ] CI: pytest on push + PR
+
+GitHub Actions workflow running the full pytest suite plus ruff and mypy on every push and PR. Red status blocks merge.
+
+### 12. [ ] Notification framework + email adapter
+
+`Notifier` ABC under `src/lawtracker/notify/`; first concrete adapter is email (Resend or Postmark — pick at design-note time). Wired to the poll loop so new `LawChange` / `LawEvent` rows can be dispatched. Subscription model is trivial in pilot (one user, all sources); proper subscription comes with item 14.
+
+### 13. [ ] SMS adapter
+
+Twilio. Same `Notifier` interface as item 12. Per-recipient rate limiting and message-length truncation with a deep link back to the dashboard.
+
+### 14. [ ] Auth + multi-user subscriptions
+
+Magic-link email login. User-level subscription model: pick which sources to follow and which notification channels to use. Migrate SQLite → managed Postgres in this item (or just before, if the timing works).
+
+### 15. [ ] Trusted third-party sources
+
+Add adapters for Tom's approved third-party trackers (law-firm client-alert pages, FCPA Blog, Stanford FCPA Clearinghouse, etc.) once Tom provides the list. Pure adapter work — schema unchanged from the framework established in item 3.
 
 ## Descoped / on hold
 
