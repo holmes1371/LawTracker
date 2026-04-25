@@ -83,7 +83,11 @@ One opt-in live smoke test (`@pytest.mark.live`, env-gated) for ad-hoc verificat
 
 None at planning time. All the questions in ROADMAP item 3 (`PollResult` shape vs. fetch failure, dedup-key strategy, metadata persistence) are resolved above.
 
-Anything that surfaces during implementation lands here as an addition before changing direction.
+## Findings during implementation (2026-04-25)
+
+- **DOJ URL restructure.** The URL ROADMAP item 3 quoted (`/criminal/criminal-fraud/related-enforcement-actions`) returns 404 — DOJ restructured paths from `/criminal/criminal-fraud/` to `/criminal-fraud/`. Corrected landing is `/criminal-fraud/related-enforcement-actions`, but it is a navigation hub (A–Z alphabetical + per-year chronological), not a case list. Actual cases live on per-year subpages: `/criminal/criminal-fraud/case/related-enforcement-actions/{year}`. The adapter targets the current-year page directly. `design/sources.md` source #5 and the `CURRENT_YEAR_URL` constant in `src/lawtracker/sources/doj_fcpa_actions.py` updated.
+- **Year rollover.** The year segment in the adapter URL needs to update each January. Captured rather than left as latent toil; if multiple DOJ year-list adapters land (e.g., Opinion Procedure releases at source #7 may have the same shape), promote to a base-class helper.
+- **Page structure.** Each case on a year page renders as two adjacent `<p>` elements: a caption paragraph holding an `<a>` with the canonical detail-page link, followed by `<p class="Indent1">` with `Case No`, `District`, `Filed: Month D, YYYY`. The parser pairs them by walking back from each `Indent1` paragraph to the immediately-preceding `<p>`.
 
 ## Test fixtures needed
 

@@ -18,12 +18,12 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 3 — commit 2 of 3)**
+**2026-04-25 (item 3 — commit 3 of 3, code complete)**
 
-- `SourceAdapter` ABC + `PollResult` + `EventRecord` landed in `src/lawtracker/sources/base.py`. Five base-contract tests in `tests/test_sources_base.py` cover ok / 5xx / 4xx / transport-error / parse-error paths. Suite + ruff + mypy all green.
-- Item 3 still `[~]`. Design note unchanged.
-- Next commit: DOJ FCPA enforcement actions adapter (source #5) at `src/lawtracker/sources/doj_fcpa_actions.py`, with committed HTML fixture under `tests/fixtures/` and adapter tests. List-page-only extraction for v1.
-- Watch-out: fixture capture may need `curl` against live DOJ; if the page is JS-rendered or blocks scrapers, fall back to a hand-trimmed minimal fixture and note it in the design note for future refresh.
+- DOJ FCPA actions adapter (source #5) landed at `src/lawtracker/sources/doj_fcpa_actions.py` with a live 2026 fixture (`tests/fixtures/doj_fcpa_actions.html`) and three adapter tests. Full suite (9 tests) + ruff + mypy all green.
+- During fixture capture: ROADMAP-quoted URL was 404; DOJ restructured paths, and the corrected landing is a navigation hub rather than a case list. Adapter targets the per-year subpage `/criminal/criminal-fraud/case/related-enforcement-actions/2026`; the year in the URL rolls over each January. `design/sources.md` source #5 and `design/source-adapter-framework.md` updated with the findings.
+- Item 3 stays `[~]`. Per ROADMAP discipline: Tom pulls / runs the suite / sanity-checks adapter output, then a future session flips to `[x]` with the closing SHA preserved.
+- Next item is 4 (storage + change detection — SQLAlchemy models, Alembic from day one, set-reconcile against `EventRecord.dedup_key`).
 
 ## For future agents
 

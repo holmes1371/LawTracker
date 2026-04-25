@@ -18,8 +18,9 @@ URLs marked **(approximate)** were not verified during inventory drafting; the a
    - https://www.justice.gov/criminal-fraud/page/file/937501/download
 4. **JM 9-28.000 — Principles of Federal Prosecution of Business Organizations** (document) — broader corporate-prosecution principles framing FCPA cases.
    - https://www.justice.gov/jm/jm-9-28000-principles-federal-prosecution-business-organizations
-5. **DOJ FCPA enforcement actions list** (event_list) — DOJ's curated list of cases.
-   - https://www.justice.gov/criminal/criminal-fraud/related-enforcement-actions
+5. **DOJ FCPA enforcement actions — chronological list** (event_list) — DOJ's per-year list of cases. The landing page is a navigation hub (alphabetical + chronological year index), not a case list, so the adapter targets the **current-year subpage** directly. URL pattern is stable; the year in the path needs to roll over each January.
+   - Adapter URL: https://www.justice.gov/criminal/criminal-fraud/case/related-enforcement-actions/2026 (current year)
+   - Landing (navigation only): https://www.justice.gov/criminal-fraud/related-enforcement-actions
 6. **SEC FCPA enforcement actions** (event_list) — SEC's enforcement-actions index for the FCPA Unit.
    - https://www.sec.gov/spotlight/fcpa/fcpa-cases.shtml
 7. **DOJ FCPA Opinion Procedure releases** (event_list) — DOJ's formal opinion responses to industry inquiries.
