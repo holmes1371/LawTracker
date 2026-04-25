@@ -18,13 +18,14 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 wave 6: ES → EN translation + LLM-API question for Tom)**
+**2026-04-25 (item 17 wave 7: chunker + CI mypy fix; item 19 filed)**
 
-- Translation helper landed at `src/lawtracker/translate.py` — MyMemory free API, no new Python dep, fail-soft. Opt-in via `translate_summary_from: ClassVar[str | None]` on `SourceAdapter`. Set on Fiscalía + Consejo (Spanish). Live: Consejo titles + summaries now arrive in English; Spanish preserved in metadata as `title_es` / `summary_es`.
-- **SEC FCPA cases parked as open item** at Tom's request — Ellen reviewing whether SEC's free-text data is worth the prose-parser investment.
-- **Open question for Tom: LLM-API opportunities.** Per the standing rule (deterministic work in Python; LLM does judgment / interpretation), several places would be clean fits for an Anthropic API call: SEC FCPA prose parsing (highest value), per-event summary generation (big UX win for Ellen), industry/resolution classification on DOJ press releases, FCPA-domain-aware translation. Each would add `anthropic` SDK + API key. Captured under "LLM-API opportunities" in `design/data-scout.md` for Tom's call.
-- Suite: 47 tests passing. Ruff + mypy clean. Live scout: 106 events from 10 adapters; Consejo entries now English-readable.
-- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff. Items 4 / 5 / 6+ still queued behind item 18 (scout review).
+- Tom flagged two issues from his push: (1) MyMemory returned "QUERY LENGTH LIMIT EXCEEDED. MAX ALLOWED QUERY : 500 CHARS" on a couple Consejo summaries, (2) GitHub Actions mypy failed with "Need type annotation for 'session'" on `base.py:119`.
+- **Chunker fix**: long sentences without internal `.!?` were passed whole. Added `_word_split` fallback in `translate._chunk` and dropped the per-request limit from 500 → 450 chars (margin for URL-encoding inflation in MyMemory's server-side count). Regression test added.
+- **CI mypy fix**: explicit `session: Any` annotation on the curl_cffi Session assignment in `SourceAdapter.poll()`. CI mypy version is stricter than local about Any-typed-import inference.
+- **New item 19 (Anthropic-API-backed prose interpretation)** filed in the backlog, deferred behind item 18 (scout review). Captures SEC FCPA prose parsing, per-event summary generation, classification, and FCPA-aware translation as candidate LLM uses; each adds `anthropic` SDK + API key when prioritized.
+- Live scout: 106 events from 10 adapters. Suite: 48 tests passing. Ruff + mypy clean.
+- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff after Ellen reviews the data.
 
 ## For future agents
 
@@ -152,6 +153,28 @@ Tom + Ellen review `data/scout/events.xlsx` and `summary.txt` produced by items 
 - Is signal-to-noise acceptable for Ellen's use?
 
 Adjustments fall out as new items (schema changes, source list edits, adapter refinements). Item 4 (storage) lands after this checkpoint; on landing, item 4's scope expands to include a one-shot `lawtracker ingest-scout` to load the JSONL files from the pilot into the new DB so pilot data isn't lost. Items 5 (poll loop), 6+ (web app) follow item 4 as before.
+
+### 19. [ ] Anthropic-API-backed prose interpretation
+
+Per Tom's standing rule (deterministic work in Python; LLM does judgment / interpretation), several places in the pipeline benefit from a Claude call. This item adds a small `src/lawtracker/llm.py` helper plus the `anthropic` SDK as a runtime dep, then wires LLM calls in priority order driven by what Ellen flags at item 18.
+
+Candidate uses, in priority order:
+
+- **SEC FCPA cases adapter** (highest value; the open item Tom parked 2026-04-25). The page is a single long narrative — year headers + bolded company names + free-text paragraphs. Regex would be brittle; Claude can read it and emit structured `EventRecord`s.
+- **Per-event summary generation** when sources don't provide one (DOJ list page, AFP search results, Miller & Chevalier entries). Claude reads the linked detail page and writes a one-line "why this matters" — biggest dashboard UX win for Ellen.
+- **Industry / resolution-type classification** on DOJ press releases. Upgrade from current keyword regex.
+- **FCPA-aware Spanish translation.** Upgrade from MyMemory if Ellen flags translation quality issues at item 18.
+- **Cross-source dedup** — defer until storage (item 4) lands.
+
+Operational requirements:
+
+- Add `anthropic` SDK to runtime deps.
+- `ANTHROPIC_API_KEY` env var (Tom locally; CI secret).
+- Fail-soft: LLM failure falls back to whatever the deterministic path can do (no events lost).
+- Cost: pilot scale ~cents per scout run; document expected costs in `design/data-scout.md` once measured.
+- Captured in `design/data-scout.md` "LLM-API opportunities" section.
+
+Deferred behind item 18 — Ellen reviews the deterministic-only output first and tells us which LLM uses are essential vs. nice-to-have.
 
 ## Descoped / on hold
 

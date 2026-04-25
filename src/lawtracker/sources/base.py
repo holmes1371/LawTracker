@@ -116,7 +116,7 @@ class SourceAdapter(ABC):
         if self.use_curl_cffi:
             from curl_cffi import requests as curl_requests
 
-            session = curl_requests.Session(
+            session: Any = curl_requests.Session(
                 impersonate=self.curl_cffi_impersonate,  # type: ignore[arg-type]
                 timeout=self.timeout_seconds,
             )

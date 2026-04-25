@@ -121,6 +121,31 @@ def test_returns_original_on_quota_exceeded(monkeypatch: pytest.MonkeyPatch) -> 
     assert translate_mod.translate("hola") == "hola"
 
 
+def test_long_punctuationless_sentence_is_word_split(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Regression: a single sentence longer than the limit must be word-split,
+    not passed whole. Real-world trigger: Consejo summaries that arrive as one
+    long sentence with no internal .!? — MyMemory rejected them with
+    'QUERY LENGTH LIMIT EXCEEDED. MAX ALLOWED QUERY : 500 CHARS'."""
+    translate_mod._reset_cache_for_tests()
+    long_text = " ".join(["palabra"] * 100)  # ~800 chars, no .!?
+    counter = {"i": 0}
+    sent_lengths: list[int] = []
+
+    def factory(params: dict[str, Any]) -> Any:
+        counter["i"] += 1
+        q = params.get("q", "") or ""
+        sent_lengths.append(len(q))
+        return _ok_response(f"chunk-{counter['i']}")
+
+    _patch_httpx_get(monkeypatch, factory)
+    result = translate_mod.translate(long_text)
+    assert counter["i"] >= 2, "long sentence must split into multiple chunks"
+    assert all(n <= 450 for n in sent_lengths), (
+        f"every chunk must be ≤ 450 chars; got {sent_lengths}"
+    )
+    assert "chunk-1" in result
+
+
 def test_returns_original_on_non_200_status(monkeypatch: pytest.MonkeyPatch) -> None:
     translate_mod._reset_cache_for_tests()
 

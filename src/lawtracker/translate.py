@@ -30,7 +30,10 @@ import httpx
 
 _CACHE: dict[tuple[str, str, str], str] = {}
 _API_URL = "https://api.mymemory.translated.net/get"
-_MAX_CHARS_PER_REQUEST = 500
+# MyMemory's stated limit is 500 chars; use 450 as a safety margin for
+# URL-encoding inflation (accented chars become %XX sequences) in their
+# server-side length check.
+_MAX_CHARS_PER_REQUEST = 450
 
 
 def translate(
@@ -93,12 +96,24 @@ def _translate_chunk(text: str, source_lang: str, target_lang: str) -> str | Non
 
 
 def _chunk(text: str, max_chars: int) -> list[str]:
+    """Split text into chunks each ≤ max_chars.
+
+    Tries sentence boundaries (.!?) first; falls back to word boundaries
+    when a single sentence is itself too long. Pathological case (a
+    single word longer than max_chars) is hard-truncated.
+    """
     if len(text) <= max_chars:
         return [text]
     chunks: list[str] = []
     current = ""
     for sentence in re.split(r"(?<=[.!?])\s+", text):
         if not sentence:
+            continue
+        if len(sentence) > max_chars:
+            if current:
+                chunks.append(current.strip())
+                current = ""
+            chunks.extend(_word_split(sentence, max_chars))
             continue
         if current and len(current) + len(sentence) + 1 > max_chars:
             chunks.append(current.strip())
@@ -107,6 +122,27 @@ def _chunk(text: str, max_chars: int) -> list[str]:
             current = f"{current} {sentence}".strip() if current else sentence
     if current:
         chunks.append(current.strip())
+    return chunks
+
+
+def _word_split(text: str, max_chars: int) -> list[str]:
+    """Hard-split on word boundaries when a sentence exceeds max_chars."""
+    chunks: list[str] = []
+    current = ""
+    for word in text.split():
+        if len(word) > max_chars:
+            if current:
+                chunks.append(current)
+                current = ""
+            chunks.append(word[:max_chars])
+            continue
+        if current and len(current) + len(word) + 1 > max_chars:
+            chunks.append(current)
+            current = word
+        else:
+            current = f"{current} {word}".strip() if current else word
+    if current:
+        chunks.append(current)
     return chunks
 
 
