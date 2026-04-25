@@ -126,6 +126,78 @@ def test_xlsx_has_universal_columns_and_metadata_union(tmp_path: Path):
     assert ws.freeze_panes == "A2"
 
 
+class _PodcastInDisguiseAdapter(SourceAdapter):
+    """An entry whose title doesn't reveal its podcast nature, but whose
+    LLM-generated summary will. Models the M&C 'EMBARGOED!: South of the
+    Border' case Tom flagged 2026-04-25."""
+
+    source_id = "fake_disguised"
+    kind = "event_list"
+    url = "https://example.test/embargoed-feed"
+
+    def poll(self, *, client=None) -> PollResult:  # type: ignore[override]
+        return PollResult(
+            status="ok",
+            events=[
+                EventRecord(
+                    dedup_key="https://example.test/embargoed/south-border",
+                    source_id="fake_disguised",
+                    event_date=date(2025, 11, 14),
+                    title="EMBARGOED!: South of the Border",
+                    primary_actor=None,
+                    # Adapter sees no summary at parse time — only the LLM
+                    # later reads the article and writes a summary that
+                    # mentions "podcast".
+                    summary=(
+                        "Miller & Chevalier's EMBARGOED! podcast discusses "
+                        "sanctions developments in Latin America."
+                    ),
+                    url="https://example.test/embargoed/south-border",
+                    country="US",
+                ),
+                EventRecord(
+                    dedup_key="https://example.test/keep",
+                    source_id="fake_disguised",
+                    event_date=date(2025, 11, 14),
+                    title="DOJ resolves $50M FCPA case with Acme Corp",
+                    primary_actor="Acme Corp",
+                    summary="Substantive enforcement news with no event-noise markers.",
+                    url="https://example.test/keep",
+                    country="US",
+                ),
+            ],
+        )
+
+    def parse(self, html: str, client=None) -> list[EventRecord]:
+        return []
+
+
+def test_post_enrichment_filter_drops_llm_revealed_podcasts(tmp_path: Path, monkeypatch):
+    """Tom 2026-04-25: M&C 'EMBARGOED!' entries slipped through because
+    their titles don't mention 'podcast' — the LLM revealed the nature in
+    the summary. scout.run must re-filter after enrichment.
+
+    `off` mode keeps the (already-podcast-mentioning) summary unchanged so
+    the post-filter pass sees what an anthropic-mode summary would
+    typically reveal: the word `podcast` somewhere in the body.
+    """
+    monkeypatch.setenv("LAWTRACKER_LLM_MODE", "off")
+    report = run([_PodcastInDisguiseAdapter], tmp_path)
+    assert report["events_collected"] == 1, (
+        "podcast-summary entry must be dropped post-enrichment; only the "
+        "substantive Acme Corp entry should remain"
+    )
+
+    parsed = [
+        json.loads(line)
+        for line in (tmp_path / "events.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    titles = [e["title"] for e in parsed]
+    assert any("Acme Corp" in t for t in titles)
+    assert not any("EMBARGOED" in t for t in titles)
+
+
 def test_xlsx_title_column_has_hyperlink_to_url(tmp_path: Path):
     """Ellen 2026-04-25: clicking the title in Excel should open the source URL."""
     run([_OkAdapter, _OtherOkAdapter], tmp_path)

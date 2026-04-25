@@ -22,6 +22,7 @@ from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
 
 from lawtracker.sources import EventRecord, SourceAdapter
+from lawtracker.sources._filters import matches_event_noise
 from lawtracker.sources.afp_foreign_bribery import AfpForeignBriberyAdapter
 from lawtracker.sources.consejo_transparencia_cl import ConsejoTransparenciaClAdapter
 from lawtracker.sources.doj_fcpa_actions import DojFcpaActionsAdapter
@@ -99,6 +100,17 @@ def run(
             all_events.extend(result.events)
 
     all_events = _enrich_summaries(all_events, output_dir)
+
+    # Re-apply event-noise filter after summary enrichment. Some entries
+    # (e.g. M&C's "EMBARGOED!: South of the Border" podcast publications)
+    # have innocuous titles that only reveal their podcast / webinar
+    # nature once the LLM reads the article. The first filter pass at
+    # parse time can't see that; this catches it.
+    all_events = [
+        e
+        for e in all_events
+        if not matches_event_noise(e.title, e.summary, e.url)
+    ]
 
     _write_xlsx(all_events, output_dir / "events.xlsx")
     _write_jsonl(all_events, output_dir / "events.jsonl")

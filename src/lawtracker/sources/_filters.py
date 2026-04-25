@@ -110,3 +110,22 @@ ANTI_CORRUPTION_ES = re.compile(
     r")\b",
     re.IGNORECASE,
 )
+
+
+def matches_event_noise(
+    title: str | None,
+    summary: str | None,
+    url: str | None = None,
+) -> bool:
+    """True if any of title / summary / URL matches the event-noise filter.
+
+    Used in two places:
+    - SourceAdapter base: at parse time on title + summary.
+    - scout post-enrichment: re-applied after the LLM generates per-event
+      summaries, so entries whose innocuous titles
+      ("EMBARGOED!: South of the Border") only reveal their podcast /
+      webinar nature once the LLM reads the article get dropped before
+      Excel / JSONL / analysis.md are written.
+    """
+    haystack = " ".join(p for p in (title, summary, url) if p)
+    return bool(EVENT_NOISE.search(haystack))

@@ -14,7 +14,7 @@ from typing import Any, ClassVar, Literal
 import httpx
 from pydantic import BaseModel, Field
 
-from lawtracker.sources._filters import EVENT_NOISE
+from lawtracker.sources._filters import EVENT_NOISE, matches_event_noise
 
 PollStatus = Literal["ok", "transient_failure", "permanent_failure"]
 
@@ -230,6 +230,8 @@ class SourceAdapter(ABC):
 
 
 def _matches(pattern: re.Pattern[str], event: EventRecord) -> bool:
-    """True if the pattern matches anywhere in title or summary."""
-    haystack = f"{event.title} {event.summary or ''}"
+    """True if the pattern matches anywhere in title / summary / URL."""
+    if pattern is EVENT_NOISE:
+        return matches_event_noise(event.title, event.summary, event.url)
+    haystack = f"{event.title} {event.summary or ''} {event.url or ''}"
     return bool(pattern.search(haystack))
