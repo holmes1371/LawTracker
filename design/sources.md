@@ -43,6 +43,8 @@ URLs marked **(approximate)** were not verified during inventory drafting; the a
     - Adapter URL: https://www.fiscaliadechile.cl/actualidad/noticias/nacionales
 13. **Contraloría General de la República — dictámenes / pronunciamientos** (event_list, Spanish) — comptroller-general findings on public-administration compliance and corruption.
     - https://www.contraloria.cl **(approximate; specific section TBD)**
+13a. **Consejo para la Transparencia (CPLT)** (event_list, Spanish, RSS) — Chilean Council for Transparency; oversees the access-to-information regime under Law 20.285. Built via `RssFeedAdapter` since it's a WordPress site with a clean RSS 2.0 feed. No keyword filter — outlet's whole beat is transparency / probity.
+    - Adapter URL: https://www.consejotransparencia.cl/feed/
 
 ## Category 2 — Multilateral / cross-jurisdictional indexes
 
@@ -56,6 +58,8 @@ URLs marked **(approximate)** were not verified during inventory drafting; the a
 16. **FCPA Blog** (event_list, RSS) — practitioner-focused aggregator covering global anti-corruption news despite the name. Single most efficient source for breadth across jurisdictions; free.
     - https://fcpablog.com  (RSS feed at https://fcpablog.com/feed/ **approximate**)
     - **BLOCKER (2026-04-25):** all candidate URLs (`/`, `/feed/`, `/rss`, `/feed.xml`, `/atom.xml`, `/blog/`, www subdomain) return HTTP 401 with a Cloudflare "you have been blocked" page even from a realistic Chrome User-Agent. The site appears to require auth or has hardened CDN bot protection. No adapter built in this round; revisit options at scout review (item 18) — possibilities: subscribe / acquire a credentialed feed, replace with a different aggregator (Harvard Anticorruption Blog, GIR if subscription is available), or scrape via a headless browser if the access is genuinely public from interactive sessions.
+17. **Volkov Law — Corruption, Crime & Compliance blog** (event_list, RSS) — Michael Volkov's practitioner blog on FCPA / AML / sanctions. WordPress; standard RSS 2.0; English; multi-jurisdictional commentary so `country = None`. Built via `RssFeedAdapter`.
+    - Adapter URL: https://blog.volkovlaw.com/feed/
 
 ## Out of scope — pilot
 

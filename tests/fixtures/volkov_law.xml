@@ -1,0 +1,1565 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	
+	xmlns:georss="http://www.georss.org/georss"
+	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+	>
+
+<channel>
+	<title>Corruption, Crime &amp; Compliance</title>
+	<atom:link href="https://blog.volkovlaw.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://blog.volkovlaw.com/</link>
+	<description>Bribery, FCPA, AML</description>
+	<lastBuildDate>Thu, 23 Apr 2026 18:31:41 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+<site xmlns="com-wordpress:feed-additions:1">74025921</site>	<item>
+		<title>Third-Party AI Risk: Why Vendor Due Diligence and Onboarding Must Evolve Now</title>
+		<link>https://blog.volkovlaw.com/2026/04/third-party-ai-risk-why-vendor-due-diligence-and-onboarding-must-evolve-now/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/third-party-ai-risk-why-vendor-due-diligence-and-onboarding-must-evolve-now/#respond</comments>
+		
+		<dc:creator><![CDATA[Michael Volkov]]></dc:creator>
+		<pubDate>Thu, 23 Apr 2026 18:31:38 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28942</guid>
+
+					<description><![CDATA[<p>As organizations rapidly adopt artificial intelligence, many are overlooking a critical exposure point: third-party AI risk. Companies are not just deploying AI internally—they are increasingly relying on vendors, platforms, and service providers that embed AI into their offerings. From SaaS providers using generative AI to analytics vendors deploying machine learning models, AI risk is now embedded across the third-party ecosystem. This creates a fundamental shift&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/third-party-ai-risk-why-vendor-due-diligence-and-onboarding-must-evolve-now/">Third-Party AI Risk: Why Vendor Due Diligence and Onboarding Must Evolve Now</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div class="wp-block-image">
+<figure class="alignleft size-full"><img fetchpriority="high" decoding="async" width="300" height="168" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/t-1.jpeg" alt="" class="wp-image-28951"/></figure>
+</div>
+
+
+<p>As organizations rapidly adopt artificial intelligence, many are overlooking a critical exposure point: <strong>third-party AI risk</strong>.</p>
+
+
+
+<p>Companies are not just deploying AI internally—they are increasingly relying on vendors, platforms, and service providers that embed AI into their offerings. From SaaS providers using generative AI to analytics vendors deploying machine learning models, <strong>AI risk is now embedded across the third-party ecosystem</strong>.</p>
+
+
+
+<p>This creates a fundamental shift in compliance expectations. Traditional vendor due diligence frameworks—focused on data security, financial stability, and legal compliance—are no longer sufficient.</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p><strong>Third-party risk management programs must now explicitly address AI-related risks as part of onboarding, contracting, and ongoing monitoring.</strong></p>
+</blockquote>
+
+
+
+<h2 class="wp-block-heading">The Expanding Third-Party AI Risk Surface</h2>
+
+
+
+<p>Third-party AI risk is not confined to obvious vendors. It often exists several layers deep within a company’s operations.</p>
+
+
+
+<p>Common sources of third-party AI risk include:</p>
+
+
+
+<ul class="wp-block-list">
+<li>SaaS providers integrating generative AI into existing platforms</li>
+
+
+
+<li>Vendors using AI for customer support, analytics, or decision-making</li>
+
+
+
+<li>Subprocessors and subcontractors leveraging AI tools</li>
+
+
+
+<li>API integrations that connect directly to external AI models</li>
+</ul>
+
+
+
+<p>In many cases, organizations <strong>do not even realize that AI is being used</strong> within a vendor’s service delivery model.</p>
+
+
+
+<h2 class="wp-block-heading">Core Risk Areas in Third-Party AI Relationships</h2>
+
+
+
+<p>A best-in-class approach begins with understanding the <strong>specific risk categories introduced by third-party AI use</strong>.</p>
+
+
+
+<h3 class="wp-block-heading">1. Data Exposure and Confidentiality Risk</h3>
+
+
+<div class="wp-block-image">
+<figure class="alignright size-full"><img decoding="async" width="299" height="168" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/t1.jpeg" alt="" class="wp-image-28952"/></figure>
+</div>
+
+
+<p>Vendors may input company or customer data into AI systems—sometimes public models—without adequate safeguards. This raises risks of:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Data leakage</li>
+
+
+
+<li>Loss of confidentiality</li>
+
+
+
+<li>Violation of privacy laws and contractual obligations</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">2. Lack of Transparency (“Black Box” Risk)</h3>
+
+
+
+<p>Many AI systems operate without clear explainability. Vendors may be unable—or unwilling—to explain:</p>
+
+
+
+<ul class="wp-block-list">
+<li>How outputs are generated</li>
+
+
+
+<li>What data was used to train models</li>
+
+
+
+<li>Whether outputs are reliable or biased</li>
+</ul>
+
+
+
+<p>This creates audit, regulatory, and reputational risk.</p>
+
+
+
+<h3 class="wp-block-heading">3. Bias and Discrimination Risk</h3>
+
+
+
+<p>If a vendor uses AI in hiring, lending, healthcare, or customer interactions, biased outputs can expose your organization—not just the vendor—to liability.</p>
+
+
+
+<h3 class="wp-block-heading">4. Regulatory and Enforcement Exposur</h3>
+
+
+
+<p>Regulators are increasingly focused on <strong>accountability across the value chain</strong>. Companies cannot outsource responsibility for:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Consumer protection violations</li>
+
+
+
+<li>Employment discrimination</li>
+
+
+
+<li>Unfair or deceptive practices</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">5. Intellectual Property and Ownership Risk</h3>
+
+
+
+<p>AI-generated outputs raise complex questions:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Who owns the output?</li>
+
+
+
+<li>Is the output infringing on third-party rights?</li>
+
+
+
+<li>Can it be used commercially?</li>
+</ul>
+
+
+
+<p>Without contractual clarity, companies face downstream disputes.</p>
+
+
+
+<h2 class="wp-block-heading">Due Diligence Must Be Re-Engineered for AI</h2>
+
+
+
+<p>Traditional vendor questionnaires are not designed to capture AI risk. Organizations should expand due diligence to include <strong>AI-specific inquiries</strong>.</p>
+
+
+
+<p>Key questions should include:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Does the vendor use AI in delivering its services? If so, how?</li>
+
+
+
+<li>What types of data are processed by AI systems?</li>
+
+
+
+<li>Are public or proprietary models used?</li>
+
+
+
+<li>What controls exist to prevent data leakage or misuse?</li>
+
+
+
+<li>How are AI outputs validated and monitored?</li>
+
+
+
+<li>Has the vendor conducted bias or fairness testing?</li>
+
+
+
+<li>What governance structure oversees AI use internally?</li>
+</ul>
+
+
+
+<p>This information should be <strong>documented, reviewed, and risk-rated</strong> before onboarding.</p>
+
+
+<div class="wp-block-image">
+<figure class="alignleft size-full"><img decoding="async" width="286" height="176" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/t2-1.jpeg" alt="" class="wp-image-28954"/></figure>
+</div>
+
+
+<h2 class="wp-block-heading">Contractual Protections Are Essential</h2>
+
+
+
+<p>Due diligence alone is not enough. AI risk must be addressed contractually.</p>
+
+
+
+<p>Key provisions to consider include:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Restrictions on data use</strong> (e.g., no use of company data for model training without consent)</li>
+
+
+
+<li><strong>Confidentiality and security obligations specific to AI processing</strong></li>
+
+
+
+<li><strong>Audit rights</strong> related to AI systems and controls</li>
+
+
+
+<li><strong>Representations and warranties</strong> regarding compliance with applicable laws</li>
+
+
+
+<li><strong>Indemnification</strong> for AI-related harms, including IP infringement and regulatory violations</li>
+
+
+
+<li><strong>Disclosure obligations</strong> if AI use changes during the contract term</li>
+</ul>
+
+
+
+<p>Contracts should evolve alongside technology—not lag behind it.</p>
+
+
+
+<h2 class="wp-block-heading">Ongoing Monitoring: A Critical Missing Piece</h2>
+
+
+
+<p>One of the biggest gaps in third-party risk management is the lack of <strong>continuous monitoring</strong>.</p>
+
+
+
+<p>AI use is dynamic. A vendor that does not use AI today may deploy it tomorrow.</p>
+
+
+
+<p>Organizations should:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Require periodic <strong>AI use certifications</strong> from vendors</li>
+
+
+
+<li>Monitor for <strong>changes in vendor technology and practices</strong></li>
+
+
+
+<li>Reassess high-risk vendors on a recurring basis</li>
+
+
+
+<li>Integrate AI risk into existing <strong>third-party audit and review processes</strong></li>
+</ul>
+
+
+
+<h2 class="wp-block-heading">Align AI Risk with Existing Compliance Frameworks</h2>
+
+
+
+<p>Third-party AI risk should not be treated as a standalone issue. It intersects with multiple compliance domains:</p>
+
+
+
+<p>A coordinated, cross-functional approach is essential.</p>
+
+
+
+<h2 class="wp-block-heading">Practical Steps for Compliance Programs</h2>
+
+
+
+<p>To operationalize third-party AI risk management, companies should:</p>
+
+
+
+<ol class="wp-block-list">
+<li><strong>Update third-party risk policies</strong> to explicitly address AI</li>
+
+
+
+<li><strong>Enhance due diligence questionnaires</strong> with AI-specific questions</li>
+
+
+
+<li><strong>Train procurement, legal, and compliance teams</strong> on AI risks</li>
+
+
+
+<li><strong>Revise contract templates</strong> to include AI-related protections</li>
+
+
+
+<li><strong>Identify high-risk vendors</strong> for prioritized review</li>
+
+
+
+<li><strong>Establish governance oversight</strong> for AI-related vendor risk</li>
+</ol>
+
+
+
+<p>These are practical, achievable steps that can significantly reduce exposure.</p>
+
+
+<div class="wp-block-image">
+<figure class="alignright size-full"><img loading="lazy" decoding="async" width="284" height="177" src="http://blog.volkovlaw.com/wp-content/uploads/2026/02/a2-2.jpeg" alt="" class="wp-image-28830"/></figure>
+</div>
+
+
+<h2 class="wp-block-heading">The Bottom Line</h2>
+
+
+
+<p>Third-party AI risk is not a future issue—it is a <strong>current and expanding compliance challenge</strong>.</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p>Companies that fail to account for AI use within their vendor ecosystem risk inheriting liabilities they do not fully understand—and cannot easily control.</p>
+</blockquote>
+
+
+
+<p>At the same time, organizations that proactively integrate AI risk into their third-party due diligence and onboarding processes will be better positioned to:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Protect sensitive data</li>
+
+
+
+<li>Maintain regulatory compliance</li>
+
+
+
+<li>Preserve trust with customers and stakeholders</li>
+</ul>
+
+
+
+<p>In today’s environment, effective compliance requires a simple shift in mindset:<br><strong>You are responsible not only for how you use AI—but for how your vendors use it on your behalf.</strong></p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/third-party-ai-risk-why-vendor-due-diligence-and-onboarding-must-evolve-now/">Third-Party AI Risk: Why Vendor Due Diligence and Onboarding Must Evolve Now</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/third-party-ai-risk-why-vendor-due-diligence-and-onboarding-must-evolve-now/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28942</post-id>	</item>
+		<item>
+		<title>What Is the ‘Ethics Premium’?</title>
+		<link>https://blog.volkovlaw.com/2026/04/what-is-the-ethics-premium/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/what-is-the-ethics-premium/#respond</comments>
+		
+		<dc:creator><![CDATA[Michael Volkov]]></dc:creator>
+		<pubDate>Thu, 23 Apr 2026 10:05:00 +0000</pubDate>
+				<category><![CDATA[Podcasts]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28964</guid>
+
+					<description><![CDATA[<p>How do you convince your board that ethics and compliance pay? This is a fundamental issue that all ethics and compliance professionals need to address and communicate to the board and to your senior management. Ethics and compliance are not a cost center. The research is overwhelming that ethics and compliance provide greater financial stability and sustainability for every organization. It&#8217;s called the ethics premium,&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/what-is-the-ethics-premium/">What Is the ‘Ethics Premium’?</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<div class="wp-block-media-text is-stacked-on-mobile" style="grid-template-columns:40% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="1024" height="1024" src="http://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-1024x1024.jpg" alt="" class="wp-image-28963 size-full" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-1024x1024.jpg 1024w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-300x300.jpg 300w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-150x150.jpg 150w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-768x768.jpg 768w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-160x160.jpg 160w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3.jpg 1500w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure><div class="wp-block-media-text__content">
+<p>How do you convince your board that ethics and compliance pay?</p>
+
+
+
+<p>This is a fundamental issue that all ethics and compliance professionals need to address and communicate to the board and to your senior management.</p>
+
+
+
+<p>Ethics and compliance are not a cost center.</p>
+</div></div>
+
+
+
+<p></p>
+
+
+
+<p>The research is overwhelming that ethics and compliance provide greater financial stability and sustainability for every organization.</p>
+
+
+
+<p>It&#8217;s called the ethics premium, and it&#8217;s called that for a reason.</p>
+
+
+
+<p>It increases your bottom line revenue, and ethics and compliance has to communicate this issue and reinforce it consistently within the organization.</p>
+
+
+
+<p>Want help making the case for compliance at the top? Visit <a href="http://volkovlaw.com/">volkovlaw.com</a></p>
+
+
+
+<p><em>The Ethics and Compliance Q and A show is produced </em><span style="box-sizing: border-box; margin: 0px; padding: 0px;"><em>by</em></span><em>&nbsp;One</em><a href="https://onestonecreative.net/"><em> Stone Creative.</em></a></p>
+
+
+
+<iframe loading="lazy" style="border:0; width:100%;" height="200px" width="100%" frameborder="no" scrolling="no" seamless src="https://player.cohostpodcasting.com/dd2209be-4e8d-41ea-91c5-155311636140/d4c50d9e-13e0-4204-b3aa-1a7989aceac5"></iframe>
+
+
+
+<p></p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/what-is-the-ethics-premium/">What Is the ‘Ethics Premium’?</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/what-is-the-ethics-premium/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28964</post-id>	</item>
+		<item>
+		<title>GE’s $36 Million ITAR Penalty — A Wake-Up Call for Export Control Compliance</title>
+		<link>https://blog.volkovlaw.com/2026/04/ges-36-million-itar-penalty-a-wake-up-call-for-export-control-compliance/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/ges-36-million-itar-penalty-a-wake-up-call-for-export-control-compliance/#respond</comments>
+		
+		<dc:creator><![CDATA[Michael Volkov]]></dc:creator>
+		<pubDate>Wed, 22 Apr 2026 21:05:05 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28958</guid>
+
+					<description><![CDATA[<p>The U.S. State Department’s Directorate of Defense Trade Controls (DDTC) recently imposed a $36 million penalty on General Electric (GE) for widespread violations of the International Traffic in Arms Regulations (ITAR). The enforcement action highlights persistent compliance failures across multiple dimensions — including technical data exports, licensing errors, and internal control breakdowns — and serves as a critical reminder of the risks companies face in&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/ges-36-million-itar-penalty-a-wake-up-call-for-export-control-compliance/">GE’s $36 Million ITAR Penalty — A Wake-Up Call for Export Control Compliance</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div class="wp-block-image">
+<figure class="alignleft size-full"><img loading="lazy" decoding="async" width="306" height="165" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/g.jpeg" alt="" class="wp-image-28959" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/04/g.jpeg 306w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/g-300x162.jpeg 300w" sizes="auto, (max-width: 306px) 100vw, 306px" /></figure>
+</div>
+
+
+<p>The U.S. State Department’s Directorate of Defense Trade Controls (DDTC) recently imposed a <strong>$36 million penalty on General Electric (GE)</strong> for widespread violations of the International Traffic in Arms Regulations (ITAR). The enforcement action highlights persistent compliance failures across multiple dimensions — including technical data exports, licensing errors, and internal control breakdowns — and serves as a critical reminder of the risks companies face in managing export-controlled information.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Scope and Nature of the Violations</strong></h2>
+
+
+
+<p>According to DDTC, GE committed <strong>116 ITAR violations between 2018 and 2024</strong>, many involving the unauthorized export of highly sensitive technical data related to military aircraft engines.</p>
+
+
+
+<p>The most concerning violations included:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Unauthorized export of technical data to China, including information related to <strong>F-35, F110, F118, and F414 military engines</strong></li>
+
+
+
+<li>Improper handling of export licenses and confusion between ITAR and Export Administration Regulations (EAR)</li>
+
+
+
+<li>Failure to control transshipment routes, allowing ITAR-controlled data to pass through restricted jurisdictions</li>
+
+
+
+<li>Misclassification of controlled items and misuse of license exemptions</li>
+
+
+
+<li>Failure to update internal procedures and report required changes to DDTC registration</li>
+</ul>
+
+
+
+<p>These failures were not isolated incidents — they reflected <strong>systemic weaknesses in GE’s export compliance program</strong>.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Human Error and Training Failures</strong></h2>
+
+
+
+<p>A striking aspect of the enforcement action is the role of employee misunderstanding. In one case, an employee incorrectly selected a Commerce Department license for ITAR-controlled data, demonstrating a <strong>fundamental failure to distinguish between ITAR and EAR regimes</strong>.</p>
+
+
+
+<p>In another incident, an employee traveled to China with a laptop containing sensitive technical data and left it unattended at a university — exposing controlled information to potential unauthorized access.</p>
+
+
+
+<p>These examples underscore a core lesson:<br><strong>Export compliance failures are often driven by inadequate training and weak internal controls — not just intentional misconduct.</strong></p>
+
+
+
+<h2 class="wp-block-heading"><strong>Breakdowns in Systems and Procedures</strong></h2>
+
+
+<div class="wp-block-image">
+<figure class="alignright size-full"><img loading="lazy" decoding="async" width="300" height="168" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/g1.jpeg" alt="" class="wp-image-28960"/></figure>
+</div>
+
+
+<p>DDTC also cited GE for:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Outdated procedures that had not been revised in over a decade</li>
+
+
+
+<li>Lack of automated compliance systems</li>
+
+
+
+<li>Inadequate oversight of freight forwarders and shipping routes</li>
+
+
+
+<li>Weak governance over licensing provisos and sublicensing arrangements</li>
+</ul>
+
+
+
+<p>Notably, GE failed to configure its logistics systems to prevent ITAR-controlled shipments from transiting through restricted countries like China — a basic compliance expectation in today’s risk environment.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>National Security Implications</strong></h2>
+
+
+
+<p>DDTC emphasized that the violations <strong>caused harm to U.S. national security</strong>, as the exported data provided foreign parties with insights into the design, manufacturing, and testing of advanced military engines.</p>
+
+
+
+<p>This reinforces the broader point:<br><strong>Export controls are not merely regulatory obligations — they are national security safeguards.</strong></p>
+
+
+
+<h2 class="wp-block-heading"><strong>Resolution and Remediation Requirements</strong></h2>
+
+
+
+<p>Under the consent agreement:</p>
+
+
+
+<ul class="wp-block-list">
+<li>GE will pay a $36 million penalty, with <strong>$18 million suspended</strong> if it invests in compliance improvements</li>
+
+
+
+<li>The company must:<ul><li>Implement an automated export compliance system</li></ul><ul><li>Conduct comprehensive classification reviews</li></ul><ul><li>Hire a DDTC-approved compliance officer</li></ul><ul><li>Engage an independent auditor</li></ul>
+<ul class="wp-block-list">
+<li>Strengthen internal controls and governance</li>
+</ul>
+</li>
+</ul>
+
+
+
+<p>DDTC declined to impose debarment due to GE’s voluntary disclosure, cooperation, and remedial efforts.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Key Compliance Takeaways</strong></h2>
+
+
+
+<p>This enforcement action offers several important lessons for companies operating in regulated industries:</p>
+
+
+
+<h3 class="wp-block-heading">1. <strong>Distinguish ITAR vs. EAR — Clearly and Consistently</strong></h3>
+
+
+
+<p>Confusion between regulatory regimes remains a major risk area. Companies must ensure employees understand classification, licensing, and jurisdictional differences.</p>
+
+
+
+<h3 class="wp-block-heading">2. <strong>Control Technical Data — Especially in Digital Form</strong></h3>
+
+
+
+<p>Laptops, cloud systems, and data transfer tools present significant exposure risks if not properly secured and monitored.</p>
+
+
+
+<h3 class="wp-block-heading">3. <strong>Manage Third Parties and Logistics</strong></h3>
+
+
+
+<p>Freight forwarders and international routing must be tightly controlled to prevent unauthorized transshipment through restricted jurisdictions.</p>
+
+
+
+<h3 class="wp-block-heading">4. <strong>Update Policies and Procedures Regularly</strong></h3>
+
+
+
+<p>Outdated compliance programs are a red flag for regulators. Continuous improvement is essential.</p>
+
+
+<div class="wp-block-image">
+<figure class="alignleft size-full"><img loading="lazy" decoding="async" width="299" height="168" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/g2.jpeg" alt="" class="wp-image-28961"/></figure>
+</div>
+
+
+<h3 class="wp-block-heading">5. <strong>Invest in Automation and Oversight</strong></h3>
+
+
+
+<p>Manual processes are insufficient for complex export control environments. Automated systems and independent monitoring are now baseline expectations.</p>
+
+
+
+<h2 class="wp-block-heading"><strong>Conclusion</strong></h2>
+
+
+
+<p>The GE enforcement action demonstrates how <strong>systemic compliance failures — even in sophisticated organizations — can lead to significant penalties and national security risks</strong>.</p>
+
+
+
+<p>For compliance professionals, the message is clear:<br>A “paper program” is not enough. Companies must build <strong>dynamic, technology-enabled, and well-governed export compliance systems</strong> that can adapt to evolving regulatory and geopolitical risks.</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/ges-36-million-itar-penalty-a-wake-up-call-for-export-control-compliance/">GE’s $36 Million ITAR Penalty — A Wake-Up Call for Export Control Compliance</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/ges-36-million-itar-penalty-a-wake-up-call-for-export-control-compliance/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28958</post-id>	</item>
+		<item>
+		<title>Building a Best-in-Class AI Use Policy: Core Elements for an Effective Compliance Framework</title>
+		<link>https://blog.volkovlaw.com/2026/04/building-a-best-in-class-ai-use-policy-core-elements-for-an-effective-compliance-framework/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/building-a-best-in-class-ai-use-policy-core-elements-for-an-effective-compliance-framework/#respond</comments>
+		
+		<dc:creator><![CDATA[Michael Volkov]]></dc:creator>
+		<pubDate>Tue, 21 Apr 2026 16:39:51 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28941</guid>
+
+					<description><![CDATA[<p>As companies accelerate adoption of artificial intelligence tools across business functions, one reality is becoming increasingly clear: AI risk is not theoretical—it is operational, immediate, and enterprise-wide. From generative AI tools used in marketing and legal functions to machine learning embedded in products and decision-making systems, organizations face a rapidly evolving risk landscape that cuts across privacy, cybersecurity, intellectual property, employment law, and regulatory compliance.&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/building-a-best-in-class-ai-use-policy-core-elements-for-an-effective-compliance-framework/">Building a Best-in-Class AI Use Policy: Core Elements for an Effective Compliance Framework</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div class="wp-block-image">
+<figure class="alignleft size-full"><img loading="lazy" decoding="async" width="310" height="163" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/a1.png" alt="" class="wp-image-28947" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/04/a1.png 310w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/a1-300x158.png 300w" sizes="auto, (max-width: 310px) 100vw, 310px" /></figure>
+</div>
+
+
+<p>As companies accelerate adoption of artificial intelligence tools across business functions, one reality is becoming increasingly clear: <strong>AI risk is not theoretical—it is operational, immediate, and enterprise-wide.</strong></p>
+
+
+
+<p>From generative AI tools used in marketing and legal functions to machine learning embedded in products and decision-making systems, organizations face a rapidly evolving risk landscape that cuts across <strong>privacy, cybersecurity, intellectual property, employment law, and regulatory compliance</strong>.</p>
+
+
+
+<p>Against this backdrop, a <strong>well-designed AI Use Policy</strong> is emerging as a foundational governance tool. But not all policies are created equal. A “check-the-box” document will not withstand scrutiny from regulators, auditors, or internal stakeholders.</p>
+
+
+
+<p>Instead, companies should focus on building a <strong>practical, enforceable, and risk-based AI Use Policy</strong> that aligns with their operational reality.</p>
+
+
+
+<p><strong>Start with a Clear Scope and Definitions</strong></p>
+
+
+
+<p>A best-in-class AI Use Policy begins by defining what “AI” means within the organization. This may sound basic, but ambiguity at the outset creates downstream compliance gaps.</p>
+
+
+
+<p>The policy should:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Define <strong>AI systems broadly</strong>, including generative AI, machine learning models, and automated decision tools</li>
+
+
+
+<li>Distinguish between <strong>approved enterprise AI tools</strong> and <strong>unauthorized public tools</strong></li>
+
+
+
+<li>Clarify whether the policy applies to <strong>internal use, customer-facing applications, or both</strong></li>
+</ul>
+
+
+<div class="wp-block-image">
+<figure class="alignright size-full"><img loading="lazy" decoding="async" width="203" height="148" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/a-1.jpeg" alt="" class="wp-image-28948"/></figure>
+</div>
+
+
+<p>Without this clarity, employees will default to inconsistent interpretations—one of the most common sources of risk.</p>
+
+
+
+<p><strong>Establish a Risk-Based Classification Framework</strong></p>
+
+
+
+<p>Not all AI use cases carry the same level of risk. A best-in-class policy incorporates a <strong>tiered risk classification system</strong> that aligns controls with impact.</p>
+
+
+
+<p>For example:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Low Risk:</strong> Internal productivity tools (e.g., drafting emails, summarizing documents)</li>
+
+
+
+<li><strong>Moderate Risk:</strong> Customer communications, marketing content, internal analytics</li>
+
+
+
+<li><strong>High Risk:</strong> Employment decisions, financial determinations, healthcare-related use, or any regulated activity</li>
+</ul>
+
+
+
+<p>Each category should trigger <strong>different approval, documentation, and oversight requirements</strong>.</p>
+
+
+
+<p>This approach mirrors emerging regulatory frameworks and demonstrates that the organization is applying <strong>proportional governance</strong>.</p>
+
+
+
+<p><strong>Define Permissible and Prohibited Uses</strong></p>
+
+
+
+<p>Employees need clear, actionable guidance—not general principles.</p>
+
+
+
+<p>A strong AI Use Policy explicitly outlines:</p>
+
+
+
+<p><strong>Permissible Uses</strong></p>
+
+
+
+<ul class="wp-block-list">
+<li>Drafting internal documents with human review</li>
+
+
+
+<li>Data analysis using approved, secure tools</li>
+
+
+
+<li>Research support with verification requirements</li>
+</ul>
+
+
+
+<p><strong>Prohibited Uses</strong></p>
+
+
+
+<ul class="wp-block-list">
+<li>Inputting <strong>confidential, proprietary, or personal data</strong> into unauthorized AI systems</li>
+
+
+
+<li>Using AI outputs as final work product without review</li>
+
+
+
+<li>Deploying AI for <strong>automated decision-making in sensitive areas</strong> without approval</li>
+
+
+
+<li>Circumventing legal, compliance, or IT controls</li>
+</ul>
+
+
+<div class="wp-block-image">
+<figure class="alignleft size-full"><img loading="lazy" decoding="async" width="299" height="168" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/a2.jpeg" alt="" class="wp-image-28949"/></figure>
+</div>
+
+
+<p>This section should be written in plain language and supported by real-world examples.</p>
+
+
+
+<p><strong>Address Data Governance and Confidentiality Risks</strong></p>
+
+
+
+<p>One of the most significant AI risks involves <strong>data leakage and unintended disclosure</strong>.</p>
+
+
+
+<p>A best-in-class policy must clearly prohibit:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Uploading sensitive company data into public AI tools</li>
+
+
+
+<li>Sharing client or regulated data without authorization</li>
+
+
+
+<li>Using AI systems that do not meet company security standards</li>
+</ul>
+
+
+
+<p>In addition, organizations should:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Require use of <strong>approved AI platforms with contractual safeguards</strong></li>
+
+
+
+<li>Align AI use with existing <strong>data classification policies</strong></li>
+
+
+
+<li>Coordinate with IT and security teams on <strong>access controls and monitoring</strong></li>
+</ul>
+
+
+
+<p><strong>Require Human Oversight and Accountability</strong></p>
+
+
+
+<p>AI should augment—not replace—human judgment.</p>
+
+
+
+<p>The policy should mandate:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Human review of all AI-generated outputs</strong> before use</li>
+
+
+
+<li>Clear assignment of <strong>accountability for decisions involving AI</strong></li>
+
+
+
+<li>Documentation of how AI outputs are used in critical processes</li>
+</ul>
+
+
+
+<p>This is particularly important in regulated environments, where explainability and auditability are essential.</p>
+
+
+
+<p><strong>Incorporate Bias, Fairness, and Ethical Safeguards</strong></p>
+
+
+
+<p>AI introduces unique risks related to <strong>bias, discrimination, and fairness</strong>—especially in employment, lending, healthcare, and customer-facing decisions.</p>
+
+
+
+<p>A strong policy should:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Prohibit use of AI in ways that could result in <strong>unlawful discrimination</strong></li>
+
+
+
+<li>Require testing or validation for <strong>high-risk use cases</strong></li>
+
+
+
+<li>Align with applicable laws enforced by agencies such as the <strong>FTC and EEOC</strong></li>
+</ul>
+
+
+
+<p>Importantly, the policy should connect to broader <strong>ethics and compliance program principles</strong>, not operate in isolation.</p>
+
+
+
+<p><strong>Implement Approval and Governance Processes</strong></p>
+
+
+
+<p>A best-in-class AI Use Policy is not static—it is operationalized through governance.</p>
+
+
+
+<p>Key elements include:</p>
+
+
+
+<ul class="wp-block-list">
+<li>A <strong>central approval process</strong> for new AI tools and use cases</li>
+
+
+
+<li>Cross-functional oversight (legal, compliance, IT, security)</li>
+
+
+
+<li>A designated <strong>AI governance committee or responsible officer</strong></li>
+
+
+
+<li>Periodic risk assessments and updates</li>
+</ul>
+
+
+
+<p>This ensures that AI adoption is <strong>intentional, documented, and monitored</strong>.</p>
+
+
+
+<p><strong>Training, Awareness, and Culture</strong></p>
+
+
+
+<p>Even the best policy will fail without effective implementation.</p>
+
+
+
+<p>Organizations should:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Conduct <strong>mandatory training</strong> tailored to different roles</li>
+
+
+
+<li>Provide <strong>practical examples and scenarios</strong></li>
+
+
+
+<li>Reinforce expectations through ongoing communications</li>
+</ul>
+
+
+
+<p>Employees should understand not just the rules—but the <strong>“why” behind them</strong>.</p>
+
+
+<div class="wp-block-image">
+<figure class="alignright size-full"><img loading="lazy" decoding="async" width="289" height="174" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/a3.jpeg" alt="" class="wp-image-28950"/></figure>
+</div>
+
+
+<p><strong>Monitoring, Auditing, and Continuous Improvement</strong></p>
+
+
+
+<p>AI risks evolve quickly. A best-in-class policy incorporates mechanisms for ongoing oversight:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Monitoring usage of AI tools across the organization</li>
+
+
+
+<li>Auditing high-risk use cases</li>
+
+
+
+<li>Investigating incidents and near-misses</li>
+
+
+
+<li>Updating policies as technology and regulations change</li>
+</ul>
+
+
+
+<p>This aligns AI governance with broader compliance program expectations—<strong>dynamic, risk-based, and continuously improving</strong>.</p>
+
+
+
+<p><strong>The Bottom Line</strong></p>
+
+
+
+<p>AI adoption is moving faster than most organizations’ ability to govern it. In this environment, a well-designed AI Use Policy is not just a compliance document—it is a <strong>critical control framework</strong>.</p>
+
+
+
+<p>Companies that implement clear rules, enforceable controls, and strong governance around AI will be better positioned to innovate responsibly—and avoid the growing wave of regulatory and enforcement risk.</p>
+
+
+
+<p>A best-in-class AI Use Policy ultimately reflects a simple principle:<br><strong>Use AI to enhance decision-making—but never outsource accountability.</strong></p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/building-a-best-in-class-ai-use-policy-core-elements-for-an-effective-compliance-framework/">Building a Best-in-Class AI Use Policy: Core Elements for an Effective Compliance Framework</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/building-a-best-in-class-ai-use-policy-core-elements-for-an-effective-compliance-framework/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28941</post-id>	</item>
+		<item>
+		<title>Is Your AI Risk Assessment Ready? (Part 2)</title>
+		<link>https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-2/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-2/#respond</comments>
+		
+		<dc:creator><![CDATA[Michael Volkov]]></dc:creator>
+		<pubDate>Tue, 21 Apr 2026 10:05:00 +0000</pubDate>
+				<category><![CDATA[Podcasts]]></category>
+		<category><![CDATA[AI]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28962</guid>
+
+					<description><![CDATA[<p>Here are 3 more reasons you may think twice about letting ChatGPT run your compliance program. First, content monitoring. The content that you generate through Chat GPT or any AI service can raise real risks with regard to improper intellectual property, data privacy risks where you name certain individuals or name certain identifiers, and most importantly, remember your third-party risks. When it comes to AI&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-2/">Is Your AI Risk Assessment Ready? (Part 2)</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<div class="wp-block-media-text is-stacked-on-mobile" style="grid-template-columns:43% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="1024" height="1024" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-1024x1024.jpg" alt="" class="wp-image-28963 size-full" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-1024x1024.jpg 1024w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-300x300.jpg 300w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-150x150.jpg 150w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-768x768.jpg 768w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3-160x160.jpg 160w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-3.jpg 1500w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure><div class="wp-block-media-text__content">
+<p>Here are 3 more reasons you may think twice about letting ChatGPT run your compliance program.</p>
+
+
+
+<p>First, content monitoring.</p>
+
+
+
+<p>The content that you generate through Chat GPT or any AI service can raise real risks with regard to improper intellectual property, data privacy risks where you name certain individuals or name certain identifiers, and most importantly, remember your third-party risks. </p>
+</div></div>
+
+
+
+<p></p>
+
+
+
+<p>When it comes to AI &#8211; you&#8217;re using vendors and those vendors have their own AI policies, and you need to analyze and mitigate those risks as part of the due diligence process and as part of the monitoring process once you&#8217;ve onboarded them.</p>
+
+
+
+<p>So be careful, take all our six steps and hold them together and mitigate your risks. </p>
+
+
+
+<iframe loading="lazy" style="border:0; width:100%;" height="200px" width="100%" frameborder="no" scrolling="no" seamless src="https://player.cohostpodcasting.com/7d3f230f-b083-41a9-86ac-f304b70cfbc7/b0e6891b-8c8d-4b42-935d-05c05704261d"></iframe>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-2/">Is Your AI Risk Assessment Ready? (Part 2)</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-2/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28962</post-id>	</item>
+		<item>
+		<title>Treasury Proposes AML/CFT and Sanctions Compliance Requirements for Permitted Payment Stablecoin Issuers</title>
+		<link>https://blog.volkovlaw.com/2026/04/treasury-proposes-aml-cft-and-sanctions-compliance-requirements-for-permitted-payment-stablecoin-issuers/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/treasury-proposes-aml-cft-and-sanctions-compliance-requirements-for-permitted-payment-stablecoin-issuers/#respond</comments>
+		
+		<dc:creator><![CDATA[Alex Cotoia]]></dc:creator>
+		<pubDate>Mon, 20 Apr 2026 16:26:51 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28915</guid>
+
+					<description><![CDATA[<p>The Treasury Department, through a coordinated rulemaking effort involving OFAC and FinCEN, has taken a significant step toward formalizing anti-money laundering and sanctions compliance expectations for a rapidly evolving segment of the financial services industry—permitted payment stablecoin issuers. The recently issued Notice of Proposed Rulemaking reflects a deliberate attempt to bring these entities squarely within the ambit of the Bank Secrecy Act framework, while at&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/treasury-proposes-aml-cft-and-sanctions-compliance-requirements-for-permitted-payment-stablecoin-issuers/">Treasury Proposes AML/CFT and Sanctions Compliance Requirements for Permitted Payment Stablecoin Issuers</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<p>The Treasury Department, through a coordinated rulemaking effort involving OFAC and FinCEN, has taken a significant step toward formalizing anti-money laundering and sanctions compliance expectations for a rapidly evolving segment of the financial services industry—permitted payment stablecoin issuers. The recently issued <a href="https://www.govinfo.gov/content/pkg/FR-2026-04-10/pdf/2026-06963.pdf"><strong>Notice of Proposed Rulemaking</strong></a> reflects a deliberate attempt to bring these entities squarely within the ambit of the <a href="https://www.fincen.gov/resources/statutes-and-regulations/bank-secrecy-act"><strong>Bank Secrecy Act</strong></a> framework, while at the same time tailoring requirements to account for the unique operational and technological characteristics of stablecoin-based payment systems. The proposal signals not only regulatory maturation in the digital asset space, but also a clear expectation that stablecoin issuers will adopt compliance architectures comparable in rigor to those long imposed on traditional financial institutions.</p>
+
+
+<div class="wp-block-image">
+<figure class="alignright size-large is-resized"><img loading="lazy" decoding="async" width="1024" height="1024" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/image-1024x1024.png" alt="" class="wp-image-28916" style="width:282px;height:auto" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/04/image-1024x1024.png 1024w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/image-300x300.png 300w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/image-150x150.png 150w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/image-768x768.png 768w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/image-160x160.png 160w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/image.png 1280w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+</div>
+
+
+<p>At its core, the proposed rule establishes a comprehensive AML/CFT program requirement that mirrors, in structure and substance, the familiar pillars of the Bank Secrecy Act. Permitted payment stablecoin issuers would be required to implement written compliance programs that are formally approved by the board of directors or equivalent governing authority, thereby embedding accountability at the highest levels of organizational governance. These programs must include internal controls reasonably designed to ensure ongoing compliance, robust procedures for maintaining and updating customer information—including beneficial ownership data—and independent testing conducted either internally or by qualified third parties. In addition, the proposal requires designation of a qualified compliance officer located in the United States and subject to regulatory oversight, as well as the establishment of a continuous employee training program.</p>
+
+
+
+<p>Beyond these baseline requirements, the NPRM underscores the importance of operationalizing compliance in a manner that is demonstrable and verifiable. It is not sufficient for a stablecoin issuer to maintain a theoretical or paper-based compliance program. Rather, the rule explicitly requires that the AML/CFT program be implemented “in all material respects,” reinforcing the longstanding regulatory principle that effectiveness—not mere formal adoption—will serve as the benchmark for compliance. This emphasis is further reflected in the requirement that issuers make their AML/CFT programs available to FinCEN upon request and provide certifications evidencing implementation to their primary regulators. Taken together, these provisions signal a clear expectation that regulators will scrutinize not only program design, but also execution and ongoing effectiveness.</p>
+
+
+
+<p>The proposed rule also introduces a structured supervisory and enforcement framework that aligns stablecoin issuers with broader financial regulatory practice. FinCEN defines “AML/CFT enforcement actions” broadly to include both formal and informal measures, such as cease-and-desist orders, consent orders, and civil monetary penalties, thereby preserving a wide range of remedial tools. At the same time, the NPRM articulates a measured enforcement posture, providing that entities that have established compliant programs will generally not be subject to enforcement actions absent significant or systemic failures. This approach reflects an effort to incentivize proactive compliance while reserving enforcement for material deficiencies and breakdowns in program implementation.</p>
+
+
+
+<p>From a sanctions compliance perspective, the implications of the proposed rule are equally significant, even where not expressly delineated in standalone provisions. By bringing stablecoin issuers within the broader AML/CFT framework, the rule necessarily incorporates sanctions screening, transaction monitoring, and reporting obligations as integral components of a compliant program. In practice, this means that stablecoin issuers will be expected to implement screening protocols capable of identifying blocked persons and prohibited jurisdictions, integrate sanctions risk into customer due diligence processes, and maintain controls sufficient to prevent the facilitation of prohibited transactions. Given the speed and pseudonymity often associated with blockchain-based transactions, these expectations will present substantial operational challenges and will likely require investment in advanced analytics and monitoring tools.</p>
+
+
+<div class="wp-block-image">
+<figure class="alignleft size-full is-resized"><img loading="lazy" decoding="async" width="462" height="253" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/image-1.png" alt="" class="wp-image-28917" style="width:359px;height:auto" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/04/image-1.png 462w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/image-1-300x164.png 300w" sizes="auto, (max-width: 462px) 100vw, 462px" /></figure>
+</div>
+
+
+<p>The NPRM must also be understood in the broader context of regulatory convergence across digital assets and traditional finance. For several years, regulators have grappled with the question of how to apply legacy compliance frameworks to emerging technologies without stifling innovation. This proposal reflects a decisive shift toward <span style="text-decoration: underline">harmonization</span>, making clear that the core principles of financial crime compliance—transparency, accountability, and traceability—apply with equal force in the digital asset ecosystem. In this respect, the rule does not so much create a new compliance paradigm as it extends an existing one into a new technological domain.</p>
+
+
+
+<p>For companies operating in or adjacent to the stablecoin ecosystem, the practical implications are immediate and substantial. Organizations should begin by conducting a comprehensive gap assessment to evaluate existing compliance capabilities against the proposed requirements. This process should include a detailed review of customer onboarding procedures, beneficial ownership identification, transaction monitoring systems, and sanctions screening protocols. Particular attention should be paid to governance structures, including board oversight and the designation of a qualified compliance officer, as these elements will be subject to heightened regulatory scrutiny. Companies should also consider the development of documented policies and procedures that reflect not only regulatory requirements but also the specific risk profile of their operations.</p>
+
+
+
+<p>In parallel, organizations should prioritize the development of documentation and evidentiary records that demonstrate the operationalization of compliance controls. As the NPRM makes clear, regulators will expect issuers to substantiate their compliance efforts through contemporaneous records, testing results, and internal reporting. This includes maintaining detailed records of customer due diligence, transaction monitoring alerts, and escalation processes, as well as documenting the rationale for risk-based decisions. In an enforcement context, the ability to produce such documentation will be critical in demonstrating good faith compliance and mitigating potential liability.</p>
+
+
+
+<p>Finally, companies should closely monitor the progression of the rulemaking process and be prepared to engage with regulators through the comment process where appropriate. Given the technical complexity and rapidly evolving nature of the digital asset space, industry input will play an important role in shaping the final contours of the rule. At the same time, organizations should not delay in beginning to align their compliance frameworks with the proposed requirements, as the direction of travel is clear and the expectations articulated in the NPRM are unlikely to be materially relaxed.</p>
+
+
+
+<p>In sum, the Treasury Department’s proposed rule represents a pivotal development in the regulation of stablecoin issuers, marking the transition from a largely unstructured compliance environment to one defined by clear, enforceable expectations. By extending the core principles of AML/CFT and sanctions compliance to this sector, regulators are signaling that digital innovation does not exist outside the bounds of financial crime risk management. For industry participants, the message is equally clear: robust, well-documented, and operationalized compliance programs are no longer optional, but essential components of doing business in the evolving digital asset landscape.</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/treasury-proposes-aml-cft-and-sanctions-compliance-requirements-for-permitted-payment-stablecoin-issuers/">Treasury Proposes AML/CFT and Sanctions Compliance Requirements for Permitted Payment Stablecoin Issuers</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/treasury-proposes-aml-cft-and-sanctions-compliance-requirements-for-permitted-payment-stablecoin-issuers/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28915</post-id>	</item>
+		<item>
+		<title>DOJ Declination in Balt Medical: A Clear Signal on Self-Disclosure, Cooperation, and Remediation</title>
+		<link>https://blog.volkovlaw.com/2026/04/doj-declination-in-balt-medical-a-clear-signal-on-self-disclosure-cooperation-and-remediation/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/doj-declination-in-balt-medical-a-clear-signal-on-self-disclosure-cooperation-and-remediation/#respond</comments>
+		
+		<dc:creator><![CDATA[Michael Volkov]]></dc:creator>
+		<pubDate>Mon, 20 Apr 2026 16:25:48 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28887</guid>
+
+					<description><![CDATA[<p>The Department of Justice’s recent declination in the Balt Medical matter provides another important data point in understanding how DOJ is applying its updated Corporate Enforcement and Voluntary Self-Disclosure Policy in practice. While declinations are always fact-specific, this letter offers a textbook example of how a company can navigate a significant FCPA issue and still avoid criminal prosecution. The declination letter, issued to Balt SAS,&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/doj-declination-in-balt-medical-a-clear-signal-on-self-disclosure-cooperation-and-remediation/">DOJ Declination in Balt Medical: A Clear Signal on Self-Disclosure, Cooperation, and Remediation</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div class="wp-block-image">
+<figure class="alignleft size-full"><img loading="lazy" decoding="async" width="306" height="165" src="https://blog.volkovlaw.com/wp-content/uploads/2026/03/b2.jpeg" alt="" class="wp-image-28894" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/03/b2.jpeg 306w, https://blog.volkovlaw.com/wp-content/uploads/2026/03/b2-300x162.jpeg 300w" sizes="auto, (max-width: 306px) 100vw, 306px" /></figure>
+</div>
+
+
+<p>The Department of Justice’s recent declination in the Balt Medical matter provides another important data point in understanding how DOJ is applying its updated Corporate Enforcement and Voluntary Self-Disclosure Policy in practice. While declinations are always fact-specific, this letter offers a textbook example of how a company can navigate a significant FCPA issue and still avoid criminal prosecution.</p>
+
+
+
+<p><a href="http://chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.justice.gov/criminal/media/1431846/dl?inline">The declination letter, issued to Balt SAS, outlines a straightforward but serious set of facts. According to the government, between approximately 2017 and 2023, Balt paid roughly $602,000 in bribes to a physician at a state-owned hospital in France. </a>The payments were routed through a third-party consultant in Belgium and were intended to influence purchasing decisions for medical devices, including embolization coils. Employees and agents allegedly took steps to conceal the payments, including the use of false invoices and purported “bonus” payments. The scheme generated approximately $1.68 million in revenue and over $1.2 million in profits.</p>
+
+
+
+<p>On its face, this is not a marginal case. It involves a multi-year bribery scheme, use of intermediaries, falsified documentation, and clear intent to influence a foreign official—core FCPA misconduct. Yet DOJ declined prosecution. The question, as always, is why.</p>
+
+
+
+<p>The answer lies squarely in Balt’s post-misconduct conduct. DOJ specifically grounded its decision in several key factors under the Corporate Enforcement Policy. First, Balt made a <strong>timely and voluntary self-disclosure</strong> to the DOJ Fraud Section. Notably, the misconduct was identified during an ongoing internal investigation, and the company disclosed while that investigation was still in progress. This is a critical point. DOJ continues to reward companies that come forward early, even before all facts are fully developed.</p>
+
+
+
+<p>Second, Balt provided <strong>full and proactive cooperation</strong>. While the letter does not detail every aspect of cooperation, it emphasizes that Balt provided all relevant information and supported the government’s investigation. Under DOJ policy, this typically includes identifying responsible individuals, preserving and producing documents, and facilitating access to evidence and witnesses. Cooperation is not passive—it requires initiative and transparency.</p>
+
+
+<div class="wp-block-image">
+<figure class="alignright size-full"><img loading="lazy" decoding="async" width="301" height="167" src="https://blog.volkovlaw.com/wp-content/uploads/2026/03/b.jpeg" alt="" class="wp-image-28895"/></figure>
+</div>
+
+
+<p>Third, Balt engaged in <strong>timely and appropriate remediation</strong>. Although the letter is less detailed on specific remediation measures, DOJ’s reference to remediation indicates that the company took meaningful steps to address the root causes of the misconduct and strengthen its compliance framework. This remains a central requirement under DOJ policy—companies must demonstrate that the misconduct is unlikely to recur.</p>
+
+
+
+<p>Finally, DOJ’s analysis reflects the absence—or at least manageable level—of aggravating circumstances. While the conduct was serious, DOJ determined that the company’s response outweighed those concerns. This balancing is critical under the Corporate Enforcement Policy, which allows for declinations even in cases involving significant misconduct where the company’s actions demonstrate genuine accountability.</p>
+
+
+
+<p>The financial component of the resolution is also instructive. Balt agreed to disgorge approximately $1.21 million in profits derived from the misconduct. This reinforces a consistent DOJ principle: a declination is not a free pass. Companies must still give up ill-gotten gains and compensate for the benefits derived from wrongdoing.</p>
+
+
+
+<p>Equally important, the declination letter makes clear that DOJ’s decision applies only to the company—not to individuals. The government expressly reserves the right to pursue prosecutions against employees, officers, or agents involved in the misconduct. This is consistent with DOJ’s continued emphasis on individual accountability as a cornerstone of corporate enforcement.</p>
+
+
+
+<p>So what are the key takeaways for companies and compliance professionals?</p>
+
+
+
+<p>First, <strong>timing is everything</strong>. Balt’s decision to self-disclose during an active internal investigation likely played a decisive role. Waiting until the government is already aware—or about to become aware—can significantly reduce the benefits available under DOJ policy.</p>
+
+
+<div class="wp-block-image">
+<figure class="alignleft size-full"><img loading="lazy" decoding="async" width="317" height="159" src="https://blog.volkovlaw.com/wp-content/uploads/2026/03/f1.jpeg" alt="" class="wp-image-28896" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/03/f1.jpeg 317w, https://blog.volkovlaw.com/wp-content/uploads/2026/03/f1-300x150.jpeg 300w" sizes="auto, (max-width: 317px) 100vw, 317px" /></figure>
+</div>
+
+
+<p>Second, <strong>cooperation must be real and complete</strong>. DOJ continues to expect companies to go beyond minimal compliance and actively assist in building the case, particularly with respect to identifying individuals.</p>
+
+
+
+<p>Third, <strong>remediation must be credible and demonstrable</strong>. Companies need to show that they understand what went wrong and have taken concrete steps to fix it. This includes compliance program enhancements, disciplinary actions, and structural changes.</p>
+
+
+
+<p>Fourth, <strong>declination does not mean no consequences</strong>. Disgorgement, reputational impact, and ongoing cooperation obligations remain significant.</p>
+
+
+
+<p>Ultimately, the Balt Medical declination underscores a broader message: DOJ is serious about its incentive structure. Companies that act quickly, cooperate fully, and remediate effectively can achieve meaningful outcomes—even in cases involving substantial misconduct. But those benefits are not automatic. They must be earned through disciplined, transparent, and credible action.</p>
+
+
+
+<p>For compliance officers and boards, the lesson is clear. The time to prepare for a potential disclosure decision is not when the issue arises—it is now.</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/doj-declination-in-balt-medical-a-clear-signal-on-self-disclosure-cooperation-and-remediation/">DOJ Declination in Balt Medical: A Clear Signal on Self-Disclosure, Cooperation, and Remediation</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/doj-declination-in-balt-medical-a-clear-signal-on-self-disclosure-cooperation-and-remediation/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28887</post-id>	</item>
+		<item>
+		<title>FinCEN’s Proposed AML Reform Signals a Shift Toward Risk-Based Enforcement and Program Accountability</title>
+		<link>https://blog.volkovlaw.com/2026/04/fincens-proposed-aml-reform-signals-a-shift-toward-risk-based-enforcement-and-program-accountability/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/fincens-proposed-aml-reform-signals-a-shift-toward-risk-based-enforcement-and-program-accountability/#respond</comments>
+		
+		<dc:creator><![CDATA[Michael Volkov]]></dc:creator>
+		<pubDate>Sun, 19 Apr 2026 21:30:07 +0000</pubDate>
+				<category><![CDATA[General]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28929</guid>
+
+					<description><![CDATA[<p>On April 7, 2026, the U.S. Department of the Treasury’s Financial Crimes Enforcement Network (FinCEN) unveiled a sweeping proposed rule aimed at modernizing anti-money laundering and countering the financing of terrorism (AML/CFT) compliance obligations under the Bank Secrecy Act (BSA). The proposal, developed in coordination with federal banking regulators, reflects a significant evolution in how regulators evaluate compliance programs, enforce obligations, and encourage innovation. At&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/fincens-proposed-aml-reform-signals-a-shift-toward-risk-based-enforcement-and-program-accountability/">FinCEN’s Proposed AML Reform Signals a Shift Toward Risk-Based Enforcement and Program Accountability</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div class="wp-block-image">
+<figure class="alignleft size-full"><img loading="lazy" decoding="async" width="300" height="168" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/f.jpeg" alt="" class="wp-image-28930"/></figure>
+</div>
+
+
+<p>On April 7, 2026, the U.S. Department of the Treasury’s Financial Crimes Enforcement Network (FinCEN) unveiled a sweeping proposed rule aimed at modernizing anti-money laundering and countering the financing of terrorism (AML/CFT) compliance obligations under the Bank Secrecy Act (BSA). The proposal, developed in coordination with federal banking regulators, reflects a significant evolution in how regulators evaluate compliance programs, enforce obligations, and encourage innovation.</p>
+
+
+
+<p>At its core, the proposal attempts to recalibrate the regulatory framework toward outcomes, risk management, and clarity—while reducing ambiguity that has long complicated AML compliance.</p>
+
+
+
+<h3 class="wp-block-heading">A More Structured Approach to Supervision and Enforcement</h3>
+
+
+
+<p>One of the most consequential changes is the introduction of a more coordinated supervisory framework between FinCEN and federal banking agencies. Under the proposal, regulators such as the OCC, FDIC, Federal Reserve, and NCUA would be required to provide FinCEN with advance notice before taking significant supervisory actions related to AML/CFT deficiencies.</p>
+
+
+
+<p>This move signals FinCEN’s intent to play a more active oversight role in enforcement decisions while promoting consistency across agencies. At the same time, FinCEN indicates that enforcement actions will generally be reserved for cases involving substantial or systemic breakdowns, rather than isolated implementation issues.</p>
+
+
+
+<h3 class="wp-block-heading">A Two-Pronged Test for Program Effectiveness</h3>
+
+
+<div class="wp-block-image">
+<figure class="alignright size-full"><img loading="lazy" decoding="async" width="300" height="168" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/f1.jpeg" alt="" class="wp-image-28931"/></figure>
+</div>
+
+
+<p>Perhaps the most notable conceptual shift is the adoption of a “two-pronged” framework for evaluating AML/CFT programs. Rather than relying on vague standards such as whether a program is “effective,” the proposal distinguishes between:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Whether a financial institution has properly established its AML/CFT program; and</li>
+
+
+
+<li>Whether it is adequately maintaining and implementing that program over time.</li>
+</ul>
+
+
+
+<p>This distinction is critical. Failures in program design may still trigger enforcement, but shortcomings in execution would need to rise to a significant or systemic level before prompting regulatory action. This approach raises the enforcement threshold and provides institutions with greater predictability.</p>
+
+
+
+<h3 class="wp-block-heading">Reinforcing the Core Pillars—While Reframing CDD</h3>
+
+
+
+<p>The proposal retains the traditional four foundational elements of an AML program: internal controls, independent testing, designated leadership, and training. However, it formally incorporates customer due diligence (CDD) into the broader internal controls framework, rather than treating it as a standalone “fifth pillar.”</p>
+
+
+
+<p>This restructuring does not materially alter CDD obligations but reflects a more integrated, risk-based philosophy.</p>
+
+
+
+<h3 class="wp-block-heading">Mandatory Risk Assessments and Resource Allocation</h3>
+
+
+
+<p>A key operational requirement is the explicit mandate that financial institutions conduct and maintain risk assessment processes. While many institutions already perform such assessments, the proposed rule standardizes this expectation across sectors, including banks, broker-dealers, and money services businesses.</p>
+
+
+
+<p>Importantly, these risk assessments must be dynamic. Institutions are expected to update them when business activities, customer bases, or geographic exposure change.</p>
+
+
+<div class="wp-block-image">
+<figure class="alignleft size-full"><img loading="lazy" decoding="async" width="299" height="168" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/f2.jpeg" alt="" class="wp-image-28932"/></figure>
+</div>
+
+
+<p>The proposal also emphasizes that institutions should allocate resources proportionately—focusing more heavily on higher-risk customers and activities. Regulators signal that they will defer to reasonable, well-supported risk determinations, rather than substituting their own judgment.</p>
+
+
+
+<h3 class="wp-block-heading">Governance and Accountability Enhancements</h3>
+
+
+
+<p>The proposal introduces several governance-related requirements designed to strengthen accountability:</p>
+
+
+
+<ul class="wp-block-list">
+<li>AML/CFT programs must be approved by a board of directors or equivalent governing authority;</li>
+
+
+
+<li>A designated AML/CFT officer must be located in the United States; and</li>
+
+
+
+<li>Programs must be available for regulatory review upon request.</li>
+</ul>
+
+
+
+<p>These changes reinforce the expectation that AML compliance is a core organizational responsibility, not merely a compliance function operating in isolation.</p>
+
+
+
+<h3 class="wp-block-heading">Encouraging Innovation—Including AI</h3>
+
+
+
+<p>In a notable departure from traditional regulatory caution, FinCEN explicitly acknowledges the role of technological innovation in strengthening AML compliance. The proposal suggests that the use of advanced analytics, including artificial intelligence, may be considered evidence of an effective program.</p>
+
+
+
+<p>At the same time, FinCEN reassures institutions that responsible experimentation with new technologies will not, by itself, increase enforcement risk. This reflects a broader policy goal of encouraging modernization and improving the usefulness of reporting to law enforcement.</p>
+
+
+
+<h3 class="wp-block-heading">Harmonization and Extended Implementation Timeline</h3>
+
+
+<div class="wp-block-image">
+<figure class="alignright size-full"><img loading="lazy" decoding="async" width="300" height="168" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/f3.jpeg" alt="" class="wp-image-28933"/></figure>
+</div>
+
+
+<p>The proposal also aims to eliminate discrepancies between regulatory regimes by creating a unified AML/CFT standard for banks, regardless of their supervisory structure.</p>
+
+
+
+<p>Recognizing the operational complexity of these changes, FinCEN proposes a 12-month implementation period following issuance of a final rule—doubling the timeline initially contemplated in earlier proposals.</p>
+
+
+
+<h3 class="wp-block-heading">Looking Ahead</h3>
+
+
+
+<p>If finalized, this proposal would represent one of the most significant updates to the U.S. AML/CFT framework in decades. It reflects a broader regulatory shift toward risk-based compliance, clearer standards, and a more measured enforcement posture.</p>
+
+
+
+<p>For financial institutions, the message is clear: success will depend not only on having the right policies in place, but on demonstrating thoughtful risk management, governance, and adaptability in an evolving threat landscape.</p>
+
+
+
+<p>With the comment period open until June 9, stakeholders have an important opportunity to shape the final contours of this regulatory transformation.</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/fincens-proposed-aml-reform-signals-a-shift-toward-risk-based-enforcement-and-program-accountability/">FinCEN’s Proposed AML Reform Signals a Shift Toward Risk-Based Enforcement and Program Accountability</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/fincens-proposed-aml-reform-signals-a-shift-toward-risk-based-enforcement-and-program-accountability/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28929</post-id>	</item>
+		<item>
+		<title>Episode 406 &#8212; AI Risks and Compliance – Building a Governance Framework</title>
+		<link>https://blog.volkovlaw.com/2026/04/episode-406-ai-risks-and-compliance-building-a-governance-framework/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/episode-406-ai-risks-and-compliance-building-a-governance-framework/#comments</comments>
+		
+		<dc:creator><![CDATA[Michael Volkov]]></dc:creator>
+		<pubDate>Sun, 19 Apr 2026 20:53:14 +0000</pubDate>
+				<category><![CDATA[Podcasts]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28912</guid>
+
+					<description><![CDATA[<p>Artificial intelligence is rapidly transforming business operations—but it is also introducing a new generation of legal, ethical, and compliance risks. In this episode, we explore how AI risk is accelerating across organizations, from data leakage and bias to over-reliance on flawed outputs and hidden third-party exposure. Drawing on real enforcement trends and practical examples, we explain why AI risk is fundamentally a human and governance&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/episode-406-ai-risks-and-compliance-building-a-governance-framework/">Episode 406 &#8212; AI Risks and Compliance – Building a Governance Framework</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<div class="wp-block-image">
+<figure class="alignleft size-full"><img loading="lazy" decoding="async" width="311" height="162" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/a.jpeg" alt="" class="wp-image-28914" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/04/a.jpeg 311w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/a-300x156.jpeg 300w" sizes="auto, (max-width: 311px) 100vw, 311px" /></figure>
+</div>
+
+
+<p>Artificial intelligence is rapidly transforming business operations—but it is also introducing a new generation of legal, ethical, and compliance risks. In this episode, we explore how AI risk is accelerating across organizations, from data leakage and bias to over-reliance on flawed outputs and hidden third-party exposure. Drawing on real enforcement trends and practical examples, we explain why AI risk is fundamentally a human and governance issue—not just a technology challenge—and why companies must adopt a risk-based approach that distinguishes between high- and low-risk AI use cases. This episode outlines the core elements of an effective AI compliance program, including governance structures, employee training, vendor oversight, and regulatory readiness in an increasingly scrutinized environment.<br></p>
+
+<iframe loading="lazy" style="border:0; width:100%;" height="200px" width="100%" frameborder="no" scrolling="no" seamless src="https://player.cohostpodcasting.com/f228878b-40e1-4717-aa11-a3eb6b04ef4f/e0904c35-d0d0-46cb-b3a5-d9f3179aadd4"></iframe><p>The post <a href="https://blog.volkovlaw.com/2026/04/episode-406-ai-risks-and-compliance-building-a-governance-framework/">Episode 406 &#8212; AI Risks and Compliance – Building a Governance Framework</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/episode-406-ai-risks-and-compliance-building-a-governance-framework/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28912</post-id>	</item>
+		<item>
+		<title>Is Your AI Risk Assessment Ready? (Part 1)</title>
+		<link>https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-1/</link>
+					<comments>https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-1/#respond</comments>
+		
+		<dc:creator><![CDATA[Michael Volkov]]></dc:creator>
+		<pubDate>Fri, 17 Apr 2026 14:14:23 +0000</pubDate>
+				<category><![CDATA[Podcasts]]></category>
+		<category><![CDATA[AI]]></category>
+		<guid isPermaLink="false">https://blog.volkovlaw.com/?p=28936</guid>
+
+					<description><![CDATA[<p>Are you actually thinking of turning over your compliance program to ChatGPT? If so, you need to listen to this. AI has to be implemented in a methodical way, a step-by-step program. So let&#8217;s talk about those steps. First, you need a governance structure, meaning you have to have an organization responsible across the entire organization for all your uses of AI. Second, like every&#46;&#46;&#46;</p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-1/">Is Your AI Risk Assessment Ready? (Part 1)</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<div class="wp-block-media-text is-stacked-on-mobile is-vertically-aligned-center" style="grid-template-columns:42% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="1024" height="1024" src="https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-2-1024x1024.jpg" alt="" class="wp-image-28939 size-full" srcset="https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-2-1024x1024.jpg 1024w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-2-300x300.jpg 300w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-2-150x150.jpg 150w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-2-768x768.jpg 768w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-2-160x160.jpg 160w, https://blog.volkovlaw.com/wp-content/uploads/2026/04/WINNER-as-of-04142026-2.jpg 1500w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure><div class="wp-block-media-text__content">
+<p>Are you actually thinking of turning over your compliance program to ChatGPT?<br><br>If so, you need to listen to this. AI has to be implemented in a methodical way, a step-by-step program. So let&#8217;s talk about those steps.<br><br>First, you need a governance structure, meaning you have to have an organization responsible across the entire organization for all your uses of AI.</p>
+</div></div>
+
+
+
+<p></p>
+
+
+
+<p>Second, like every issue that we deal with in ethics and compliance, you need a risk assessment. And you need to look at specific use cases and how those are going to impact your risk profile. This is critical. Only then you can start to tailor your program.</p>
+
+
+
+<p>Third, you need to decide and investigate what exactly your risks are.</p>
+
+
+
+<p>Is it algorithmic, meaning you&#8217;re using it for your business purpose, or non-algorithmic?</p>
+
+
+
+<p>Stay tuned to part two, where we&#8217;re going to talk about the rest of the steps.</p>
+
+
+
+<iframe loading="lazy" style="border:0; width:100%;" height="200px" width="100%" frameborder="no" scrolling="no" seamless src="https://player.cohostpodcasting.com/d75b3cad-9d92-4e12-82ff-c380a8e812a2/c8c92b65-b63b-40ad-90be-cedd81e2ca2d"></iframe>
+
+
+
+<p></p>
+<p>The post <a href="https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-1/">Is Your AI Risk Assessment Ready? (Part 1)</a> appeared first on <a href="https://blog.volkovlaw.com">Corruption, Crime &amp; Compliance</a>.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.volkovlaw.com/2026/04/is-your-ai-risk-assessment-ready-part-1/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">28936</post-id>	</item>
+	</channel>
+</rss>

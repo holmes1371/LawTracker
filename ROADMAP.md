@@ -18,13 +18,14 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 — DOJ historical years + link-following enrichment landed; code complete)**
+**2026-04-25 (item 17 wave 2 + item 11 CI; possibleSources.txt expansion)**
 
-- DOJ adapter now iterates `years` (default `(2025, 2026)`) via a base-class `urls` property; per-case enrichment fetches the case-detail page → press release for `topic`, `component`, `industry`, `resolution_type`, `amount_usd`, `press_release_url`. Enrichment is best-effort — silent fail-soft when a case-detail page lacks a press-release link or the press release has unexpected structure.
-- Live scout end-to-end: 15 events (DOJ 6, AFP 9, Fiscalía 0). Ferrera case shows full enrichment (industry=medical devices, resolution=declination, amount_usd=1.2M); other DOJ cases got partial enrichment, surfacing the brittleness Tom + Ellen will evaluate at item 18.
-- Base-class refactor: added `urls` property override hook; `parse(html, client)` now accepts the client so adapters can follow links during parsing. AFP / Fiscalía updated to the new signature (no behavior change). Suite: 25 passing.
-- Items 3, 16, 17 all `[~]` pending Tom's manual signoff. Item 17's only outstanding piece is the FCPA Blog 401 blocker — captured for resolution at item 18 (scout review).
-- Next: item 18 — Tom + Ellen review `data/scout/events.xlsx` and decide what to refine. No more code without their input.
+- Item 11 (CI) pulled forward and `[~]`: GitHub Actions at `.github/workflows/ci.yml` runs ruff → mypy → pytest on Python 3.11 + 3.12 for every push and PR.
+- Generic `RssFeedAdapter` landed as the reuse mechanism — adding a new RSS source = ~5-line subclass. Volkov Law and Consejo para la Transparencia (Chile) wired in via this base; both fetch live and emit records. Default browser User-Agent on `SourceAdapter` (Chrome on Windows) — httpx default UA was getting 403'd by WordPress nginx.
+- Live scout end-to-end with 5 adapters: 35 events (DOJ 6, AFP 9, Fiscalía 0 sparse, Consejo Transparencia 10, Volkov Law 10). Suite: 31 passing. Ruff + mypy clean.
+- Sources from `possibleSources.txt` blocked from this environment (captured in `design/data-scout.md` "Findings wave 2" for scout-review): SEC FCPA cases (403), OECD WGB (403), CDPP/NACC/AUSTRAC (timeouts — likely AU geo-block), ASIC (JS-rendered, no inline data), FCPA Blog (401, prior). Production environment may need residential proxy / headless browser / API access.
+- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff. Items 4 / 5 / 6+ still queued behind item 18 (scout review).
+- Next: Tom runs `python -m lawtracker scout`, opens `data/scout/events.xlsx`, decides at item 18 which sources are worth investing access in vs. dropping vs. replacing.
 
 ## For future agents
 

@@ -23,14 +23,21 @@ from openpyxl.utils import get_column_letter
 
 from lawtracker.sources import EventRecord, SourceAdapter
 from lawtracker.sources.afp_foreign_bribery import AfpForeignBriberyAdapter
+from lawtracker.sources.consejo_transparencia_cl import ConsejoTransparenciaClAdapter
 from lawtracker.sources.doj_fcpa_actions import DojFcpaActionsAdapter
 from lawtracker.sources.fiscalia_chile import FiscaliaChileAdapter
+from lawtracker.sources.volkov_law import VolkovLawAdapter
 
 PILOT_ADAPTERS: list[type[SourceAdapter]] = [
     DojFcpaActionsAdapter,
     AfpForeignBriberyAdapter,
     FiscaliaChileAdapter,
-    # FCPA Blog blocked by Cloudflare auth wall (item 17 — see design note).
+    ConsejoTransparenciaClAdapter,
+    VolkovLawAdapter,
+    # Sources flagged blocked / JS-rendered: FCPA Blog (CDN 401), SEC FCPA
+    # cases (CDN 403), OECD WGB (CDN 403), AUSTRAC / NACC / CDPP (timeout
+    # from this environment), ASIC (JS-rendered, no inline data). See
+    # design/sources.md and design/data-scout.md "Findings" sections.
 ]
 
 DEFAULT_OUTPUT_DIR = Path("data/scout")

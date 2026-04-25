@@ -78,6 +78,11 @@ class SourceAdapter(ABC):
     url: ClassVar[str]
 
     timeout_seconds: ClassVar[float] = 30.0
+    user_agent: ClassVar[str] = (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/120.0.0.0 Safari/537.36"
+    )
 
     @property
     def urls(self) -> tuple[str, ...]:
@@ -92,7 +97,9 @@ class SourceAdapter(ABC):
         """
         if client is None:
             with httpx.Client(
-                timeout=self.timeout_seconds, follow_redirects=True
+                timeout=self.timeout_seconds,
+                follow_redirects=True,
+                headers={"User-Agent": self.user_agent},
             ) as owned:
                 return self._do_poll(owned)
         return self._do_poll(client)
