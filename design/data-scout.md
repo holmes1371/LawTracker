@@ -102,3 +102,9 @@ N/A — local Python; no accounts, secrets, or external setup.
 ## Commit sequence
 
 Single commit: scout module + CLI extension + tests + pyproject update + design note + ROADMAP `[ ]` → `[~]` flip + summary block update.
+
+## Findings during item 17 buildout (2026-04-25)
+
+- **FCPA Blog blocked.** All candidate URLs return HTTP 401 with a Cloudflare bot-protection page even from a realistic Chrome User-Agent. No adapter possible without changes to access. Captured in `design/sources.md` source #16; revisit options at scout review (item 18).
+- **AFP general news has zero foreign-bribery signal.** The originally-listed `/news-media/media-releases` returns 30+ pages of mostly domestic crime; zero hits on bribery / corruption / FCPA keywords. Switched the adapter target to AFP's site search (`/search?keys=foreign+bribery`) which yields ~12 actual foreign-bribery media releases on page 0.
+- **Fiscalía Chile URL was wrong.** `/Fiscalia/sala_prensa` is a 404; the press section is now under `/actualidad/noticias/nacionales`. Anti-corruption signal is sparse on the front page — keyword filter (`cohecho`, `corrupción`, `soborno`, `lavado`, `fraude al fisco`, `Ley 20.393`, `funcionario público`) usually returns zero matches per page. Tom + Ellen will see this in the scout output and can decide whether to pursue regional pages, broader keyword set, or a different Chilean source.

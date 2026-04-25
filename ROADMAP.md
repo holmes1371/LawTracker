@@ -18,12 +18,12 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 16 — code complete; item 17 next)**
+**2026-04-25 (item 17 — AFP + Fiscalía adapters landed; FCPA Blog blocked)**
 
-- Item 16 (`[~]`) code complete: `lawtracker scout` runs every adapter in `PILOT_ADAPTERS` and writes `data/scout/events.xlsx` + `events.jsonl` + `summary.txt`. End-to-end smoke against live DOJ produced one row (the 2026 Ferrera case) with a clean Excel + summary. 16 tests, ruff + mypy clean. Design note at `design/data-scout.md`.
-- Items 3 + 16 both `[~]` pending Tom's manual signoff.
-- Next: item 17 (pilot adapters + DOJ link-following enrichment). Tom pre-approved proceeding; no further plan-and-wait cycle. Order I'll work in: (a) FCPA Blog RSS, (b) AFP foreign-bribery, (c) Fiscalía Chile, (d) DOJ historical-year support, (e) DOJ press-release enrichment. Each adapter is its own commit; design notes updated as decisions land.
-- Risks flagged: source URLs marked `(approximate)` in `design/sources.md` may need correction; DOJ press-release HTML structure unknown (highest brittleness risk for the enrichment commit).
+- AFP and Fiscalía Chile adapters landed in `src/lawtracker/sources/`; both wired into `PILOT_ADAPTERS` in `scout.py`. Suite: 23 passing. Live smoke: AFP returns 9 real foreign-bribery cases; Fiscalía page 0 currently has 0 anti-corruption hits (sparse signal — captured as a finding for scout review).
+- **FCPA Blog blocked**: all candidate URLs return HTTP 401 (Cloudflare). No adapter built; logged in `design/sources.md` source #16 and `design/data-scout.md` for resolution at item 18 (scout review).
+- Discovery: original AFP and Fiscalía URLs in `design/sources.md` were wrong; both updated to live working paths. AFP needs site-search rather than the general-releases page; Fiscalía moved to `/actualidad/noticias/nacionales`.
+- Item 17 stays `[~]`. Next commits: (d) DOJ historical-year support — extend adapter with `poll_year(year)` so scout iterates 24 months; (e) DOJ link-following enrichment — fetch each press release for industry / defendant / penalty / resolution_type.
 
 ## For future agents
 
@@ -127,7 +127,7 @@ Outputs under `data/scout/`:
 
 Adds `openpyxl` to runtime deps. List-page-only initial scope; per-source extraction depth lands with the adapters in item 17 (DOJ specifically gets link-following enrichment there).
 
-### 17. [ ] Pilot adapters + DOJ link-following enrichment
+### 17. [~] Pilot adapters + DOJ link-following enrichment
 
 Build the breadth needed for a meaningful first scout:
 

@@ -32,15 +32,15 @@ URLs marked **(approximate)** were not verified during inventory drafting; the a
 
 ### Australia
 
-10. **AFP foreign-bribery media releases** (event_list) — Australian Federal Police; primary investigative-stage announcements for foreign-bribery cases.
-    - https://www.afp.gov.au/news-centre/news (filter to fraud / foreign bribery) **(approximate)**
+10. **AFP foreign-bribery search** (event_list) — Australian Federal Police site search keyed on "foreign bribery". Captures media releases that mention foreign bribery in title / body. Discovery during build (2026-04-25): the general media-releases page (`/news-media/media-releases`) has zero foreign-bribery hits across 30 pages of recent releases — AFP's foreign-bribery cases are sparse and the topic-tagged landing only highlights ~4 unrelated fraud items. The site search is the only viable surface and currently returns ~12 historical media releases on page 0.
+    - Adapter URL: https://www.afp.gov.au/search?keys=foreign+bribery
 11. **CDPP case reports** (event_list) — Commonwealth Director of Public Prosecutions; prosecutorial-stage announcements. Often paired with AFP item above on the same case at different stages.
     - https://www.cdpp.gov.au/case-reports (filter to bribery / foreign bribery) **(approximate)**
 
 ### Chile
 
-12. **Fiscalía Nacional — sala de prensa** (event_list, Spanish) — Chile's national prosecutor; press releases on cases. Adapter must filter for *cohecho / corrupción / soborno / Ley 20.393* keywords.
-    - https://www.fiscaliadechile.cl/Fiscalia/sala_prensa **(approximate)**
+12. **Fiscalía Nacional — noticias nacionales** (event_list, Spanish) — Chile's national prosecutor; news/press section. Discovery during build (2026-04-25): the URL the original inventory listed (`/Fiscalia/sala_prensa`) is a 404; Fiscalía moved press to `/actualidad/noticias/nacionales`. Adapter applies a Spanish-language keyword filter (`cohecho`, `corrupci[oó]n`, `soborn`, `lavado`, `fraude al fisco`, `Ley 20.393`, `funcionario p[uú]blico`) over title + body so only anti-corruption-relevant items are emitted. Signal is sparse — most pages return zero matches — which is itself useful pilot signal.
+    - Adapter URL: https://www.fiscaliadechile.cl/actualidad/noticias/nacionales
 13. **Contraloría General de la República — dictámenes / pronunciamientos** (event_list, Spanish) — comptroller-general findings on public-administration compliance and corruption.
     - https://www.contraloria.cl **(approximate; specific section TBD)**
 
@@ -55,6 +55,7 @@ URLs marked **(approximate)** were not verified during inventory drafting; the a
 
 16. **FCPA Blog** (event_list, RSS) — practitioner-focused aggregator covering global anti-corruption news despite the name. Single most efficient source for breadth across jurisdictions; free.
     - https://fcpablog.com  (RSS feed at https://fcpablog.com/feed/ **approximate**)
+    - **BLOCKER (2026-04-25):** all candidate URLs (`/`, `/feed/`, `/rss`, `/feed.xml`, `/atom.xml`, `/blog/`, www subdomain) return HTTP 401 with a Cloudflare "you have been blocked" page even from a realistic Chrome User-Agent. The site appears to require auth or has hardened CDN bot protection. No adapter built in this round; revisit options at scout review (item 18) — possibilities: subscribe / acquire a credentialed feed, replace with a different aggregator (Harvard Anticorruption Blog, GIR if subscription is available), or scrape via a headless browser if the access is genuinely public from interactive sessions.
 
 ## Out of scope — pilot
 

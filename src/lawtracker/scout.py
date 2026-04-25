@@ -22,11 +22,15 @@ from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
 
 from lawtracker.sources import EventRecord, SourceAdapter
+from lawtracker.sources.afp_foreign_bribery import AfpForeignBriberyAdapter
 from lawtracker.sources.doj_fcpa_actions import DojFcpaActionsAdapter
+from lawtracker.sources.fiscalia_chile import FiscaliaChileAdapter
 
 PILOT_ADAPTERS: list[type[SourceAdapter]] = [
     DojFcpaActionsAdapter,
-    # FCPA Blog, AFP, Fiscalía Chile land in item 17.
+    AfpForeignBriberyAdapter,
+    FiscaliaChileAdapter,
+    # FCPA Blog blocked by Cloudflare auth wall (item 17 — see design note).
 ]
 
 DEFAULT_OUTPUT_DIR = Path("data/scout")
