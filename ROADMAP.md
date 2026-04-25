@@ -90,9 +90,11 @@ Dockerfile, `fly.toml`, persistent volume for SQLite, secrets configuration, fir
 
 `www` CNAME and apex A/AAAA records configured at Squarespace; Fly issues the HTTPS cert. Verify both `lawmasolutions.com` and `www.lawmasolutions.com` resolve and serve the app.
 
-### 11. [ ] CI: pytest on push + PR
+### 11. [~] CI: pytest on push + PR
 
 GitHub Actions workflow running the full pytest suite plus ruff and mypy on every push and PR. Red status blocks merge.
+
+Pulled forward from its original priority slot on Tom's request 2026-04-25 — wanted the suite to run automatically on every push from now on. Workflow at `.github/workflows/ci.yml` runs ruff → mypy → pytest on Python 3.11 and 3.12, on every push to any branch and every PR to main. Closes when Tom confirms a green run on GitHub.
 
 ### 12. [ ] Notification framework + email adapter
 
