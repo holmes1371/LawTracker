@@ -183,6 +183,34 @@ it through), loosen the regex or add new keywords there.
 - **Pattern**: most large law firms host on enterprise CMS (Sitecore / Vignette / custom) without standard RSS, OR sit behind aggressive bot protection. Subscription via firm email or scraping HTML pages directly with a headless browser are the realistic alternatives — defer for now and prioritize at item 18 review based on which firms Ellen actually wants to follow.
 - **Scout state at end of wave 3:** 6–7 working adapters depending on Gibson Dunn's mood. 45 events on this run. DOJ 6, AFP 9, Fiscalía 0, Consejo 10, Volkov 10, Gibson Dunn 0 (CF blocked this run), GAB 10.
 
+## Findings during item 17 wave 6 (2026-04-25, ES → EN translation)
+
+- **Translation helper landed** at `src/lawtracker/translate.py`. Uses MyMemory's free translation API — no API key, no Python dep beyond httpx, fail-soft (returns original text on any failure). In-memory cache avoids retranslating duplicates within a scout run.
+- **Opt-in flag on `SourceAdapter`**: `translate_summary_from: ClassVar[str | None] = None`. Set to `"es"` (or future `"fr"`/`"pt"`/etc.) and the base class translates `title` and `summary` to English on every emitted record, stashing the originals in metadata as `title_<lang>` and `summary_<lang>`.
+- **Applied to FiscaliaChileAdapter and ConsejoTransparenciaClAdapter.** Live scout: Consejo's titles + summaries now arrive in English; Spanish preserved in metadata for reference. Fiscalía has zero current entries so nothing to translate yet.
+- **Trade-offs for Ellen's review:**
+  - MyMemory free tier ~5000 chars/day per IP; pilot scout volume is well below that.
+  - Quality is community-contributed memory + machine translation — okay for general prose, occasionally clumsy on legal terminology.
+  - Outgrow / quality issues → swap options: argostranslate (offline, ~250MB model, deterministic), DeepL API (paid, best quality), Google Cloud Translate (paid, well-supported). All swap behind `translate()`; adapters don't change.
+  - **Translation is the cleanest first place to consider an Anthropic-API call** — Claude could translate legal Spanish to English with FCPA-domain awareness, preserving terminology like "cohecho" → "bribery" (not "corruption"). See "LLM-API opportunities" section below.
+
+## LLM-API opportunities (open question for Tom)
+
+Tom's standing rule: deterministic work in Python; LLM steps do "judgment and interpretation." The current pipeline is all Python; there are several places where an Anthropic API call would be a clean fit. Each would need explicit approval and adds the `anthropic` SDK as a runtime dep + an API key.
+
+- **SEC FCPA cases prose parsing** (deferred earlier). The page is one long narrative — year headers + bolded company names + free-text paragraphs. Regex would be brittle; Claude could read the page and emit structured records. **Highest-value LLM use** in the current backlog.
+- **Per-event summary generation.** Many sources emit records with `summary=None` because no clean summary text is available (DOJ list page, AFP search results). Claude could read the linked detail page and write a one-line "why this matters" for the dashboard row. Big UX win for Ellen's triage.
+- **Industry / resolution-type classification** for DOJ press releases. Currently keyword regex; Claude could read the press release prose and classify with higher accuracy and less brittleness.
+- **Translation** (current pilot uses MyMemory). Claude with an FCPA-domain prompt would handle legal terminology better than commodity translation.
+- **Cross-source dedup.** When DOJ press releases overlap with FCPA-actions list entries (and FCPA Blog and Volkov Law cover the same case), Claude could match them by reading both. Currently scoped to "post-storage."
+
+Trade-offs of LLM steps (across all of the above):
+- Adds `anthropic` dep + `ANTHROPIC_API_KEY` env var.
+- Cost — pilot-scale usage is cents per scout run; bigger volumes scale.
+- Non-determinism — small variability between runs (Claude is mostly stable but not byte-identical).
+- Latency — each call adds 1-3s; 50 events with summaries = ~1-2 min added to scout time.
+- Auditability — Ellen sees the LLM's output, not the raw source. Need to keep raw source preserved for verification.
+
 ## Findings during item 17 wave 5 (2026-04-25, curl_cffi unlock)
 
 - **`curl_cffi` runtime dep approved by Tom.** Drop-in client that mimics Chrome's TLS handshake (JA3 hash) — beats Cloudflare fingerprint blocks. Wired into `SourceAdapter` as an opt-in `use_curl_cffi: ClassVar[bool] = False` flag plus `curl_cffi_impersonate: ClassVar[str] = "chrome120"`. When True, `poll()` builds a `curl_cffi.requests.Session` instead of an `httpx.Client`. The two duck-type the same `.get(url) → response.{status_code,text}` interface, so no other framework code changed.

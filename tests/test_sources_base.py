@@ -94,3 +94,47 @@ def test_parse_error_is_permanent_failure():
     assert result.status == "permanent_failure"
     assert "parse error" in result.error
     assert "ValueError" in result.error
+
+
+class _SpanishAdapter(SourceAdapter):
+    """Fake adapter that opts into ES → EN translation."""
+
+    source_id = "fake_es"
+    kind = "event_list"
+    url = "https://example.test/es"
+    translate_summary_from = "es"
+
+    def parse(self, html: str, client) -> list[EventRecord]:
+        return [
+            EventRecord(
+                dedup_key="https://example.test/case/1",
+                source_id="fake_es",
+                event_date=None,
+                title="Título original",
+                primary_actor=None,
+                summary="Resumen original",
+                url="https://example.test/case/1",
+                country="CL",
+            )
+        ]
+
+
+def test_translate_summary_from_swaps_title_and_summary(monkeypatch):
+    translations = {
+        "Título original": "Original title",
+        "Resumen original": "Original summary",
+    }
+    monkeypatch.setattr(
+        "lawtracker.translate.translate",
+        lambda text, **kwargs: translations.get(text, text),
+    )
+
+    with _client(_respond(200, "<html>ok</html>")) as client:
+        result = _SpanishAdapter().poll(client=client)
+
+    assert result.status == "ok"
+    event = result.events[0]
+    assert event.title == "Original title"
+    assert event.summary == "Original summary"
+    assert event.metadata["title_es"] == "Título original"
+    assert event.metadata["summary_es"] == "Resumen original"

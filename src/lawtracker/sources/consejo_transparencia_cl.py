@@ -15,3 +15,4 @@ class ConsejoTransparenciaClAdapter(RssFeedAdapter):
     kind = "event_list"
     url = "https://www.consejotransparencia.cl/feed/"
     country = "CL"
+    translate_summary_from = "es"

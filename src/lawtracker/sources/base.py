@@ -96,6 +96,8 @@ class SourceAdapter(ABC):
     use_curl_cffi: ClassVar[bool] = False
     curl_cffi_impersonate: ClassVar[str] = "chrome120"
 
+    translate_summary_from: ClassVar[str | None] = None
+
     @property
     def urls(self) -> tuple[str, ...]:
         """URLs to fetch per poll. Override for paginated / multi-page sources."""
@@ -178,7 +180,33 @@ class SourceAdapter(ABC):
                 status="permanent_failure",
                 error=f"parse error: {type(exc).__name__}: {exc}",
             )
+        if self.translate_summary_from:
+            events = [self._translate_event(e, self.translate_summary_from) for e in events]
         return PollResult(status="ok", events=events)
+
+    @staticmethod
+    def _translate_event(event: EventRecord, source_lang: str) -> EventRecord:
+        """Translate `title` and `summary` to English; preserve originals in metadata."""
+        from lawtracker.translate import translate
+
+        translated_title = (
+            translate(event.title, source_lang=source_lang) if event.title else event.title
+        )
+        translated_summary = (
+            translate(event.summary, source_lang=source_lang) if event.summary else event.summary
+        )
+        new_metadata = dict(event.metadata)
+        if event.title and translated_title != event.title:
+            new_metadata[f"title_{source_lang}"] = event.title
+        if event.summary and translated_summary != event.summary:
+            new_metadata[f"summary_{source_lang}"] = event.summary
+        return event.model_copy(
+            update={
+                "title": translated_title,
+                "summary": translated_summary,
+                "metadata": new_metadata,
+            }
+        )
 
     @abstractmethod
     def parse(self, html: str, client: Any) -> list[EventRecord]:

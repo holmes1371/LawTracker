@@ -38,6 +38,7 @@ class FiscaliaChileAdapter(SourceAdapter):
     source_id = "fiscalia_chile"
     kind = "event_list"
     url = "https://www.fiscaliadechile.cl/actualidad/noticias/nacionales"
+    translate_summary_from = "es"
 
     def parse(self, html: str, client: Any) -> list[EventRecord]:
         soup = BeautifulSoup(html, "html.parser")

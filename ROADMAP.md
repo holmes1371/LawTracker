@@ -18,15 +18,13 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 wave 5: curl_cffi unlock + 2 new adapters)**
+**2026-04-25 (item 17 wave 6: ES → EN translation + LLM-API question for Tom)**
 
-- Tom approved `curl_cffi` as a runtime dep. Wired into `SourceAdapter` as opt-in `use_curl_cffi: ClassVar[bool] = False` flag. When True, `poll()` uses a Chrome-impersonating curl_cffi Session instead of httpx. The two clients duck-type the same `.get(url) → response.{status_code,text}` interface; `parse(html, client)` signature relaxed to `Any` to accept either.
-- Flipped `use_curl_cffi = True` on Miller & Chevalier and Gibson Dunn — both now flow live (M&C 0→60 events, Gibson Dunn 0→1 event after `ANTI_CORRUPTION_EN` filter).
-- Re-probed every previously-403'd source with curl_cffi; built two new RSS adapters from the wins: `FoleyLlpAdapter` (`/feed/` + `ANTI_CORRUPTION_EN`, currently 0 hits — no anti-corruption posts in current feed snapshot) and `HarvardCorpGovFcpaAdapter` (FCPA-tag-only feed, no filter, currently 0 entries — sparse academic coverage).
-- **SEC FCPA cases now reachable** via curl_cffi but the page is a single long narrative document (year headers + free-text case paragraphs, not a structured list). Adapter deferred to its own commit; needs careful prose-parsing.
-- Live scout: **106 events from 10 adapters** (DOJ 6, AFP 9, Fiscalía 0, Consejo 10, Volkov 10, Gibson Dunn 1, GAB 10, M&C 60, Foley LLP 0, Harvard CorpGov 0). Suite: 38 passing. Ruff + mypy clean.
+- Translation helper landed at `src/lawtracker/translate.py` — MyMemory free API, no new Python dep, fail-soft. Opt-in via `translate_summary_from: ClassVar[str | None]` on `SourceAdapter`. Set on Fiscalía + Consejo (Spanish). Live: Consejo titles + summaries now arrive in English; Spanish preserved in metadata as `title_es` / `summary_es`.
+- **SEC FCPA cases parked as open item** at Tom's request — Ellen reviewing whether SEC's free-text data is worth the prose-parser investment.
+- **Open question for Tom: LLM-API opportunities.** Per the standing rule (deterministic work in Python; LLM does judgment / interpretation), several places would be clean fits for an Anthropic API call: SEC FCPA prose parsing (highest value), per-event summary generation (big UX win for Ellen), industry/resolution classification on DOJ press releases, FCPA-domain-aware translation. Each would add `anthropic` SDK + API key. Captured under "LLM-API opportunities" in `design/data-scout.md` for Tom's call.
+- Suite: 47 tests passing. Ruff + mypy clean. Live scout: 106 events from 10 adapters; Consejo entries now English-readable.
 - Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff. Items 4 / 5 / 6+ still queued behind item 18 (scout review).
-- Next options: (a) build SEC FCPA cases adapter (focused commit, prose parsing), (b) defer to scout review and let Ellen call which gaps matter, (c) probe more 404-RSS firms by HTML practice-area pattern (M&C-style).
 
 ## For future agents
 
