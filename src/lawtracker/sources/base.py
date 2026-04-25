@@ -68,6 +68,15 @@ class SourceAdapter(ABC):
     matching press release for richer metadata) accept the `client` argument
     in `parse()`. Adapters that don't need it ignore it.
 
+    HTTP backend: by default, the base class uses `httpx` with a Chrome-on-
+    Windows User-Agent header. Sites with Cloudflare-style TLS fingerprint
+    blocks (Miller & Chevalier, Gibson Dunn, Sidley, Skadden, etc.) reject
+    httpx because its TLS handshake is recognizable. Subclasses can flip
+    `use_curl_cffi = True` to switch to `curl_cffi`, which mimics a real
+    Chrome browser's TLS fingerprint (JA3 hash) and bypasses those blocks.
+    The two clients duck-type the same `.get(url) → response.{status_code,text}`
+    interface so the rest of the framework stays unchanged.
+
     Recommended dedup-key pattern for event_list subclasses: use the canonical
     detail URL when stable; otherwise hash a stable subset of fields (typically
     title + listed date).
@@ -84,27 +93,44 @@ class SourceAdapter(ABC):
         "Chrome/120.0.0.0 Safari/537.36"
     )
 
+    use_curl_cffi: ClassVar[bool] = False
+    curl_cffi_impersonate: ClassVar[str] = "chrome120"
+
     @property
     def urls(self) -> tuple[str, ...]:
         """URLs to fetch per poll. Override for paginated / multi-page sources."""
         return (self.url,)
 
-    def poll(self, *, client: httpx.Client | None = None) -> PollResult:
+    def poll(self, *, client: Any = None) -> PollResult:
         """Fetch the source and return a PollResult.
 
         `client` is for test injection. Production callers pass None and the
-        base class manages a default client with the configured timeout.
+        base class manages a default client with the configured timeout. Whether
+        that client is httpx or curl_cffi depends on `use_curl_cffi`.
         """
-        if client is None:
-            with httpx.Client(
-                timeout=self.timeout_seconds,
-                follow_redirects=True,
-                headers={"User-Agent": self.user_agent},
-            ) as owned:
-                return self._do_poll(owned)
-        return self._do_poll(client)
+        if client is not None:
+            return self._do_poll(client)
 
-    def _do_poll(self, client: httpx.Client) -> PollResult:
+        if self.use_curl_cffi:
+            from curl_cffi import requests as curl_requests
+
+            session = curl_requests.Session(
+                impersonate=self.curl_cffi_impersonate,  # type: ignore[arg-type]
+                timeout=self.timeout_seconds,
+            )
+            try:
+                return self._do_poll(session)
+            finally:
+                session.close()
+
+        with httpx.Client(
+            timeout=self.timeout_seconds,
+            follow_redirects=True,
+            headers={"User-Agent": self.user_agent},
+        ) as owned:
+            return self._do_poll(owned)
+
+    def _do_poll(self, client: Any) -> PollResult:
         all_events: list[EventRecord] = []
         worst_status: PollStatus = "ok"
         first_error: str | None = None
@@ -120,23 +146,29 @@ class SourceAdapter(ABC):
 
         return PollResult(status=worst_status, events=all_events, error=first_error)
 
-    def _fetch_one(self, client: httpx.Client, url: str) -> PollResult:
+    def _fetch_one(self, client: Any, url: str) -> PollResult:
         try:
             response = client.get(url)
         except httpx.RequestError as exc:
             return PollResult(
                 status="transient_failure", error=f"request error: {exc}"
             )
-
-        if 500 <= response.status_code < 600:
+        except Exception as exc:
             return PollResult(
                 status="transient_failure",
-                error=f"HTTP {response.status_code}",
+                error=f"request error: {type(exc).__name__}: {exc}",
             )
-        if response.status_code >= 400:
+
+        status_code = response.status_code
+        if 500 <= status_code < 600:
+            return PollResult(
+                status="transient_failure",
+                error=f"HTTP {status_code}",
+            )
+        if status_code >= 400:
             return PollResult(
                 status="permanent_failure",
-                error=f"HTTP {response.status_code}",
+                error=f"HTTP {status_code}",
             )
 
         try:
@@ -149,7 +181,7 @@ class SourceAdapter(ABC):
         return PollResult(status="ok", events=events)
 
     @abstractmethod
-    def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
+    def parse(self, html: str, client: Any) -> list[EventRecord]:
         """Extract EventRecords from the source's raw page content.
 
         `client` is provided for adapters that need to follow links during

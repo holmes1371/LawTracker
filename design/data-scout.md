@@ -183,6 +183,20 @@ it through), loosen the regex or add new keywords there.
 - **Pattern**: most large law firms host on enterprise CMS (Sitecore / Vignette / custom) without standard RSS, OR sit behind aggressive bot protection. Subscription via firm email or scraping HTML pages directly with a headless browser are the realistic alternatives — defer for now and prioritize at item 18 review based on which firms Ellen actually wants to follow.
 - **Scout state at end of wave 3:** 6–7 working adapters depending on Gibson Dunn's mood. 45 events on this run. DOJ 6, AFP 9, Fiscalía 0, Consejo 10, Volkov 10, Gibson Dunn 0 (CF blocked this run), GAB 10.
 
+## Findings during item 17 wave 5 (2026-04-25, curl_cffi unlock)
+
+- **`curl_cffi` runtime dep approved by Tom.** Drop-in client that mimics Chrome's TLS handshake (JA3 hash) — beats Cloudflare fingerprint blocks. Wired into `SourceAdapter` as an opt-in `use_curl_cffi: ClassVar[bool] = False` flag plus `curl_cffi_impersonate: ClassVar[str] = "chrome120"`. When True, `poll()` builds a `curl_cffi.requests.Session` instead of an `httpx.Client`. The two duck-type the same `.get(url) → response.{status_code,text}` interface, so no other framework code changed.
+- **`parse(html, client)` signature relaxed** from `httpx.Client` to `Any` to accept either client transparently. All adapters updated.
+- **Re-probed every previously-403'd source with curl_cffi**:
+  - **Newly accessible (HTTP 200):** SEC FCPA cases, Foley & Lardner LLP RSS, Skadden (HTML AngularJS shell — not actual feed), Covington (HTML — same as before), Harvard CorpGov FCPA-tag RSS.
+  - **Still blocked / no feed:** OECD anti-bribery (404 — site moved), FCPA Blog (still 401, auth wall not bot block), Sidley / Debevoise / Dentons / Herbert Smith Freehills / Ropes & Gray / DLA Piper (404 — these firms genuinely don't expose RSS).
+- **Built two new RSS adapters:**
+  - `FoleyLlpAdapter` — Foley & Lardner LLP `/feed/`, mixed-topic so uses `ANTI_CORRUPTION_EN`. `use_curl_cffi = True`. 0 events on this snapshot — feed currently has Sripetch / cannabis / IP-podcast posts; no anti-corruption hits today. Will catch matching posts as they appear.
+  - `HarvardCorpGovFcpaAdapter` — Harvard Law School Forum on Corporate Governance, FCPA-tagged feed only. Single-topic, no filter. `use_curl_cffi = True`. 0 events on this snapshot — the FCPA tag genuinely has no current entries.
+- **Both Miller & Chevalier and Gibson Dunn now flow live** via `use_curl_cffi = True` (from 0 events to 60 + 1 respectively).
+- **SEC FCPA cases adapter deferred.** Page is reachable but is a single long narrative document — year headers + free-text case paragraphs, not a structured list. Parser will need careful regex/prose work; deferred to its own commit.
+- **Scout state at end of wave 5:** 10 adapters (8 working with non-zero events), 106 events. DOJ 6, AFP 9, Fiscalía 0, Consejo 10, Volkov 10, Gibson Dunn 1, GAB 10, Miller & Chevalier 60, Foley LLP 0, Harvard CorpGov 0.
+
 ## Findings during item 17 wave 4 (2026-04-25, Miller & Chevalier HTML pattern)
 
 - **Tom flagged a path I'd missed**: many firms expose their FCPA-practice content via filterable HTML search pages even when they don't expose RSS. Miller & Chevalier's `/search?related_practice=8965&content_types[0]=publication` returns the firm's FCPA Winter / Autumn Reviews + client alerts cleanly.

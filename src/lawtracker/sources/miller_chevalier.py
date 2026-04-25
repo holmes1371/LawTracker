@@ -26,9 +26,9 @@ three URLs it's parsing.
 """
 
 from datetime import date, datetime
+from typing import Any
 from urllib.parse import urljoin
 
-import httpx
 from bs4 import BeautifulSoup, Tag
 
 from lawtracker.sources.base import EventRecord, SourceAdapter
@@ -47,12 +47,13 @@ class MillerChevalierFcpaAdapter(SourceAdapter):
     kind = "event_list"
     url = f"{_SEARCH_BASE}&content_types%5B0%5D=publication"
     country = None
+    use_curl_cffi = True
 
     @property
     def urls(self) -> tuple[str, ...]:
         return tuple(f"{_SEARCH_BASE}&content_types%5B0%5D={ct}" for ct in _CONTENT_TYPES)
 
-    def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
+    def parse(self, html: str, client: Any) -> list[EventRecord]:
         soup = BeautifulSoup(html, "html.parser")
         records: list[EventRecord] = []
         for card in soup.select("div.search_result"):

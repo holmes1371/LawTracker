@@ -1,0 +1,1113 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Foley &amp; Lardner LLP</title>
+	<atom:link href="https://www.foley.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.foley.com/</link>
+	<description>Legal services in Boston, Massachusetts</description>
+	<lastBuildDate>Fri, 24 Apr 2026 21:27:00 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.8.5</generator>
+
+<image>
+	<url>https://www.foley.com/wp-content/uploads/2024/11/cropped-Foley-Favicon-1-32x32.png</url>
+	<title>Foley &amp; Lardner LLP</title>
+	<link>https://www.foley.com/</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Justices Appear Skeptical of Investor-Harm Requirement in Sripetch SEC Disgorgement Case</title>
+		<link>https://www.foley.com/insights/publications/2026/04/justices-appear-skeptical-of-investor-harm-requirement-in-sripetch-sec-disgorgement-case/</link>
+		
+		<dc:creator><![CDATA[eaheinrich@foley.com]]></dc:creator>
+		<pubDate>Fri, 24 Apr 2026 16:54:33 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[Foley Blogs]]></category>
+		<guid isPermaLink="false">https://www.foley.com/?p=119687</guid>
+
+					<description><![CDATA[<p>On April 20, 2026, the Supreme Court heard oral arguments in Sripetch v. SEC, a case in which the Justices will answer whether the Securities and Exchange Commission must prove pecuniary harm to investors before a court can order disgorgement.</p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/justices-appear-skeptical-of-investor-harm-requirement-in-sripetch-sec-disgorgement-case/">Justices Appear Skeptical of Investor-Harm Requirement in Sripetch SEC Disgorgement Case</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+
+<p><strong>Key Takeaways</strong></p>
+
+
+
+<ul class="wp-block-list wp-block-list">
+<li class="wp-block-list-item">On April 20, 2026, the Supreme Court heard oral arguments in <em>Sripetch v. SEC</em>, a case in which the justices will answer whether the Securities and Exchange Commission (SEC or the Commission) must prove pecuniary harm to investors before a court can order disgorgement.<sup data-fn="317a2451-91dd-4ef1-a004-12c7f005227f" class="fn"><a href="#317a2451-91dd-4ef1-a004-12c7f005227f" id="317a2451-91dd-4ef1-a004-12c7f005227f-link">1</a></sup> A ruling is expected by July 2026.</li>
+
+
+
+<li class="wp-block-list-item">The justices appeared skeptical of Petitioner Sripetch’s position that the purpose of disgorgement is not to strip the defendant of ill-gotten gains but rather to return funds to harmed investors who have a legal entitlement to the funds.</li>
+
+
+
+<li class="wp-block-list-item">The outcome could significantly affect the SEC’s ability to seek disgorgement as the SEC under the Petitioner’s argument would be required to prove (1) the specific individual(s) who were harmed, (2) the monetary amount of harm to those individuals, and (3) the defendant’s violation caused the harm.</li>
+</ul>
+
+
+
+<p><strong>Background</strong></p>
+
+
+
+<p>In the initial Southern District of California case, Defendant Sripetch consented to a final judgment for violations of the securities laws and agreed that the District Court could order disgorgement.<sup data-fn="d956314c-e472-48c8-9376-45831a81f7e0" class="fn"><a href="#d956314c-e472-48c8-9376-45831a81f7e0" id="d956314c-e472-48c8-9376-45831a81f7e0-link">2</a></sup> Without requiring a showing of pecuniary harm, the court ordered Sriptech to disgorge roughly $2.25 million, plus over $1 million in prejudgment interest based on his ill-gotten gains.<sup data-fn="676de3f6-a870-4124-8947-61e3ce029442" class="fn"><a href="#676de3f6-a870-4124-8947-61e3ce029442" id="676de3f6-a870-4124-8947-61e3ce029442-link">3</a></sup> The Ninth Circuit upheld the ruling.<sup data-fn="d55e9809-b133-43ed-9a92-9903785b0b94" class="fn"><a href="#d55e9809-b133-43ed-9a92-9903785b0b94" id="d55e9809-b133-43ed-9a92-9903785b0b94-link">4</a></sup></p>
+
+
+
+<p>Previously, the First Circuit held that pecuniary harm need not be shown for the court to order disgorgement.<sup data-fn="4148840a-2195-4d29-9728-4d120806e453" class="fn"><a href="#4148840a-2195-4d29-9728-4d120806e453" id="4148840a-2195-4d29-9728-4d120806e453-link">5</a></sup> The Second Circuit, however, had ruled that proof of investor’s pecuniary harm was required for the court to order disgorgement.<sup data-fn="424dd3f4-dc9e-4ae8-af32-1841ff289b32" class="fn"><a href="#424dd3f4-dc9e-4ae8-af32-1841ff289b32" id="424dd3f4-dc9e-4ae8-af32-1841ff289b32-link">6</a></sup></p>
+
+
+
+<p>Traditionally, courts ordered defendants to disgorge ill-gotten gains without requiring proof of pecuniary harm.<sup data-fn="f7d80d8f-a47c-4f5d-83a6-2b6fab34fa15" class="fn"><a href="#f7d80d8f-a47c-4f5d-83a6-2b6fab34fa15" id="f7d80d8f-a47c-4f5d-83a6-2b6fab34fa15-link">7</a></sup> The Fifth Circuit has noted that the securities laws, as amended, ratify “the pre-<em>Liu</em>&nbsp;disgorgement framework used by every circuit court of appeals,” which focused on approximating the defendant’s unjust enrichment rather than quantifying or requiring proof of investor losses.<sup data-fn="c1a965e0-2df8-497a-8657-39cb1d6f1f9b" class="fn"><a href="#c1a965e0-2df8-497a-8657-39cb1d6f1f9b" id="c1a965e0-2df8-497a-8657-39cb1d6f1f9b-link">8</a></sup></p>
+
+
+
+<p>In the 2020 case <em>Liu v. SEC</em>, the Supreme Court analyzed the SEC’s ability to seek disgorgement under Section 21(d)(5) of the Securities Exchange Act,<sup data-fn="fddc1d6a-abb0-4db7-8d66-2d6ae00fb631" class="fn"><a href="#fddc1d6a-abb0-4db7-8d66-2d6ae00fb631" id="fddc1d6a-abb0-4db7-8d66-2d6ae00fb631-link">9</a></sup> i.e., as an equitable remedy “for the benefit of investors.”<sup data-fn="95a63ba3-b671-473e-8bdb-3e10b33eb008" class="fn"><a href="#95a63ba3-b671-473e-8bdb-3e10b33eb008" id="95a63ba3-b671-473e-8bdb-3e10b33eb008-link">10</a></sup> Section 21(d)(5) authorizes the SEC to “seek, and any Federal court may grant, any equitable relief that may be appropriate or necessary for the benefit of investors.” The <em>Liu</em> Court found that disgorgement can be wielded as an equitable remedy under Section 21(d)(5) if it is restricted “to an individual wrongdoer&#8217;s net profits to be awarded for victims.”<sup data-fn="29a47832-c070-4a63-b246-d4e15d3f45e9" class="fn"><a href="#29a47832-c070-4a63-b246-d4e15d3f45e9" id="29a47832-c070-4a63-b246-d4e15d3f45e9-link">11</a></sup> In dicta, the Court further explained that lower courts can consider if the SEC “fails to return funds to victims, it imposes joint-and-several liability, [or] it declines to deduct business expenses from the award” to determine if disgorgement is being applied as a penalty rather than as an equitable remedy. To explain why “failing to return funds to victims” may indicate disgorgement is being used as a penalty, the Court looked to traditional equity practice and analyzed the phrase “may be appropriate or necessary for the benefit of investors.”<sup data-fn="86dd3edc-5460-41e3-95fb-b1448d4850ed" class="fn"><a href="#86dd3edc-5460-41e3-95fb-b1448d4850ed" id="86dd3edc-5460-41e3-95fb-b1448d4850ed-link">12</a></sup></p>
+
+
+
+<p><em>Liu</em> left open several questions, among them: does the requirement that disgorgement “be awarded for victims”<sup data-fn="1e85d227-5da2-426c-b62c-722c29cde313" class="fn"><a href="#1e85d227-5da2-426c-b62c-722c29cde313" id="1e85d227-5da2-426c-b62c-722c29cde313-link">13</a></sup> mean that courts must find the SEC proved pecuniary harm to investors prior to ordering disgorgement?<sup data-fn="76b2bece-671b-4261-8afe-bb328288af4f" class="fn"><a href="#76b2bece-671b-4261-8afe-bb328288af4f" id="76b2bece-671b-4261-8afe-bb328288af4f-link">14</a></sup></p>
+
+
+
+<p>In less than one year after the <em>Liu </em>decision, Congress enacted Section 21(d)(7) of the Securities Exchange Act<sup data-fn="830e5610-50a2-480f-95da-f8e3543fa952" class="fn"><a href="#830e5610-50a2-480f-95da-f8e3543fa952" id="830e5610-50a2-480f-95da-f8e3543fa952-link">15</a></sup> in 2021. This provision explicitly authorizes the SEC to seek and federal courts to order disgorgement “[i]n any action or proceeding brought by the Commission under any provision of the securities laws.” Notably, this new provision omits the phrase “for the benefit of investors.”</p>
+
+
+
+<p><strong>The Parties’ Positions</strong></p>
+
+
+
+<p>Petitioner Sripetch argued equity has traditionally limited disgorgement to provable harm to investors. He asserted the SEC’s interpretation of the remedy — recovery of ill-gotten gains without proof of pecuniary harm — transforms it into a civil penalty. He also argued that Congress did not intend for disgorgement to be a civil penalty because it was not included in the provision for civil penalties in Section 21(d)(3). Citing <em>Jarkesy</em>,<sup data-fn="97c5cabd-7e79-4d25-8459-f237133ef727" class="fn"><a href="#97c5cabd-7e79-4d25-8459-f237133ef727" id="97c5cabd-7e79-4d25-8459-f237133ef727-link">16</a></sup> Petitioner also contended that the SEC’s broader definition of disgorgement would allow it to avoid jury trials in violation of defendant’s rights under the Seventh Amendment.</p>
+
+
+
+<p>The SEC argued it has authority to seek disgorgement under Section 21(d)(3)(a)(2) and (d)(7), or (d)(5), and that disgorgement is tied to the defendant’s net ill-gotten gains — not to investor losses. The SEC seemed to concede that reliance on Section 21(d)(5) was its weaker argument but noted that the Court left open in <em>Liu</em> whether the SEC could seek disgorgement when profits cannot be practically distributed to investors.<sup data-fn="04cd4cd1-22ef-4211-8641-ddba3aaf905b" class="fn"><a href="#04cd4cd1-22ef-4211-8641-ddba3aaf905b" id="04cd4cd1-22ef-4211-8641-ddba3aaf905b-link">17</a></sup> The SEC did not address <em>Jarkesy</em> in its briefs and, when pressed, asserted <em>Jarkesy</em> was inapplicable to this case as it was heard in an Article III court and did not involve a civil penalty.</p>
+
+
+
+<p><strong>Signals From the Bench</strong></p>
+
+
+
+<p>The justices seem to understand the enactment of Section 21(d)(7) constituted a significant addition to the SEC’s quiver of remedies. Justice Thomas said the world had changed since <em>Liu</em> and noted that, before the statutory amendments, he viewed disgorgement as “homeless,” referring to his dissent in <em>Liu</em> arguing that disgorgement is not an equitable remedy.<sup data-fn="b91c7796-4581-4dec-92c0-34d7b332cdc5" class="fn"><a href="#b91c7796-4581-4dec-92c0-34d7b332cdc5" id="b91c7796-4581-4dec-92c0-34d7b332cdc5-link">18</a></sup> Justice Sotomayor questioned why she had spent time analyzing the phrase “for the benefit of investors” in <em>Liu</em> if such language were implicit in the definition of disgorgement.<sup data-fn="bf280fe5-9aa5-45d5-9169-40d1363a64cf" class="fn"><a href="#bf280fe5-9aa5-45d5-9169-40d1363a64cf" id="bf280fe5-9aa5-45d5-9169-40d1363a64cf-link">19</a></sup> Justice Barrett pushed the Petitioner to explain how he could win without relying on <em>Liu</em>.</p>
+
+
+
+<p>Justices Kagan and Sotomayor seemed to be concerned about the implications of the SEC discounting its Section 21(d)(5) argument. While the easiest path to victory for the SEC might be through Section 21(d)(7), abandoning the argument that Section 21(d)(5) authorizes disgorgement of gains without pecuniary harm could potentially strengthen arguments that disgorgement is not equitable — or, at least, disgorgement as used by the SEC is a civil penalty. If disgorgement were found to be a civil penalty, the SEC might be forced to submit to a jury trial each time it litigated its right to disgorgement. Such a requirement could impose a significant additional burden on the Commission, potentially reducing its leverage in settlement discussions and could result in more defendants avoiding liability for disgorgement.</p>
+
+
+
+<p>The justices also seemed to push back on the SEC’s claim that disgorgement could be equitable if the SEC collects funds without any intention of trying to return them to investors, but they also noted that the Court need not resolve that question to resolve this case. The only issue before it in the present case is whether the SEC must prove pecuniary harm to seek disgorgement at all.</p>
+
+
+
+<p>A decision is expected by July 2026. <em>Sripetch</em> is unlikely to be the last disgorgement case before the Court as the lower courts continue to test the boundaries of the 2021 statutory amendments.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" />
+
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+
+
+<ol class="wp-block-footnotes"><li id="317a2451-91dd-4ef1-a004-12c7f005227f"><em>See SEC v. Sripetch</em>, 154 F.4th 980 (9th Cir. 2025), cert. granted sub nom. <em>Sripetch v. SEC</em>, No. 25-466, 2026 WL 73091 (U.S. Jan. 9, 2026).  <a href="#317a2451-91dd-4ef1-a004-12c7f005227f-link" aria-label="Jump to footnote reference 1"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="d956314c-e472-48c8-9376-45831a81f7e0">Final Judgment as to Defendant Ongkaruck Sripetch, <em>SEC v. Sripetch</em>, No. 3:20-cv-01864-H-BGS (S.D. Cal. April 17, 2024), Dkt. No. 172, <a href="https://www.sec.gov/files/litigation/litreleases/2025/judg26332-sripetch.pdf">https://www.sec.gov/files/litigation/litreleases/2025/judg26332-sripetch.pdf</a>. <a href="#d956314c-e472-48c8-9376-45831a81f7e0-link" aria-label="Jump to footnote reference 2"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="676de3f6-a870-4124-8947-61e3ce029442"><em>Ongkaruck Sripetch, et al.</em>, SEC Litigation Release No. 26332 (June 20, 2025), <a href="https://www.sec.gov/enforcement-litigation/litigation-releases/lr-26332">https://www.sec.gov/enforcement-litigation/litigation-releases/lr-26332</a>. <a href="#676de3f6-a870-4124-8947-61e3ce029442-link" aria-label="Jump to footnote reference 3"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="d55e9809-b133-43ed-9a92-9903785b0b94"><em>Sripetch</em>, 154 F.4th at 981-82. <a href="#d55e9809-b133-43ed-9a92-9903785b0b94-link" aria-label="Jump to footnote reference 4"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="4148840a-2195-4d29-9728-4d120806e453"><em>SEC v. Navellier &amp; Assocs</em>., 108 F.4th 19 (1st Cir. 2024), cert. denied, 145 S. Ct. 2777 (2025). <a href="#4148840a-2195-4d29-9728-4d120806e453-link" aria-label="Jump to footnote reference 5"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="424dd3f4-dc9e-4ae8-af32-1841ff289b32"><em>SEC v. Govil</em>, 86 F.4th 89, 98 (2d Cir. 2023). <a href="#424dd3f4-dc9e-4ae8-af32-1841ff289b32-link" aria-label="Jump to footnote reference 6"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="f7d80d8f-a47c-4f5d-83a6-2b6fab34fa15"><em>See</em> <em>SEC v. Hallam</em>, 42 F.4th 316, 338 (5th Cir. 2022). <a href="#f7d80d8f-a47c-4f5d-83a6-2b6fab34fa15-link" aria-label="Jump to footnote reference 7"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="c1a965e0-2df8-497a-8657-39cb1d6f1f9b"><em>Id</em>. <a href="#c1a965e0-2df8-497a-8657-39cb1d6f1f9b-link" aria-label="Jump to footnote reference 8"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="fddc1d6a-abb0-4db7-8d66-2d6ae00fb631">15 U.S.C. § 78u(d)(5). <a href="#fddc1d6a-abb0-4db7-8d66-2d6ae00fb631-link" aria-label="Jump to footnote reference 9"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="95a63ba3-b671-473e-8bdb-3e10b33eb008">591 U.S. 71,78 (2020). <a href="#95a63ba3-b671-473e-8bdb-3e10b33eb008-link" aria-label="Jump to footnote reference 10"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="29a47832-c070-4a63-b246-d4e15d3f45e9"><em>Id.</em> at 79. <a href="#29a47832-c070-4a63-b246-d4e15d3f45e9-link" aria-label="Jump to footnote reference 11"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="86dd3edc-5460-41e3-95fb-b1448d4850ed"><em>Id</em>. at 87-90. <a href="#86dd3edc-5460-41e3-95fb-b1448d4850ed-link" aria-label="Jump to footnote reference 12"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="1e85d227-5da2-426c-b62c-722c29cde313"><em>Liu</em>, 591 U.S. at 79. <a href="#1e85d227-5da2-426c-b62c-722c29cde313-link" aria-label="Jump to footnote reference 13"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="76b2bece-671b-4261-8afe-bb328288af4f"><em>See Navellier</em>, 108 F.4th at 41 n.14; <em>see also</em> <em>Govil</em>, 86 F.4th at 94.; <em>see also</em> <em>Sripetch</em>, 154 F.4th at 985-86. <a href="#76b2bece-671b-4261-8afe-bb328288af4f-link" aria-label="Jump to footnote reference 14"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="830e5610-50a2-480f-95da-f8e3543fa952">15 U.S.C. § 78u(d)(7) (2021). <a href="#830e5610-50a2-480f-95da-f8e3543fa952-link" aria-label="Jump to footnote reference 15"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="97c5cabd-7e79-4d25-8459-f237133ef727"><em>SEC v. Jarkesy</em>, 603 U.S. 109 (2024). <a href="#97c5cabd-7e79-4d25-8459-f237133ef727-link" aria-label="Jump to footnote reference 16"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="04cd4cd1-22ef-4211-8641-ddba3aaf905b"><em>See Liu</em>, 591 U.S. at 89-90. <a href="#04cd4cd1-22ef-4211-8641-ddba3aaf905b-link" aria-label="Jump to footnote reference 17"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="b91c7796-4581-4dec-92c0-34d7b332cdc5"><em>See id. </em>at 93 (Thomas, J., dissenting). <a href="#b91c7796-4581-4dec-92c0-34d7b332cdc5-link" aria-label="Jump to footnote reference 18"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li><li id="bf280fe5-9aa5-45d5-9169-40d1363a64cf"><em>See id</em>. at 87-90. <a href="#bf280fe5-9aa5-45d5-9169-40d1363a64cf-link" aria-label="Jump to footnote reference 19"><img src="https://s.w.org/images/core/emoji/16.0.1/72x72/21a9.png" alt="↩" class="wp-smiley" style="height: 1em; max-height: 1em;" />︎</a></li></ol><p>The post <a href="https://www.foley.com/insights/publications/2026/04/justices-appear-skeptical-of-investor-harm-requirement-in-sripetch-sec-disgorgement-case/">Justices Appear Skeptical of Investor-Harm Requirement in Sripetch SEC Disgorgement Case</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>DEA Issues Long Awaited Final Order Rescheduling Certain Marijuana Products to Schedule III: What It Means, What It Doesn’t, and What Comes Next</title>
+		<link>https://www.foley.com/insights/publications/2026/04/dea-issues-long-awaited-final-order-rescheduling-certain-marijuana-products-to-schedule-iii-what-it-means-what-it-doesnt-and-what-comes-next/</link>
+		
+		<dc:creator><![CDATA[Holly Swanson]]></dc:creator>
+		<pubDate>Thu, 23 Apr 2026 21:07:16 +0000</pubDate>
+				<category><![CDATA[Foley Blogs]]></category>
+		<category><![CDATA[Health Care Law Today]]></category>
+		<guid isPermaLink="false">https://www.foley.com/?p=119661</guid>
+
+					<description><![CDATA[<p>Effective April 22, 2026, the Acting Attorney General issued a final order placing certain categories of marijuana and marijuana products into Schedule III of the Controlled Substances Act (“CSA”) in accordance with President Trump’s December 18, 2025 Executive Order on Increasing Medical Marijuana and Cannabidiol Research. This is a landmark development in federal drug policy and one that carries significant legal and business consequences for entities in the pharmaceutical, cannabis, healthcare, tax, and regulatory compliance sectors. As with most everything touching marijuana, however, the details matter enormously. Importantly, the Final Order does not broadly reclassify marijuana. Instead, it defines a narrow and conditional rescheduling that includes several important caveats, added steps, and ongoing obligations that affected parties must understand.</p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/dea-issues-long-awaited-final-order-rescheduling-certain-marijuana-products-to-schedule-iii-what-it-means-what-it-doesnt-and-what-comes-next/">DEA Issues Long Awaited Final Order Rescheduling Certain Marijuana Products to Schedule III: What It Means, What It Doesn’t, and What Comes Next</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+
+<p>Effective April 22, 2026, the Acting Attorney General issued a <a href="https://www.justice.gov/opa/pr/justice-department-places-fda-approved-marijuana-products-and-products-containing-marijuana">final order</a> placing certain categories of marijuana and marijuana products into Schedule III of the Controlled Substances Act (“CSA”) in accordance with <a href="https://www.foley.com/p/102lyes/prohibition-to-prescription-what-trumps-marijuana-executive-order-really-means/">President Trump’s December 18, 2025 Executive Order on Increasing Medical Marijuana and Cannabidiol Research</a>. This is a landmark development in federal drug policy and one that carries significant legal and business consequences for entities in the pharmaceutical, cannabis, healthcare, tax, and regulatory compliance sectors. As with most everything touching marijuana, however, the details matter enormously. Importantly, the Final Order does not broadly reclassify marijuana. Instead, it defines a narrow and conditional rescheduling that includes several important caveats, added steps, and ongoing obligations that affected parties must understand.</p>
+
+
+
+<p><em>What Marijuana or Marijuana Products Are Rescheduled?</em></p>
+
+
+
+<p>The final order moves two specific categories of marijuana from Schedule I to Schedule III. First, it reclassifies drug products containing marijuana that have been approved by the U.S. Food and Drug Administration (“FDA”). Second, it reclassifies marijuana that is subject to a state-issued license to manufacture, distribute, and/or dispense marijuana for medical purposes only (a “state medical marijuana license”). The order covers marijuana as defined in the CSA, marijuana extracts, and naturally derived delta-9-tetrahydrocannabinol (“Delta 9”) from the cannabis plant, but only to the extent those substances are incorporated into an FDA-approved product or are covered by a qualifying state medical marijuana license.</p>
+
+
+
+<p>We note that DEA will hold a <a href="https://www.justice.gov/opa/media/1437446/dl?utm_medium=email&amp;utm_source=govdelivery">new hearing beginning on June 29, 2026</a>, which will provide a timely and legally compliant pathway to evaluate broader changes to marijuana’s status under federal law.</p>
+
+
+
+<p><em>What Marijuana or Marijuana Products Are Not Rescheduled?</em></p>
+
+
+
+<p>Any form of marijuana other than an FDA-approved drug product or marijuana covered by a state medical marijuana license (such as state licensed cannabis for adult recreational use) remains a Schedule I controlled substance. Individuals and entities handling such material remain subject to the full range of regulatory controls and criminal sanctions applicable to Schedule I substances. Additionally, the order does not apply to synthetically derived THC. Tetrahydrocannabinols that can be derived only through artificial synthesis, such as delta-10-THC, are expressly excluded and remain in Schedule I—a critical distinction for entities involved in the synthesis or sale of novel cannabinoid products. Importantly and to the dismay of industry advocates pushing for broad rescheduling, recreational (also referred to as adult use under many state programs) marijuana is not covered by this order. The rescheduling is expressly limited to FDA-approved products and state-licensed medical marijuana, consistent with the United States’ obligation under the Single Convention on Narcotic Drugs to limit the use of these substances exclusively to medical and scientific purposes.</p>
+
+
+
+<p>Moreover, the order also does not affect the legal status of hemp, which remains excluded from the definition of marijuana under the CSA. It similarly does not alter the scheduling of any drug product containing marijuana or THC that was previously rescheduled out of Schedule I, such as Marinol or Syndros, nor does it impact any previously scheduled synthetic cannabinoids.</p>
+
+
+
+<p><em>Who is Impacted by the Final Order?</em></p>
+
+
+
+<p>Those individuals and entities directly impacted by the final order include: (i) state licensed medical marijuana operators; (ii) handlers of FDA-approved products; and (iii) practitioners who prescribe FDA-approved products that contain marijuana.</p>
+
+
+
+<p><strong>State-Licensed Medical Marijuana Operators</strong></p>
+
+
+
+<p>State-licensed medical marijuana entities face a concrete set of new federal requirements and should begin preparing now. The final order establishes an expedited DEA registration pathway for holders of state medical marijuana licenses. Importantly, Attorney General Blanche expressly incorporated state licensing systems into the federal registration framework, which will hopefully streamline this new process and minimize disruption for patients and existing state medical marijuana systems.&nbsp; Under this process, applicants may submit their existing state credentials as conclusive evidence of state-law authorization, and the DEA must grant registration unless doing so would be inconsistent with the public interest or the requirements of the Single Convention. Entities that submit applications within 60 days of publication (by Monday, June 22, 2026) may continue operating under their state licenses during the pendency of review, and the DEA has committed to processing those early applications within six months.</p>
+
+
+
+<p>Registered state licensees will be subject to several operational requirements, though many are designed to minimize regulatory burden by leveraging existing state compliance infrastructure. State-required records, reports, and forms will be accepted to the maximum extent permissible. State-authorized medical marijuana certifications will be sufficient for dispensing purposes, provided they meet certain minimum criteria, including the patient’s name and address and the issuing practitioner’s information. Registrants may also rely on state-law labeling, packaging, disposal, and physical-security requirements in lieu of federal requirements, subject to inclusion of a statutory warning label.</p>
+
+
+
+<p>Manufacturers, however, should be aware of a unique compliance obligation related to the Single Convention: all registered manufacturers must establish a nominal price for the purchase of their marijuana crops, and the DEA will execute a purchase-and-resale transaction at that price (plus an administrative fee) to satisfy the Convention’s requirement that a government agency serve as the exclusive purchaser of cannabis production. Manufacturers must store crops in a DEA-accessible facility until this transaction is complete.</p>
+
+
+
+<p><strong>Handlers of FDA-Approved Products</strong></p>
+
+
+
+<p>For those handling marijuana exclusively in the form of FDA-approved drug products, standard Schedule III regulatory requirements now apply. These include DEA registration for manufacturing, distributing, dispensing, importing, or exporting such products. Prescriptions are required prior to dispensing, and they must be issued for a legitimate medical purpose by a practitioner acting in the usual course of professional practice. Registrants must also comply with Schedule III requirements for recordkeeping, reporting, security, labeling, packaging, inventory, and disposal. &nbsp;</p>
+
+
+
+<p>Import and export activities involving these products will continue to require a permit, as the order simultaneously amends DEA regulations to add these rescheduled marijuana products to the list of nonnarcotic Schedule III–V controlled substances subject to import/export permit requirements.</p>
+
+
+
+<p><strong>Prescribers of FDA-Approved Marijuana Products</strong></p>
+
+
+
+<p>Practitioners who intend to prescribe or dispense these products must hold a DEA registration applicable to Schedule III controlled substances.&nbsp; Entities that transfer marijuana to patients, including dispensaries, must separately register with the DEA as “practitioners” under 21 U.S.C. § 823(g), and such registration does not authorize the possession or dispensing of Schedule I controlled substances, including marijuana in forms other than an FDA-approved product or marijuana covered by a state medical marijuana license.&nbsp; Each applicant for registration, other than government employees, must pay applicable fees &nbsp;(currently $3,699 annually for manufacturers, $1,850 annually for distributors, and $888 for a three-year dispenser registration (including pharmacies)).&nbsp; With respect to storage and physical security, registrants operating under state medical marijuana licenses may satisfy federal security requirements by complying with the security standards imposed by their state programs, rather than meeting the otherwise-applicable federal security regulations. This deference to state-level infrastructure extends to storage: registered manufacturers must maintain marijuana crops in a facility to which the DEA has access until the nominal-price purchase-and-resale transaction required by the Single Convention is complete, and the DEA retains the right to inspect such facilities on demand.</p>
+
+
+
+<p><em>How Does the Rescheduling Impact Federal Income Tax Liabilities?</em></p>
+
+
+
+<p>One of the most commercially significant consequences of this rescheduling is its impact on federal income taxation. Section 280E of the Internal Revenue Code disallows business expense deductions for entities engaged in trafficking in Schedule I or II controlled substances, other than the cost of goods sold. Because qualifying medical marijuana operations are now Schedule III, state licensees will no longer be subject to this deduction disallowance. Importantly, Attorney General Blanche encourages the Secretary of the Treasury “to consider providing retrospective relief from Section 280E liability for taxable years in which the state licensee operated under a state medical marijuana license.” Should the Secretary of the Treasury heed this encouragement, it would be a huge win for medical marijuana operators.&nbsp; Because the rescheduling is limited to only those FDA-approved products with marijuana or marijuana subject to a state medical marijuana license, the Section 280E relief does not also apply to entities operating under a state recreational or adult use license.</p>
+
+
+
+<p>Note, the final order did not address state and local taxes, which are not directly affected by this decision and we must await further guidance from the Internal Revenue Service, such as transitional rules for 2026.&nbsp; Further, if a dispensary sells both medical marijuana and adult recreational marijuana, it is uncertain how Section 280E would apply to such circumstances.</p>
+
+
+
+<p><strong><em>Taxpayers should consult with their own tax advisors as to impact of the rescheduling to them.</em></strong></p>
+
+
+
+<p><em>What are the Key Takeaways?</em></p>
+
+
+
+<p>This order represents a historic but carefully bounded shift in federal marijuana policy. Only&nbsp; FDA-approved marijuana products and state-licensed medical marijuana are rescheduled to Schedule III; &nbsp;recreational marijuana (even pursuant to a state program), unlicensed activity (i.e., bulk marijuana, marijuana extract, and Delta-9 material used to make FDA-approved products), and synthetically derived THC remain in Schedule I. Entities impacted by the order should consider taking the following steps:</p>
+
+
+
+<ul class="wp-block-list wp-block-list">
+<li class="wp-block-list-item"><strong>File DEA registration applications promptly.</strong> State medical marijuana licensees that submit applications within 60 days of publication—by Monday, June 22, 2026—may continue operating under their state licenses during DEA review. The DEA has committed to processing those early applications within six months.</li>
+
+
+
+<li class="wp-block-list-item"><strong>Assess Section 280E tax implications.</strong> State-licensed medical marijuana operators are no longer subject to Section 280E’s deduction disallowance and should consult tax advisors regarding both current and potentially retrospective relief.</li>
+
+
+
+<li class="wp-block-list-item"><strong>Prepare for new federal compliance obligations.</strong> Registered entities must comply with Schedule III requirements for recordkeeping, reporting, security, and labeling. Manufacturers must also prepare for the nominal-price crop purchase mechanism under the Single Convention and ensure crops are stored in a DEA-accessible facility.</li>
+
+
+
+<li class="wp-block-list-item"><strong>Maintain state license compliance.</strong> A DEA registration automatically suspends if the underlying state license is suspended, revoked, or expires. Any activity not authorized by or in violation of the CSA remains subject to administrative, civil, or criminal sanctions.</li>
+
+
+
+<li class="wp-block-list-item"><strong>Monitor the June 29, 2026 DEA hearing.</strong> Impacted entities should monitor this forthcoming hearing to stay abreast of any updates to the new processes outlined in the the order.</li>
+</ul>
+
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/dea-issues-long-awaited-final-order-rescheduling-certain-marijuana-products-to-schedule-iii-what-it-means-what-it-doesnt-and-what-comes-next/">DEA Issues Long Awaited Final Order Rescheduling Certain Marijuana Products to Schedule III: What It Means, What It Doesn’t, and What Comes Next</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Episode 136: Chanley Howell, Partner</title>
+		<link>https://www.foley.com/insights/publications/2026/04/episode-136-chanley-howell-partner/</link>
+		
+		<dc:creator><![CDATA[Holly Kane]]></dc:creator>
+		<pubDate>Thu, 23 Apr 2026 19:36:56 +0000</pubDate>
+				<category><![CDATA[Foley Blogs]]></category>
+		<category><![CDATA[Foley Career Perspectives]]></category>
+		<category><![CDATA[Foley Podcasts]]></category>
+		<category><![CDATA[The Path & The Practice]]></category>
+		<guid isPermaLink="false"></guid>
+
+					<description><![CDATA[<p>This episode features a conversation with Chanley Howell. Chanley is a partner and intellectual property lawyer in Foley’s Jacksonville office where his practice focuses on a broad range of technology law matters. In this discussion, he reflects on growing up in Jacksonville, FL, attending Vanderbilt University for undergrad and the University of Florida College of Law.</p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/episode-136-chanley-howell-partner/">Episode 136: Chanley Howell, Partner</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+
+<p>This episode features a conversation with Chanley Howell. Chanley is a partner and intellectual property lawyer in Foley’s Jacksonville office where his practice focuses on a broad range of technology law matters. In this discussion, he reflects on growing up in Jacksonville, FL, attending Vanderbilt University for undergrad and the University of Florida College of Law. Chanley shares his path to law school, including how his father being a lawyer influenced his decision to become an attorney. And, he details the different types of work that fall under the technology transactions, cybersecurity, and privacy umbrella at Foley. He also discusses the importance of law students becoming A.I. literate and how the adoption of A.I. is impacting the practice of law. Finally, Chanley provides advice on the importance of finding a firm with a culture that most aligns with who you are.</p>
+
+
+
+<p><strong><u>Chanley’s Profile</u>:</strong></p>
+
+
+
+<ul class="wp-block-list wp-block-list">
+<li class="wp-block-list-item"><strong>Title</strong>: Partner</li>
+
+
+
+<li class="wp-block-list-item"><strong>Foley Office</strong>: Jacksonville</li>
+
+
+
+<li class="wp-block-list-item"><strong>Practice Area:</strong> Tech Transactions, Cybersecurity, and Privacy</li>
+
+
+
+<li class="wp-block-list-item"><strong>Hometown:</strong> Jacksonville, FL</li>
+
+
+
+<li class="wp-block-list-item"><strong>College: </strong>Vanderbilt University</li>
+
+
+
+<li class="wp-block-list-item"><strong>Law School:</strong> University of Florida College of Law</li>
+</ul>
+
+
+<div class="wp-block-html">
+<iframe src=https://player.resonaterecordings.com/embed?uuid=e177de55-bca1-451e-a324-27ff9c9d7d08&#038;accentColor=42,128,213&#038;backgroundColor=255,255,255 width="100%" height="155" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+</div>
+
+
+<p><a href="https://www.foley.com/en/insights/blogs/foley-career-perspectives?topic=9890b29b443f482b9d01f904decd42eb" target="_blank" rel="noreferrer noopener">Click here</a>&nbsp;for full list of The Path &amp; The Practice episodes.</p>
+
+
+
+<p>You can also find, and subscribe, to this podcast on all major podcast platforms including&nbsp;<a href="https://podcasts.apple.com/us/podcast/the-path-the-practice/id1523076918?i=1000484060627" target="_blank" rel="noreferrer noopener">iTunes</a>,&nbsp;<a href="https://www.stitcher.com/podcast/the-path-the-practice" target="_blank" rel="noreferrer noopener">Stitcher</a>,&nbsp;<a href="https://open.spotify.com/show/43dd8Em8LK11Q3eS0YlJPs" target="_blank" rel="noreferrer noopener">Spotify</a>&nbsp;and&nbsp;<a href="https://podcasts.google.com/feed/aHR0cHM6Ly9mZWVkcy5yZXNvbmF0ZXJlY29yZGluZ3MuY29tL2ZvbGV5LXBvZGNhc3Q" target="_blank" rel="noreferrer noopener">Google Play</a>.</p>
+
+
+
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/episode-136-chanley-howell-partner/">Episode 136: Chanley Howell, Partner</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Ten Minute Interview: Alternative Investments</title>
+		<link>https://www.foley.com/insights/publications/2026/04/ten-minute-interview-alternative-investments/</link>
+		
+		<dc:creator><![CDATA[Holly Kane]]></dc:creator>
+		<pubDate>Thu, 23 Apr 2026 19:31:05 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://www.foley.com/?p=119656</guid>
+
+					<description><![CDATA[<p>Brian Lucareli, director of Foley Private Client Services (PCS) and co-chair of the Family Offices team, sits down with Nick Chamis, senior counsel in the Estate Planning practice, for a 10-minute interview on alternative investments in the family office space. </p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/ten-minute-interview-alternative-investments/">Ten Minute Interview: Alternative Investments</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+
+<p><a href="https://www.foley.com/people/lucareli-brian-l/" target="_blank" rel="noreferrer noopener">Brian Lucareli</a>, director of <a href="https://www.foley.com/practice-areas/corporate/estate-planning/foley-private-client-services/" target="_blank" rel="noreferrer noopener">Foley Private Client Services (PCS)</a> and co-chair of the <a href="https://www.foley.com/sectors/family-offices/" target="_blank" rel="noreferrer noopener">Family Offices</a> team, sits down with <a href="https://www.foley.com/people/chamis-nicholas-a/" target="_blank" rel="noreferrer noopener">Nick Chamis</a>, senior counsel in the <a href="https://www.foley.com/practice-areas/corporate/estate-planning/" target="_blank" rel="noreferrer noopener">Estate Planning</a> practice, for a 10-minute interview on alternative investments in the family office space. During the session, Brian and Nick discuss why sports and sports-related investments have become increasingly attractive to family offices, what families seek beyond profit when investing in sports, and other examples of alternative investments families are exploring.</p>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube col-12  wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<div class='iframe-wrapper youtube' data-video-id='aA-8Hsl5_I0' data-image-src='https://img.youtube.com/vi/aA-8Hsl5_I0/sddefault.jpg'>
+				<div class='iframe-wrapper__overlay' style='background-image: url(https://img.youtube.com/vi/aA-8Hsl5_I0/sddefault.jpg);'>
+					<button class='iframe-wrapper__play c-btn--play' aria-label='Play Video'></button>
+				</div>
+				<iframe title="youtube video" title="Ten Minute Interview: Alternative Investments" width="500" height="281" loading="lazy" data-src="https://www.youtube.com/embed/aA-8Hsl5_I0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+			</div>
+</div></figure>
+
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/ten-minute-interview-alternative-investments/">Ten Minute Interview: Alternative Investments</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>BGCA Author Series Brings Creativity and Empowerment to Boston Club Kids</title>
+		<link>https://www.foley.com/insights/publications/2026/04/bgca-author-series-brings-creativity-and-empowerment-to-boston-club-kids/</link>
+		
+		<dc:creator><![CDATA[Holly Kane]]></dc:creator>
+		<pubDate>Thu, 23 Apr 2026 18:48:12 +0000</pubDate>
+				<category><![CDATA[Foley Blogs]]></category>
+		<category><![CDATA[Foley Career Perspectives]]></category>
+		<guid isPermaLink="false"></guid>
+
+					<description><![CDATA[<p>Foley &#038; Lardner’s national partnership with Boys &#038; Girls Clubs of America (BGCA) is driven in our 25 North American offices through the commitment and support of our attorneys and business professionals who create unforgettable experiences for youth at local Clubs.</p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/bgca-author-series-brings-creativity-and-empowerment-to-boston-club-kids/">BGCA Author Series Brings Creativity and Empowerment to Boston Club Kids</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+
+<p>Foley &amp; Lardner’s&nbsp;<a href="https://www.foley.com/foley-boys-girls-clubs-of-america-great-futures/" target="_blank" rel="noreferrer noopener">national partnership with Boys &amp; Girls Clubs of America</a>&nbsp;(BGCA) is driven in our 25 North American offices through the commitment and support of our attorneys and business professionals who create unforgettable experiences for youth at local Clubs.</p>
+
+
+
+<figure class="wp-block-image alignleft size-col-4 is-resized col-4"><img fetchpriority="high" decoding="async" width="2400" height="1601" src="https://www.foley.com/wp-content/uploads/2026/04/BGCA-Author-Series_Rosales-1.jpg" alt="" class="wp-image-119653" style="width:416"/></figure>
+
+
+
+<p>One of these programs, launched in 2023, is our BGCA Author Series, which invites celebrated children’s authors to local Clubs across the country where they lead interactive readings and discussions. Last year, in celebration of the four-year anniversary of our partnership,&nbsp;<a href="https://www.foley.com/p/102kz7k/bgca-author-series-embarks-on-a-three-city-tour/" target="_blank" rel="noreferrer noopener">we organized a three-city Midwest tour in July featuring a wonderful author from Mexico</a>, and in October welcomed back to <a href="https://www.foley.com/insights/publications/2025/11/bgca-author-series-brings-chicago-author-back-to-the-west-side/">Chicago rower and bestselling author Arshay Cooper</a>, our sixth and seventh installments, respectively, of this unique program.</p>
+
+
+
+<figure class="wp-block-image alignright size-col-4 is-resized col-4"><img decoding="async" width="2400" height="1601" src="https://www.foley.com/wp-content/uploads/2026/04/BGCA-Author-Series_Rosales-2.jpg" alt="" class="wp-image-119654" style="width:416"/></figure>
+
+
+
+<p>Most recently on Friday, April 17, Foley’s Boston office hosted the celebrated author and artist <a href="https://www.harmoniarosales.art/"><strong>Harmonia Rosales</strong></a> at the national historic landmark King’s Chapel to discuss her critically acclaimed book <em>Chronicles of Ori.</em> Since the genesis of her career, Rosales’s main artistic concern has focused on Black female empowerment in Western culture, depicting and honoring the African diaspora.</p>
+
+
+
+<p>The event kicked off with a tour of Rosales’ permanent 14-foot bronze sculpture <em>Unbound</em>, unveiled last fall, and a warm welcome from King’s Chapel Reverend Joy Fallon. Former Boston Public Library Board of Trustees chair Dr. Priscilla Douglas conducted an engaging, deep discussion with Rosales about the themes and images of her book. Then Boston Boys &amp; Girls Club kid Juju interviewed Rosales, a former club kid herself, and fielded questions from an audience that included fellow Club kids and local artists. The event concluded with each Club kid receiving their own copy of <em>Chronicles of Ori</em> and having the opportunity for Rosales to sign their book.</p>
+
+
+
+<figure class="wp-block-image alignleft size-col-4 is-resized col-4"><img loading="lazy" decoding="async" width="2000" height="1500" src="https://www.foley.com/wp-content/uploads/2026/04/BGCA-Author-Series_Rosales-3.jpg" alt="" class="wp-image-119655" style="width:416"/></figure>
+
+
+
+<p>This was the eighth installment of our BGCA Author series that has featured seven authors across nine cities in the United States and Mexico (and showings of the recordings in many more).</p>
+
+
+
+<p>This (inter)national initiative is a great way to engage with our local Clubs, provide age-appropriate books to Club kids, and support youth development.</p>
+
+
+
+<p>Foley &amp; Lardner’s <a href="https://www.foley.com/foley-boys-girls-clubs-of-america-great-futures/" target="_blank" rel="noreferrer noopener">national partnership with Boys &amp; Girls Clubs of America</a> (BGCA) is driven in our 25 Noth American offices through the commitment and support of our attorneys and business professionals who create unforgettable experiences for youth at local Clubs.</p>
+
+
+
+
+
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/bgca-author-series-brings-creativity-and-empowerment-to-boston-club-kids/">BGCA Author Series Brings Creativity and Empowerment to Boston Club Kids</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Mexican Supreme Court Validates the Blocking of Bank Accounts</title>
+		<link>https://www.foley.com/insights/publications/2026/04/mexican-supreme-court-validates-the-blocking-of-bank-accounts/</link>
+		
+		<dc:creator><![CDATA[Holly Swanson]]></dc:creator>
+		<pubDate>Wed, 22 Apr 2026 22:49:01 +0000</pubDate>
+				<category><![CDATA[Foley Viewpoints]]></category>
+		<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://www.foley.com/?p=119630</guid>
+
+					<description><![CDATA[<p>On April 6, 2026, the Mexican Supreme Court (“SCJN”), when ruling on the constitutional challenge (acción de inconstitucionalidad) 58/2022, recognized the constitutionality of Article 116 Bis 2 of the Credit Institutions Law (“LIC”), validating the blocking of bank accounts by the Mexican Ministry of the Treasury, through its Financial Intelligence Unit (“UIF”), based on the “Blocked Persons List” when there is sufficient evidence to believe that these persons are involved in crimes of (i) terrorist financing, (ii) operations with illicit funds, or (iii) related offenses. This precedent is of particular relevance for anyone who maintains bank accounts or performs transactions through the Mexican Financial System.</p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/mexican-supreme-court-validates-the-blocking-of-bank-accounts/">Mexican Supreme Court Validates the Blocking of Bank Accounts</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+<div class="wp-block-html">
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody><tr><td><strong>Mexican Supreme Court Validates the Blocking of bank accounts</strong></td><td><strong>Suprema Corte valida el bloqueo de cuentas bancarias en México</strong></td></tr><tr><td>On April 6, 2026, the Mexican Supreme Court (“SCJN”), when ruling on the constitutional challenge (<em>acción de inconstitucionalidad</em>) 58/2022, recognized the constitutionality of Article 116 Bis 2 of the Credit Institutions Law (“LIC”), validating the blocking of bank accounts by the Mexican Ministry of the Treasury, through its Financial Intelligence Unit (“UIF”), based on the “Blocked Persons List” when there is sufficient evidence to believe that these persons are involved in crimes of (i) terrorist financing, (ii) operations with illicit funds, or (iii) related offenses. This precedent is of particular relevance for anyone who maintains bank accounts or performs transactions through the Mexican Financial System.<br><br>The SCJN ruled that the procedure for blocking accounts provided in Articles 115 and 116 Bis 2 of the LIC by the UIF does not encroach upon the Public Prosecutor&#8217;s investigative authority or breach the presumption of innocence, <strong>confirming that the tax authority may block a taxpayer&#8217;s assets </strong>without the need for a prior court order or an ongoing prosecutorial investigation, as long as the account holder refutes the authority’s evidence in the administrative proceeding (which may entail months or even years of freezing).<br><br>As a result, <strong>the possibility of obtaining an injunction through an <em>amparo</em> proceeding to, if applicable, unblock a bank account is essentially eliminated</strong>.<br><br>The SCJN determined that the regulation provides legal certainty by establishing a specific administrative defense procedure for those affected before the UIF itself, thereby strengthening its authority to oversee and monitor individuals’ accounts.<br><br>From a tax and administrative perspective, the consequences of being included on that list are severe:<ul><br><li><strong>Immediate Operational Shutdown</strong>: The suspension of activities, operations, or services takes effect immediately, making it impossible to pay salaries, suppliers, and—critically—to comply with tax obligations in a timely manner.</li><br><li><strong>Burden of Proof</strong>: The existence of “sufficient evidence” is enough for the UIF to block accounts, and it is the affected who are responsible for providing evidence to refute these allegations during the brief period of the administrative hearing established by the LIC.<br><br>The SCJN upheld the “sufficient evidence” standard granted to the UIF to block bank accounts, as it is sufficient, in the Court’s judgment, for that authority to “have verifiable objective elements that reasonably indicate the commission of one of the crimes” mentioned above; however, this could lead to arbitrary actions by the UIF.</li><br><li><strong>Risk of Broadening Standards</strong>: The SCJN stated that the concept of “associated crimes” is not ambiguous because it refers to the applicable financial framework; however, in administrative practice, the UIF retains significant discretion to initiate such proceedings.</li></ul><br><br>The recent SCJN decision emphasizes the importance of taking a proactive approach to regulatory compliance and financial risk prevention.<br><br>Given the possibility that UIF could block bank accounts, it is essential that individuals and companies remain prepared to take immediate legal action. The speed and effectiveness with which evidence and legal arguments are presented will be critical to securing the unblocking of affected accounts through appropriate legal remedies.<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p></td><td>El 06 de abril de 2026, la Suprema Corte de Justicia de la Nación (&#8220;<strong>SCJN</strong>&#8220;) al resolver la acción de inconstitucionalidad 58/2022, reconoció la constitucionalidad del artículo 116 Bis 2 de la Ley de Instituciones de Crédito (&#8220;<strong>LIC</strong>&#8220;), validando el bloqueo de cuentas bancarias por parte de la Secretaría de Hacienda, a través de la Unidad de Inteligencia Financiera (&#8220;<strong>UIF</strong>&#8220;) con base en la &#8220;Lista de Personas Bloqueadas&#8221; cuando existan <em>indicios suficientes</em> de su relación con delitos de <em>(i)</em> financiamiento al terrorismo, <em>(ii) </em>operaciones con recursos de procedencia ilícita o <em>(iii) </em>delitos asociados. Este precedente resulta de especial relevancia para cualquiera que mantenga cuentas bancarias o realice operaciones a través del Sistema Financiero Mexicano.<br><br>La SCJN determinó que el procedimiento de bloqueo de cuentas previsto en los artículos 115 y 116 Bis 2 de la LIC por parte de la UIF no invade las facultades de investigación del Ministerio Público ni vulnera el principio de presunción de inocencia, <strong>validando que la autoridad hacendaria puede paralizar el patrimonio de un contribuyente </strong>sin necesidad de una orden judicial previa o de una investigación ministerial en curso, en tanto el contribuyente desvirtúa en el procedimiento administrativo los indicios de la autoridad (lo cual puede implicar meses o, incluso, años de bloqueo).<br><br>Como consecuencia, <strong>en la práctica se elimina la posibilidad de obtener una suspensión a través de un juicio de amparo para, en su caso, desbloquear alguna cuenta bancaria</strong>.<br><br>Sin embargo, la SCJN determinó que la norma otorga certeza jurídica al establecer un procedimiento administrativo de defensa específico para los afectados ante la propia UIF, lo que consolida su poder de fiscalización y control sobre las cuentas de los particulares.<br><br>Desde una perspectiva fiscal y administrativa, las consecuencias de ser incluido en esa lista son severas:<br><br><ul><li><strong>Parálisis Transaccional Inmediata:</strong> La suspensión de actos, operaciones o servicios es inmediata, lo que imposibilita el pago de nóminas, proveedores y, críticamente, el cumplimiento oportuno de las obligaciones fiscales ante el SAT.</li><br><li><strong>Carga de la Prueba:</strong> Basta la existencia de &#8220;indicios suficientes&#8221; para que la UIF congele las cuentas y serán los particulares los que tengan la obligación de aportar pruebas para desvirtuar dichas presunciones durante el breve plazo de la garantía de audiencia administrativa que establece la LIC.<br><br>La SCJN validó el criterio de “<em>indicios suficientes</em>” otorgado a la UIF para incluir y bloquear cuentas bancarias, pues basta, a consideración de la Corte, que esa autoridad “cuente con elementos objetivos verificables, que hagan razonablemente probable la comisión de uno de los delitos” mencionados previamente, sin embargo; esto podría dar pie a actuaciones  arbitrarias por parte de la UIF.</li><br><li><strong>Riesgo de Ampliación de Criterios:</strong> La SCJN señaló que el concepto de &#8220;<em>delitos asociados</em>&#8221; no es ambiguo porque remite al marco financiero aplicable; sin embargo, en la práctica administrativa, la UIF mantiene un margen amplio de apreciación importante para iniciar este tipo de procedimientos.</li></ul><br><br>La reciente resolución de la SCJN resalta la importancia de adoptar una postura proactiva en materia de cumplimiento regulatorio y prevención de riesgos financieros.<br><br>Ante la posibilidad de que la UIF pueda congelar cuentas bancarias, es fundamental que los particulares estén preparados para responder inmediatamente. La rapidez y eficacia en la presentación de pruebas y argumentos legales serán determinantes para lograr el descongelamiento de las cuentas afectadas a través de los medios defensa adecuados.<br><br>En Foley México estamos listos para apoyarlos con cualquier cuestión preventiva y litigiosa en contra de bloqueos de cuentas bancarias.</td></tr></tbody></table></figure>
+</div>
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/mexican-supreme-court-validates-the-blocking-of-bank-accounts/">Mexican Supreme Court Validates the Blocking of Bank Accounts</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Patent analysis is increasingly shaping AI-driven target and drug candidate selection</title>
+		<link>https://www.foley.com/insights/publications/2026/04/patent-analysis-is-increasingly-shaping-ai-driven-target-and-drug-candidate-selection/</link>
+		
+		<dc:creator><![CDATA[Holly Kane]]></dc:creator>
+		<pubDate>Wed, 22 Apr 2026 21:04:23 +0000</pubDate>
+				<category><![CDATA[Foley Blogs]]></category>
+		<guid isPermaLink="false">https://www.foley.com/?p=119700</guid>
+
+					<description><![CDATA[<p>Pun et al.’s recent review entitled “Target identification and assessment in the era of AI” in Nature Reviews Drug Discovery maps how artificial intelligence (AI) is widening target identification through multi-omics integration, knowledge graphs, and foundation models.</p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/patent-analysis-is-increasingly-shaping-ai-driven-target-and-drug-candidate-selection/">Patent analysis is increasingly shaping AI-driven target and drug candidate selection</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+
+<p>Pun et al.’s recent review entitled “<strong>Target identification and assessment in the era of AI”</strong>&nbsp;in&nbsp;<a href="https://www.nature.com/articles/s41573-026-01412-8" target="_blank" rel="noreferrer noopener"><em>Nature Reviews Drug Discovery</em></a>&nbsp;maps how artificial intelligence (AI) is widening target identification through multi-omics integration, knowledge graphs, and foundation models. The authors place patentability, commercial tractability, and competitor analysis alongside druggability and safety within target assessment itself, before experimental validation. This framework implies a forming tension in AI-driven discovery: faster hypothesis generation makes it harder to decide when to commit to a specific invention.&nbsp;</p>
+
+
+
+<p>AI is rapidly increasing the number of plausible targets and drug candidates, often outpacing experimental validation. Integration of multi-omics data, knowledge graphs, and machine learning enables systematic generation and prioritization at a scale not previously possible. At the same time, generative methods produce large sets of candidates that still need to be filtered through validation, safety, and translational constraints. As a result, the bottleneck is shifting from finding viable options to selecting those that can be validated, differentiated, and advanced with confidence.</p>
+
+
+
+<p>AI is compressing discovery timelines, but not decision-making. In that environment, the temptation is to keep the hypothesis fluid — to let the model generate one more iteration — rather than commit. The frameworks and overview of AI approaches provided by Pun et al. will help create a system for selecting targets and drug candidates to develop with greater confidence. By placing patentability alongside scientific and translational criteria, Pun et al.’s frameworks effectively bring IP into target selection rather than leaving it to downstream considerations.</p>
+
+
+
+<p>In practice, this can change decisions and help commit to a target. Faced with two biologically plausible targets, teams may favor the one where differentiation can be demonstrated experimentally and translated into defensible patent protection, even if the alternative has stronger initial scientific support but sits in a more crowded landscape.</p>
+
+
+
+<p>As AI expands what is possible, the constraint is shifting toward what can be validated, differentiated, and owned.</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="has-text-align-left is-style-wide">&#8220;The strategic selection of targets often involves a delicate trade-off<br>between novelty and confidence in the target’s role in disease.<br>High-confidence targets are supported by more scientific evidence,<br>offering a clearer translational path to the clinic and reducing the<br>risk involved in drug development. However, novel targets present<br>opportunities for breakthrough therapies, especially for diseases with<br>unmet medical needs.&#8221;</p>
+</blockquote>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p><a href="https://www.nature.com/articles/s41573-026-01412-8" target="_blank" rel="noreferrer noopener">View referenced article</a></p>
+</blockquote>
+
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/patent-analysis-is-increasingly-shaping-ai-driven-target-and-drug-candidate-selection/">Patent analysis is increasingly shaping AI-driven target and drug candidate selection</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Financing the Data Center Boom: Trends, Structures, and Considerations for Market Participants</title>
+		<link>https://www.foley.com/insights/publications/2026/04/financing-the-data-center-boom-trends-structures-and-considerations-for-market-participants/</link>
+		
+		<dc:creator><![CDATA[Holly Kane]]></dc:creator>
+		<pubDate>Tue, 21 Apr 2026 21:27:15 +0000</pubDate>
+				<category><![CDATA[Energy Current]]></category>
+		<category><![CDATA[Foley Blogs]]></category>
+		<guid isPermaLink="false"></guid>
+
+					<description><![CDATA[<p>The explosive growth in demand for data center capacity — driven by artificial intelligence workloads, cloud computing, and the broader digitization of the economy — has created one of the most active infrastructure financing markets in recent memory. For developers, investors, lenders, and hyperscale operators alike, understanding the current financing landscape is essential.</p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/financing-the-data-center-boom-trends-structures-and-considerations-for-market-participants/">Financing the Data Center Boom: Trends, Structures, and Considerations for Market Participants</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+
+<p>The explosive growth in demand for data center capacity — driven by artificial intelligence workloads, cloud computing, and the broader digitization of the economy — has created one of the most active infrastructure financing markets in recent memory. For developers, investors, lenders, and hyperscale operators alike, understanding the current financing landscape is essential. This post surveys the major financing approaches used in data center construction and identifies key headwinds that market participants should keep top of mind.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>The Financing Landscape: How Data Centers Get Built</strong></h3>
+
+
+
+<p>Data center development is extraordinarily capital-intensive, with a single large-scale campus requiring billions of dollars in upfront investment for land, power infrastructure, fiber connectivity, cooling systems, and the physical structures themselves. The market has developed a range of financing approaches to meet this demand, each with distinct advantages and trade-offs.</p>
+
+
+
+<p><strong>Project Finance.</strong>&nbsp;Project finance has become a cornerstone of large-scale data center development, particularly for purpose-built facilities with creditworthy anchor tenants. A special purpose vehicle is formed to own and develop the data center, and lenders extend credit based primarily on projected cash flows rather than the sponsor’s balance sheet, with long-term lease or colocation agreements with investment-grade hyperscalers serving as foundational credit support. This structure allows developers to achieve high leverage — often 60% to 80% loan-to-cost — while ring-fencing risk away from other sponsor assets and preserving corporate borrowing capacity.</p>
+
+
+
+<p>An important nuance is that data center project finance does not always follow the traditional non-recourse model familiar from other infrastructure sectors. Given the construction risk profile and significant capital outlays required before revenue generation, lenders frequently require sponsor credit support — including completion guarantees, cost overrun funding obligations, carry guarantees covering debt service during construction and lease-up, and, in some cases, limited recourse to the sponsor’s balance sheet until the project achieves certain milestones. The scope of this credit support can meaningfully affect the sponsor’s overall risk exposure and capacity to pursue additional projects. Borrowers should also expect lenders to scrutinize anchor tenant creditworthiness, including the enforceability and termination provisions of underlying lease or colocation agreements.</p>
+
+
+
+<p>These transactions are typically structured through syndicated credit facilities arranged by commercial banks, often with participation from institutional lenders and infrastructure debt funds. For established operators, corporate-level revolving credit or term loans may complement project-level debt. The primary advantage of bank-led syndicated facilities is cost efficiency and relationship-driven capital, while trade-offs include conservative underwriting — particularly for speculative, non-pre-leased capacity — and the potential for banks to tighten terms during periods of volatility. More broadly, project finance transactions involve lengthy documentation, significant structuring costs, and restrictive covenants, and the timeline from mandate to close can stretch for months.</p>
+
+
+
+<p><strong>Private Credit.</strong>&nbsp;Direct lenders, infrastructure debt funds, and alternative asset managers are increasingly deploying capital into data center construction loans, bridge facilities, and mezzanine financings. Private credit offers speed and flexibility that can be difficult to achieve in the syndicated bank or public capital markets, and borrowers can often negotiate bespoke terms — including flexible draw schedules, tailored covenants, and accommodations for construction risk that traditional lenders may be reluctant to underwrite. The trade-off is cost: private credit facilities generally carry higher interest rates and fees, and the market can be less liquid than the syndicated loan market, potentially limiting refinancing options at maturity.</p>
+
+
+
+<p><strong>Capital Markets and Securitization.</strong>&nbsp;Data center operators can also potentially access the capital markets through investment-grade bond issuances, high-yield offerings, and asset-backed securitizations. Securitization in particular has gained traction as a means of monetizing stabilized, cash-flowing portfolios at attractive spreads. The capital markets offer scale and longer tenors than the bank market, but execution requires significant lead time, robust financial reporting infrastructure, and willingness to accept the disclosure requirements that come with rated debt. Market windows can also be unpredictable.</p>
+
+
+
+<p><strong>Joint Ventures and Equity Partnerships.</strong>&nbsp;Many data center projects are financed through joint ventures between developers and institutional equity investors, including pension funds, sovereign wealth funds, and infrastructure-focused private equity sponsors. The developer typically contributes expertise, entitlements, and project management capabilities while the equity partner provides the majority of the capital. Joint ventures are effective for scaling a development pipeline but introduce governance complexity, potential misalignment of investment horizons, and the need to negotiate detailed arrangements around decision-making, capital calls, and exit rights.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Headwinds and Key Considerations</strong></h3>
+
+
+
+<p>While the data center financing market remains highly active, several headwinds merit careful attention.</p>
+
+
+
+<p><strong>Interest Rate Environment and Capital Costs.</strong>&nbsp;The interest rate environment continues to influence the relative attractiveness of different financing structures. Sponsors should model a range of rate scenarios and consider the impact of hedging costs on overall project returns, particularly for projects with extended construction timelines.</p>
+
+
+
+<p><strong>Tenant Concentration and Credit Risk.</strong>&nbsp;Many data center projects are financed on the strength of a single anchor tenant, often a hyperscale operator. While the credit quality of these tenants is generally strong, revenue concentration in a single counterparty introduces risk. Financing parties should consider the implications of tenant default, early termination rights, and the re-leasing market for purpose-built facilities in the event of a vacancy.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Conclusion</strong></h3>
+
+
+
+<p>The data center financing market is deep, innovative, and evolving rapidly. Developers and operators have access to a broad menu of financing options, each with its own risk and return profile. Market participants should approach these transactions with a clear-eyed view of the headwinds that can affect project execution and investment returns. As with any infrastructure asset class experiencing rapid growth, disciplined underwriting, thorough diligence, and experienced legal counsel remain essential.</p>
+
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/financing-the-data-center-boom-trends-structures-and-considerations-for-market-participants/">Financing the Data Center Boom: Trends, Structures, and Considerations for Market Participants</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>New Federal Focus on Fraud, Waste and Abuse May Signal Changes for the Health Care Industry</title>
+		<link>https://www.foley.com/insights/publications/2026/04/new-federal-focus-on-fraud-waste-and-abuse-may-signal-changes-for-the-health-care-industry/</link>
+		
+		<dc:creator><![CDATA[Holly Swanson]]></dc:creator>
+		<pubDate>Mon, 20 Apr 2026 21:48:40 +0000</pubDate>
+				<category><![CDATA[Foley Blogs]]></category>
+		<category><![CDATA[Health Care Law Today]]></category>
+		<guid isPermaLink="false"></guid>
+
+					<description><![CDATA[<p>Congress and the Trump Administration have issued a series of heightened warnings indicating an emerging effort to crack down on what it terms rampant “fraud, waste, and abuse” in the health care industry. All industry stakeholders should be aware of this new focus, which not only signals potentially heightened scrutiny and enhanced penalties for compliance issues but also potential policy changes intended to reduce federal expenditures on programs or practices that are identified as improper or wasteful.</p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/new-federal-focus-on-fraud-waste-and-abuse-may-signal-changes-for-the-health-care-industry/">New Federal Focus on Fraud, Waste and Abuse May Signal Changes for the Health Care Industry</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+
+<p>Congress and the Trump Administration have issued a series of heightened warnings indicating an emerging effort to crack down on what it terms rampant “<a href="https://www.cms.gov/newsroom/press-releases/trump-administration-prioritizes-affordability-announcing-major-crackdown-health-care-fraud">fraud, waste, and abuse</a>” in the health care industry. All industry stakeholders should be aware of this new focus, which not only signals potentially heightened scrutiny and enhanced penalties for compliance issues but also potential policy changes intended to reduce federal expenditures on programs or practices that are identified as improper or wasteful.</p>
+
+
+
+<p>Efforts to date include the creation of an interagency <a href="https://www.whitehouse.gov/presidential-actions/2026/03/establishing-the-task-force-to-eliminate-fraud/">Task Force</a> to coordinate and strengthen fraud prevention and enforcement activities across affected programs, an <a href="https://oig.hhs.gov/newsroom/media-materials/2025-national-health-care-fraud-takedown/">increased</a> <a href="https://www.justice.gov/opa/pr/california-man-pleads-guilty-orchestrating-270m-medication-reimbursement-fraud-scheme">focus</a> on <a href="https://www.justice.gov/usao-cdca/pr/orange-county-man-pleads-guilty-orchestrating-fraud-scheme-submitted-nearly-270">criminal prosecutions</a>, and a <a href="https://www.cms.gov/newsroom/press-releases/trump-administration-prioritizes-affordability-announcing-major-crackdown-health-care-fraud">six‑month nationwide moratorium</a> on Medicare enrollment for certain Durable Medical Equipment, Prosthetics, Orthotics, and Supplies (DMEPOS) suppliers, which the Centers for Medicare &amp; Medicaid Services (CMS) states is necessary due to longstanding fraud, waste, and abuse in the DMEPOS sector.</p>
+
+
+
+<p><strong><u>The Federal Initiative Aims to Compel States and Other Non-Federal Actors to Prevent Fraud, Waste, and Abuse</u></strong></p>
+
+
+
+<p>A key aspect of the federal initiatives are attempts to compel states and other non-federal actors to adopt a similar focus. Most significantly, CMS temporarily deferred approximately $259.5 million in federal Medicaid matching funds to Minnesota based on allegations that the state had failed to take adequate steps to ensure program integrity. CMS has warned that if Minnesota fails to remediate identified program integrity vulnerabilities, the agency may defer more than <a href="https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_CONVERSION&amp;RevisionSelectionMethod=LatestReleased&amp;dDocName=MNDHS-075036.">$1 billion</a> in federal funds over the next year.</p>
+
+
+
+<p>Additionally, CMS directed the Minnesota Department of Human Services to freeze enrollment of 13 categories of providers. Judith Waltz, <a href="https://www.foley.com/p/102mdrf/medicaid-moratoria-cms-directs-state-to-limit-provider-enrollment-in-minnesota/"><em>Medicaid Moratoria: CMS Directs State to Limit Provider Enrollment in Minnesota</em>,</a> Foley &amp; Lardner LLP (Jan. 22, 2026). The alleged program integrity vulnerabilities in Minnesota related to Medicaid providers of certain categories of rehabilitative or supportive services, such as adult day services, assertive community treatment, nonemergency medical transportation, peer recovery support services, and recuperative care. <em>See </em>Foley &amp; Lardner LLP, <a href="https://www.foley.com/news/2026/01/waltz-comments-on-doj-medicaid-fraud-crackdown/"><em>Judith Waltz Comments on DOJ Medicaid Fraud Crackdown</em></a> (Jan. 23, 2026). The deferral of Medicaid matching funds prompted Minnesota to sue CMS, an action which the district court ultimately <a href="https://litigationtracker.law.georgetown.edu/wp-content/uploads/2026/04/Minnesota_2026.04.06_OPINION.pdf">denied </a>&nbsp;on April 6 for procedural reasons. Minnesota also submitted a corrective action plan to CMS to address the identified program integrity concerns. Although CMS approved the corrective action plan, the funds nevertheless remain <a href="https://www.mprnews.org/story/2026/04/10/minnesotas-plan-to-fight-fraud-underway-as-federal-medicaid-money-remains-frozen">withheld</a>.</p>
+
+
+
+<p>Congress has expanded its fraud prevention efforts by increasing oversight of state Medicaid programs. Specifically, in early March, the House Committee on Energy and Commerce sent <a href="https://energycommerce.house.gov/posts/e-and-c-leaders-expand-investigation-into-medicaid-fraud-nationwide">letters</a> to governors and Medicaid agency leaders in California, Colorado, Maine, Massachusetts, Nebraska, New York, Oregon, Pennsylvania, Vermont, and Washington seeking detailed information on Medicaid program integrity efforts. In an <a href="https://news.bgov.com/bloomberg-government-news/oz-warns-more-states-may-see-federal-dollars-denied-over-fraud">interview</a> with Bloomberg Government, Dr. Mehmet Oz, administrator of CMS, announced that CMS will soon expand beyond the states where they are already investigating for Medicaid fraud and warned that states that do not cooperate with CMS’ investigations may lose federal funding.</p>
+
+
+
+<p>CMS’s actions have been publicized with <a href="https://news.bloomberglaw.com/health-law-and-business/minnesota-says-trump-administration-weaponized-medicaid-funds">social media campaigns</a> against <a href="https://kffhealthnews.org/news/article/medicaid-fraud-dr-oz-minnesota-california-maine-new-york-florida/">California, Florida, Maine, and New York</a>, alleging high-dollar public benefit fraud. In some cases, states have responded by enhancing and publicizing their own anti-fraud efforts. For example, in Texas, Governor Greg Abbott directed the Texas Health and Human Services Commission (HHSC) and HHSC’s Office of Inspector General to increase Medicaid fraud enforcement, including by ensuring that Medicaid Managed Care Organizations maintain fully staffed and compliant Special Investigations Units and by prioritizing oversight of high‑risk service areas. Nanette K. Beaird et al., <a href="https://www.foley.com/p/102mdrl/texas-governor-issues-new-directive-on-medicaid-fraud-enforcement-five-things-th/"><em>Texas Governor Issues New Directive on Medicaid Fraud Enforcement: Five Things That Managed Care Organizations Should Do Now</em></a>, Foley &amp; Lardner LLP (Jan. 22, 2026).</p>
+
+
+
+<p><strong><u>CRUSH RFI</u></strong></p>
+
+
+
+<p>In addition to its heightened emphasis on enforcement activities, the Administration has signaled an interest in policy changes to prevent “fraud, waste, and abuse” in federal health care programs. In February 2026, CMS issued a <a href="https://www.federalregister.gov/documents/2026/02/27/2026-03968/request-for-information-rfi-related-to-comprehensive-regulations-to-uncover-suspicious-healthcare">Request for Information</a> (RFI) inviting input on how CMS can expand and strengthen its fraud, waste, and abuse efforts under a future proposed rule pursuant to CMS’ Comprehensive Regulations to Uncover Suspicious Healthcare (CRUSH) initiative (CRUSH RFI).</p>
+
+
+
+<p>The CRUSH RFI solicited feedback on a wide variety of topics, listed below, and provided insight on the types of actions CMS is considering taking. The topics were not limited to tools designed to prevent fraudulent or criminal activity but also indicated that CMS was considering affirmative changes to program policy in areas it viewed as improper or wasteful. Hundreds of comments were submitted in response to the CRUSH RFI, which CMS is now reviewing. Changes identified in the CRUSH RFI generally would require new rulemaking to be implemented.</p>
+
+
+
+<p><strong><em>A. Modifications to Program Integrity Requirements. </em></strong>CMS sought stakeholder input on how it can better use or modify its existing program integrity authorities, including provider enrollment, audits, payment suspensions, analytics, and enforcement processes, to more quickly and effectively prevent fraud, waste, and abuse across federal health care programs.</p>
+
+
+
+<p><strong><em>B. Enhanced Identity Proofing and Ownership Requirements</em>. </strong>Based on significant concerns that Medicare fraud is increasing through international fraud schemes characterized by opacity of ownership structures, CMS sought feedback on potential provisions that would require enhanced identify proofing of individuals associated with Medicare-enrolled entities and impose citizenship or legal resident requirements for ownership.</p>
+
+
+
+<p><strong><em>C. Preclusion List and Medicare Advantage (MA) Enrollment Requirements</em>. </strong>CMS sought input on how to strengthen the Medicare Advantage preclusion list to prevent providers revoked from Medicare Parts A and B (Traditional Medicare) from continuing to bill MA plans, including whether MA billing should require provider enrollment in Traditional Medicare.</p>
+
+
+
+<p><strong><em>D.</em></strong> <strong><em>Laboratory Testing (Including Genetic and Molecular Tests)</em>. </strong>In light of increased spending and persistent fraud concerns related to laboratory tests, particularly genetic tests, including molecular testing, CMS sought input on what additional authorities, analytics, and safeguards could better prevent, detect, and address fraud related to laboratory tests.</p>
+
+
+
+<p><strong><em>E. Reducing Risks from Non-Participating DMEPOS Suppliers in MA. </em></strong>CMS has identified that non-participating DMEPOS suppliers are fraudulently billing MA plans for millions of dollars of services not rendered and not needed. CMS sought feedback on solutions related to non-participating DMEPOS suppliers in MA.</p>
+
+
+
+<p><strong><em>F. Reducing Fraudulent Traditional Medicare Claim Submission</em>. </strong>CMS sought feedback on the impact of reducing the Traditional Medicare one (1)-year timely filing deadline for claims for high-risk items and services, including for DMEPOS.</p>
+
+
+
+<p><strong><em>G. Artificial Intelligence in MA Coding Oversight and Hospital Biling</em>. </strong>CMS sought input from stakeholders about the availability, use, efficacy, and cost of using artificial intelligence, based on machine learning and other methods, to assist with accurately and efficiently abstracting diagnoses from medical record documentation as part of a medical records review.</p>
+
+
+
+<p><strong><em>H. Beneficiary Solicitation, Contact, and Fraud Reporting</em>.</strong> Because Medicare beneficiaries are often subject to unsolicited outreach by individuals seeking to obtain the beneficiaries’ personally identifiable information, CMS sought feedback on the impact of expanding prohibitions on unsolicited beneficiary outreach beyond DMEPOS suppliers and beyond telephone communications. CMS also sought guidance on how to better support beneficiaries in identifying and reporting potentially suspicious Traditional Medicare claims.</p>
+
+
+
+<p><strong><em>I.</em></strong> <strong><em>Surety Bond Requirements</em>. </strong>CMS sought feedback on how it can strengthen the existing surety bond requirements for DMEPOS suppliers under Section 1834(a)(16) of the Social Security Act.</p>
+
+
+
+<p><strong><em>J.</em></strong> <strong><em>Medicaid and CHIP</em>. </strong>CMS sought input to ensure that “states are proactive in crushing fraudulent activities in these programs.” Specific inquiries related to improving program integrity with regard to intergovernmental transfers (IGTs), programs that offer services to individuals without satisfactory immigration status, or differential payment rates between public and private providers.&nbsp;</p>
+
+
+
+<p><strong><em>K. Federally Facilitated Exchange (FFE) and State-Based Exchanges (SBE).</em> </strong>CMS sought comments on how it can strengthen program integrity, including fraud prevention and consumer protection in both the FFEs and SBEs.</p>
+
+
+
+<p><strong><u>Looking Ahead</u></strong></p>
+
+
+
+<p>The rhetoric from CMS, the Trump Administration, and from Congress indicate that health care enforcement activities to prevent fraud, waste, and abuse are on the rise. These efforts include a wide swath of proactive tools that can be used to prevent improper activity — including preventive moratoria or enhanced scrutiny applied against entire sectors. They also may extend to policymaking in areas that the government now views as wasteful. Financial threats such as those imposed by CMS on the state of Minnesota or the letters issued by the Governor of Texas may also lead state actors to take harder lines on the prevention of fraud, waste, and abuse.</p>
+
+
+
+<p><strong><em>Key Takeaways</em></strong></p>
+
+
+
+<p>Providers, suppliers, managed care organizations, and other stakeholders may wish to assess their readiness for heightened scrutiny and consider how CMS’s evolving approach could affect enrollment, billing, and program integrity expectations going forward.</p>
+
+
+
+<p>* * *</p>
+
+
+
+<p>At Foley, we are tracking these developments closely and actively advising providers across the country on how to respond to this evolving legal landscape. From policy development and compliance strategy to enforcement defense, we are here to help. Please reach out to the authors, your Foley relationship partner, or to our&nbsp;<a href="https://www.foley.com/practice-areas/corporate/health-care/" target="_blank" rel="noreferrer noopener">Health Care Practice Group</a>&nbsp;and&nbsp;<a href="https://www.foley.com/sectors/health-care-life-sciences/" target="_blank" rel="noreferrer noopener">Health Care &amp; Life Sciences Sector</a>&nbsp;with any questions.</p>
+
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/new-federal-focus-on-fraud-waste-and-abuse-may-signal-changes-for-the-health-care-industry/">New Federal Focus on Fraud, Waste and Abuse May Signal Changes for the Health Care Industry</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>The EEOC’s Annual Reports Reflect Its Priorities and Set Future Expectations</title>
+		<link>https://www.foley.com/insights/publications/2026/04/the-eeocs-annual-reports-reflect-its-priorities-and-set-future-expectations/</link>
+		
+		<dc:creator><![CDATA[eaheinrich@foley.com]]></dc:creator>
+		<pubDate>Mon, 20 Apr 2026 20:11:10 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false"></guid>
+
+					<description><![CDATA[<p>On April 6, 2026, the Equal Employment Opportunity Commission issued its FY 2027 Agency Performance Plan and its FY 2025 Agency Performance Report. It also released the litigation report for FY 2025 from its Office of General Counsel.</p>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/the-eeocs-annual-reports-reflect-its-priorities-and-set-future-expectations/">The EEOC’s Annual Reports Reflect Its Priorities and Set Future Expectations</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[
+<section class="acf-block block-text-sidebar bg-transparent">
+	<div class="container">
+		<div class="block-text-sidebar__grid 
+					block-text-sidebar__grid--has-social-share 					block-text-sidebar__grid--has-sidebar">
+							<div class="block-text-sidebar__share-column">
+				
+<div class="a2a_kit share-icons wp-block-buttons">
+	<div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-linkedin)"><a href="#" class="wp-block-button__link a2a_button_linkedin share-icons__link" target="_self">Share on LinkedIn</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-x)"><a href="#" class="wp-block-button__link a2a_button_twitter share-icons__link" target="_self">Share on Twitter</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-download-pdf)"><a href="#" class="wp-block-button__link a2a_button_print share-icons__link" target="_self">Print</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-email)"><a href="#" class="wp-block-button__link a2a_button_email share-icons__link" target="_self">Share by Email</a></div><div class="wp-block-button is-style-social wp-block-button--icon-right" style="--buttonIcon: var(--icon-share)"><a href="#" class="wp-block-button__link a2a_dd share-icons__link" target="_self">Share</a></div></div>
+
+				<div class="back-to-top__wrapper">
+	<a href="#page" class="back-to-top">
+		<span class="sr-only">Back to top</span>
+		<span class="icon-top"></span>
+	</a>
+</div>
+				</div>
+						<div class="block-text-sidebar__content-column">
+				<div class="block-text-sidebar__container">
+											<div class="acf-innerblocks-container">
+
+
+
+<p>On April 6, 2026, the Equal Employment Opportunity Commission (EEOC) issued its <a href="https://www.eeoc.gov/fy-2027-agency-performance-plan-app-and-fy-2025-agency-performance-report-apr">FY 2027 Agency Performance Plan (APP) and its FY 2025 Agency Performance Report (APR)</a>. It also released the <a href="https://www.eeoc.gov/office-general-counsel-fiscal-year-2025-annual-report">litigation report for FY 2025</a> from its Office of General Counsel. These reports describe the results achieved by the Trump administration’s EEOC and provide insight about its activities moving forward.</p>
+
+
+
+<p><strong>The EEOC Reports Publicize Agency Efforts and Priorities</strong></p>
+
+
+
+<p>Despite staff reductions and budget cuts, the EEOC reported obtaining $660 million for 17,680 victims of discrimination. While this total recovery figure was down from $700 million in the previous fiscal year, as was the number of merits lawsuits, the EEOC touted securing a record $528 million from its pre-litigation enforcement processes (e.g., mediation and conciliation).</p>
+
+
+
+<p>Of more significance might be the EEOC’s description of how the achievement of these results aligned with its strategic priorities. The APP explained that these enforcement efforts included “rooting out unlawful race and sex discrimination arising from or related to DEI programs, policies, and practices; protecting American workers from unlawful national origin bias that places foreign hires ahead of citizens; safeguarding women’s sex-based rights at work; and defending religious liberty by addressing unlawful bias against people of faith.”</p>
+
+
+
+<p>In addition to the headline-grabbing DEI-related lawsuits, the EEOC also adopted a more targeted litigation approach. Sex- and pregnancy-related cases accounted for 44% of its litigation, followed by disability and retaliation. The EEOC filed ten cases based on religious discrimination, up from three cases the prior year. Race and national origin EEOC litigation, on the other hand, were down substantially — with only two cases of each in 2025, compared with 15 race cases and six national origin cases in 2024.</p>
+
+
+
+<p><strong>Employers Can Glean Insights from the EEOC’s Reports</strong></p>
+
+
+
+<p>While EEOC cases are only a part of the risk pool, employers would be wise to take stock of what these reports tell us:</p>
+
+
+
+<ul class="wp-block-list wp-block-list">
+<li class="wp-block-list-item">First, this administration&#8217;s intense scrutiny on DEI is clear. Employers should continue to audit their DEI programs to ensure that they comply with the numerous guidance and executive orders prohibiting equity in outcomes, as opposed to promoting equality of opportunity.</li>
+</ul>
+
+
+
+<ul class="wp-block-list wp-block-list">
+<li class="wp-block-list-item">Second, the administration has prioritized religious discrimination and accommodation for religious beliefs cases, and these faith-based lawsuits are only likely to grow, <a href="https://www.foley.com/news/2024/07/schroeder-on-groff-supreme-court-decision/">especially given</a> the Supreme Court’s more employee-friendly standard in <em>Groff v. DeJoy </em>(2023).</li>
+</ul>
+
+
+
+<ul class="wp-block-list wp-block-list">
+<li class="wp-block-list-item">Third, perhaps more unknown is the <a href="https://www.foley.com/insights/publications/2024/09/recent-eeoc-lawsuits-pregnancy-related-accommodation/">EEOC’s concentration on sex and pregnancy discrimination and harassment</a>. The Pregnant Workers Fairness Act (PWFA) is still a fairly new statute, and some employers are not fully aware of the heightened accommodation requirements that it mandates.Therefore, employers should ensure that both their pregnancy and religious accommodation procedures are up to speed.</li>
+</ul>
+
+
+
+<p>In January 2026, the EEOC announced that all litigation must be approved by the Commission. However, now that the new appointees give the EEOC a quorum, employers should expect to see more EEOC litigation in these priority areas.</p>
+
+</div>
+														</div>
+							</div>
+							<aside class="block-text-sidebar__sidebar-column">					
+																
+						
+<div class="block-text-sidebar__sidebar-links block-text-sidebar__section" data-index="">
+					</div>
+																								</aside>
+					</div>
+	</div>
+</section>
+<p>The post <a href="https://www.foley.com/insights/publications/2026/04/the-eeocs-annual-reports-reflect-its-priorities-and-set-future-expectations/">The EEOC’s Annual Reports Reflect Its Priorities and Set Future Expectations</a> appeared first on <a href="https://www.foley.com">Foley &amp; Lardner LLP</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>

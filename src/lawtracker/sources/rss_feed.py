@@ -20,10 +20,9 @@ each one is a 4-line subclass instead of a full adapter.
 import re
 from datetime import date
 from email.utils import parsedate_to_datetime
-from typing import ClassVar
+from typing import Any, ClassVar
 from xml.etree import ElementTree as ET
 
-import httpx
 from bs4 import BeautifulSoup
 
 from lawtracker.sources.base import EventRecord, SourceAdapter
@@ -36,7 +35,7 @@ class RssFeedAdapter(SourceAdapter):
     country: ClassVar[str | None] = None
     keyword_filter: ClassVar[re.Pattern[str] | None] = None
 
-    def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
+    def parse(self, html: str, client: Any) -> list[EventRecord]:
         root = ET.fromstring(html)
 
         items = root.findall(".//item")

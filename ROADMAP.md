@@ -18,14 +18,15 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 wave 4: Miller & Chevalier HTML adapter)**
+**2026-04-25 (item 17 wave 5: curl_cffi unlock + 2 new adapters)**
 
-- Tom pointed at a path I'd missed: HTML practice-area / filtered-search pages on firms that don't expose RSS. Built `MillerChevalierFcpaAdapter` against M&C's `/search?related_practice=8965&content_types[0]=publication|news|event` endpoint via the multi-URL `urls` property. Fixture has 20 publications including the FCPA Winter Review 2026 and Autumn Review 2025.
-- **Same Cloudflare TLS-fingerprint block** that hits Gibson Dunn intermittently also blocks Miller & Chevalier at scout time (200 to curl during fixture capture, 403 to httpx live). The block is on JA3 hash, not User-Agent or HTTP headers.
-- Three unblock options surfaced for item 18 decision: (1) `curl_cffi` as runtime dep (drop-in httpx replacement, ~1 hour swap; *needs Tom's approval*), (2) Playwright headless browser (~half-day, also beats JS-rendered sites), (3) email-subscription parsing.
-- Live scout: still 45 events from working adapters; M&C currently joins Gibson Dunn in CF-blocked status. Suite: 36 passing. Ruff + mypy clean.
-- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff.
-- Next: Tom decides on a TLS-unblock path so M&C, Gibson Dunn, and other Cloudflare-fingerprinted firms can poll reliably; or accepts the current set (DOJ + AFP + Fiscalía + Consejo + Volkov + GAB) for the first scout review with Ellen.
+- Tom approved `curl_cffi` as a runtime dep. Wired into `SourceAdapter` as opt-in `use_curl_cffi: ClassVar[bool] = False` flag. When True, `poll()` uses a Chrome-impersonating curl_cffi Session instead of httpx. The two clients duck-type the same `.get(url) → response.{status_code,text}` interface; `parse(html, client)` signature relaxed to `Any` to accept either.
+- Flipped `use_curl_cffi = True` on Miller & Chevalier and Gibson Dunn — both now flow live (M&C 0→60 events, Gibson Dunn 0→1 event after `ANTI_CORRUPTION_EN` filter).
+- Re-probed every previously-403'd source with curl_cffi; built two new RSS adapters from the wins: `FoleyLlpAdapter` (`/feed/` + `ANTI_CORRUPTION_EN`, currently 0 hits — no anti-corruption posts in current feed snapshot) and `HarvardCorpGovFcpaAdapter` (FCPA-tag-only feed, no filter, currently 0 entries — sparse academic coverage).
+- **SEC FCPA cases now reachable** via curl_cffi but the page is a single long narrative document (year headers + free-text case paragraphs, not a structured list). Adapter deferred to its own commit; needs careful prose-parsing.
+- Live scout: **106 events from 10 adapters** (DOJ 6, AFP 9, Fiscalía 0, Consejo 10, Volkov 10, Gibson Dunn 1, GAB 10, M&C 60, Foley LLP 0, Harvard CorpGov 0). Suite: 38 passing. Ruff + mypy clean.
+- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff. Items 4 / 5 / 6+ still queued behind item 18 (scout review).
+- Next options: (a) build SEC FCPA cases adapter (focused commit, prose parsing), (b) defer to scout review and let Ellen call which gaps matter, (c) probe more 404-RSS firms by HTML practice-area pattern (M&C-style).
 
 ## For future agents
 

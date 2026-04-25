@@ -32,7 +32,6 @@ from datetime import date, datetime
 from typing import Any, ClassVar
 from urllib.parse import urljoin
 
-import httpx
 from bs4 import BeautifulSoup, Tag
 
 from lawtracker.sources.base import EventRecord, SourceAdapter
@@ -109,7 +108,7 @@ class DojFcpaActionsAdapter(SourceAdapter):
     def urls(self) -> tuple[str, ...]:
         return tuple(YEAR_URL_TEMPLATE.format(year=y) for y in self.years)
 
-    def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
+    def parse(self, html: str, client: Any) -> list[EventRecord]:
         soup = BeautifulSoup(html, "html.parser")
         body = soup.select_one("div.field_body")
         if body is None:
@@ -122,7 +121,7 @@ class DojFcpaActionsAdapter(SourceAdapter):
                 records.append(record)
         return records
 
-    def _build_record(self, indent: Tag, client: httpx.Client) -> EventRecord | None:
+    def _build_record(self, indent: Tag, client: Any) -> EventRecord | None:
         caption_p = indent.find_previous_sibling("p")
         if not isinstance(caption_p, Tag):
             return None
@@ -162,7 +161,7 @@ class DojFcpaActionsAdapter(SourceAdapter):
         )
 
 
-def _fetch_enrichment(client: httpx.Client, case_url: str) -> dict[str, Any]:
+def _fetch_enrichment(client: Any, case_url: str) -> dict[str, Any]:
     """Best-effort: case-detail page → press-release URL → press release.
 
     Any failure returns whatever has been collected so far. Enrichment is
@@ -185,7 +184,7 @@ def _fetch_enrichment(client: httpx.Client, case_url: str) -> dict[str, Any]:
         if pr_resp.status_code != 200:
             return {"press_release_url": pr_url}
         return _parse_press_release(pr_resp.text, pr_url)
-    except (httpx.RequestError, httpx.HTTPError):
+    except Exception:
         return {}
 
 

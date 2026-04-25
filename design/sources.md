@@ -65,9 +65,12 @@ URLs marked **(approximate)** were not verified during inventory drafting; the a
 19. **Global Anticorruption Blog (GAB)** (event_list, RSS, English) — Matthew Stephenson at Harvard Law School. Academic, single-topic, multi-jurisdictional. No keyword filter — every post is on-topic. Built via `RssFeedAdapter`.
     - Adapter URL: https://globalanticorruptionblog.com/feed/
 
-20. **Miller & Chevalier — FCPA & International Anti-Corruption practice search** (event_list, HTML, English) — Drupal-driven `/search` endpoint accepting filter parameters that pin results to the FCPA practice area (`related_practice=8965`). Adapter fetches three content types per poll (publications, news, events) by overriding `urls`. Publications are the Winter / Spring / Summer / Autumn FCPA Reviews Tom flagged; news is media mentions; events are speaking engagements.
+20. **Miller & Chevalier — FCPA & International Anti-Corruption practice search** (event_list, HTML, English) — Drupal-driven `/search` endpoint accepting filter parameters that pin results to the FCPA practice area (`related_practice=8965`). Adapter fetches three content types per poll (publications, news, events) by overriding `urls`. Publications are the Winter / Spring / Summer / Autumn FCPA Reviews Tom flagged; news is media mentions; events are speaking engagements. **`use_curl_cffi = True`** — Cloudflare fingerprint-blocks httpx but accepts curl_cffi's Chrome-impersonating TLS.
     - Adapter URL (publications): https://www.millerchevalier.com/search?search_term=&related_practice=8965&...&content_types%5B0%5D=publication
-    - **Live access intermittent**: returns 200 to curl during fixture capture but 403 to httpx (Cloudflare appears to fingerprint TLS, not just User-Agent). Same failure mode as Gibson Dunn. Reliable production access needs `curl_cffi`, Playwright, or a manual fixture refresh process.
+21. **Foley & Lardner LLP — publications RSS** (event_list, RSS, English) — major US firm with a mixed-topic `/feed/`; adapter applies `ANTI_CORRUPTION_EN` to keep only FCPA / AML / sanctions items. `use_curl_cffi = True`.
+    - Adapter URL: https://www.foley.com/feed/
+22. **Harvard Law School Forum on Corporate Governance — FCPA tag** (event_list, RSS, English) — academic / commentary outlet, FCPA-tag-restricted feed so single-topic (no filter). `use_curl_cffi = True`. Volume is low (commentary, not a case feed).
+    - Adapter URL: https://corpgov.law.harvard.edu/category/foreign-corrupt-practices-act/feed/
 
 ### Law-firm feeds that could not be added (audited 2026-04-25)
 

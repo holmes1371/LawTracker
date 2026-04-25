@@ -15,6 +15,7 @@ dependencies = [
     "beautifulsoup4>=4.12",
     "pydantic>=2.6",
     "openpyxl>=3.1",
+    "curl_cffi>=0.7",
 ]
 
 [project.optional-dependencies]
@@ -43,5 +44,5 @@ target-version = "py311"
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [[tool.mypy.overrides]]
-module = ["openpyxl.*"]
+module = ["openpyxl.*", "curl_cffi.*"]
 ignore_missing_imports = true

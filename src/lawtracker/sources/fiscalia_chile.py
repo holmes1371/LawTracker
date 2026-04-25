@@ -23,9 +23,9 @@ text is the headline, and a `<div class="field--name-body">` body summary.
 """
 
 from datetime import date, datetime
+from typing import Any
 from urllib.parse import urljoin
 
-import httpx
 from bs4 import BeautifulSoup, Tag
 
 from lawtracker.sources._filters import ANTI_CORRUPTION_ES
@@ -39,7 +39,7 @@ class FiscaliaChileAdapter(SourceAdapter):
     kind = "event_list"
     url = "https://www.fiscaliadechile.cl/actualidad/noticias/nacionales"
 
-    def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
+    def parse(self, html: str, client: Any) -> list[EventRecord]:
         soup = BeautifulSoup(html, "html.parser")
         records: list[EventRecord] = []
         for card in soup.select("div.card-new"):

@@ -10,8 +10,10 @@ from pathlib import Path
 import httpx
 
 from lawtracker.sources._filters import ANTI_CORRUPTION_EN
+from lawtracker.sources.foley_llp import FoleyLlpAdapter
 from lawtracker.sources.gibson_dunn import GibsonDunnAdapter
 from lawtracker.sources.global_anticorruption_blog import GlobalAnticorruptionBlogAdapter
+from lawtracker.sources.harvard_corpgov_fcpa import HarvardCorpGovFcpaAdapter
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -44,6 +46,43 @@ def test_gibson_dunn_uses_anti_corruption_filter():
     )
     # And should drop the joint-employer one.
     assert not any("Joint-Employer" in t for t in titles)
+
+
+def test_foley_llp_uses_anti_corruption_filter_and_curl_cffi():
+    assert FoleyLlpAdapter.keyword_filter is ANTI_CORRUPTION_EN
+    assert FoleyLlpAdapter.use_curl_cffi is True
+    assert FoleyLlpAdapter.country is None
+
+    with _client_for("foley_llp.xml") as client:
+        result = FoleyLlpAdapter().poll(client=client)
+    assert result.status == "ok"
+    # Filter trims a large mixed-topic feed; expect at least one anti-corruption hit.
+    for event in result.events:
+        haystack = (event.title + " " + (event.summary or "")).lower()
+        keywords = (
+            "fcpa",
+            "bribery",
+            "corruption",
+            "sanctions",
+            "aml",
+            "money laundering",
+            "ofac",
+        )
+        assert any(kw in haystack for kw in keywords), (
+            f"event passed filter without anti-corruption keyword: {event.title}"
+        )
+
+
+def test_harvard_corpgov_fcpa_no_filter_curl_cffi():
+    assert HarvardCorpGovFcpaAdapter.keyword_filter is None
+    assert HarvardCorpGovFcpaAdapter.use_curl_cffi is True
+    assert "foreign-corrupt-practices-act" in HarvardCorpGovFcpaAdapter.url
+
+    with _client_for("harvard_corpgov_fcpa.xml") as client:
+        result = HarvardCorpGovFcpaAdapter().poll(client=client)
+    assert result.status == "ok"
+    for event in result.events:
+        assert event.source_id == "harvard_corpgov_fcpa"
 
 
 def test_global_anticorruption_blog_no_filter_all_on_topic():

@@ -19,3 +19,4 @@ class GibsonDunnAdapter(RssFeedAdapter):
     url = "https://www.gibsondunn.com/feed/"
     country = None
     keyword_filter = ANTI_CORRUPTION_EN
+    use_curl_cffi = True
