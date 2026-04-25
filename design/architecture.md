@@ -4,15 +4,16 @@ Status: locked 2026-04-25 with Tom's approval. This note frames everything else;
 
 ## Product shape
 
-LawTracker is a web dashboard that monitors **how the US government enforces and interprets anti-corruption law**, with FCPA and FEPA as the priority pilot scope. Pilot user is Ellen.
+LawTracker is a web dashboard that monitors **how governments around the world enforce and interpret anti-corruption law**. Pilot scope is **United States + Australia + Chile**, sourced through three categories: primary government agencies, multilateral / cross-jurisdictional indexes, and one curated practitioner aggregator. Pilot user is Ellen.
 
 The statutes themselves are out of scope — they change rarely and are not the signal Ellen needs. What she needs is:
 
-- **Enforcement actions** — DOJ and SEC FCPA cases as they are filed.
-- **Government messaging** — policy announcements, senior-official speeches, press releases that signal enforcement priority and strategy.
-- **Compliance expectations** — changes to DOJ/SEC corporate-enforcement guidance and policy memos.
+- **Enforcement actions** — case announcements from prosecutors and regulators across pilot jurisdictions, plus aggregator coverage of additional cases.
+- **Government messaging** — speeches and press materials that signal enforcement priority and strategy.
+- **Compliance expectations** — guidance documents from anti-corruption authorities (DOJ ECCP, AFA recommendations, etc.).
+- **Cross-jurisdictional indexes** — OECD Working Group on Bribery country evaluations; World Bank sanctions / debarment list.
 
-Future scope (not pilot): trusted third-party trackers (law-firm alerts, FCPA Blog, Stanford FCPA Clearinghouse, etc.) under the same adapter framework; expansion to other US anti-corruption statutes (18 U.S.C. § 201 domestic bribery, AML Act, Magnitsky/OFAC) and other jurisdictions (UK Bribery Act, EU directives) once the pilot proves out.
+Future scope (not pilot): expansion to additional jurisdictions (UK SFO/FCA, French PNF/AFA, German prosecutors, Brazilian MPF/CGU, Swiss OAG, Dutch OM, Italian ANAC, Singapore CPIB, Hong Kong ICAC); paid aggregators (Global Investigations Review); law-firm client alerts (Latham, Skadden, Gibson Dunn, Cleary, Debevoise, etc.); Stanford FCPA Clearinghouse; expansion to adjacent US regimes (18 U.S.C. § 201 domestic bribery, AML Act, Magnitsky/OFAC SDN updates).
 
 ## Two source shapes
 

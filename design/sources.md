@@ -1,49 +1,87 @@
 # LawTracker — Pilot source inventory
 
-Status: locked 2026-04-25 with Tom's approval. Pilot scope is **US anti-corruption enforcement and compliance guidance**, with FCPA and FEPA as priority subject matter. Statutes themselves are out of scope — Ellen needs enforcement and government messaging, not statutory text.
+Status: widened 2026-04-25 from US-only to global. Pilot scope is **anti-corruption enforcement and compliance guidance across the United States, Australia, and Chile**, plus multilateral indexes and one curated aggregator. Statutes themselves are out of scope — Ellen needs enforcement and government messaging, not statutory text.
 
-Each source has a kind: `document` (changes in place; hash + diff) or `event_list` (entries appear over time; new-entry detection). One Python module per source under `src/lawtracker/sources/`.
+Each source has a kind: `document` (changes in place; hash + diff) or `event_list` (entries appear over time; new-entry detection). One Python module per source under `src/lawtracker/sources/`. Sources are organized below by the three categories settled with Tom on 2026-04-25.
 
-## Compliance and enforcement guidance — *document* sources
+URLs marked **(approximate)** were not verified during inventory drafting; the adapter implementer must confirm the exact path before wiring extraction. Spanish-language sources will need a corruption/cohecho/soborno keyword filter inside the adapter to limit emissions to anti-corruption content.
 
-Change rarely; each change is high-signal. Hash + diff on each poll.
+## Category 1 — Primary government agencies
 
-1. **DOJ FCPA Resource Guide** — joint DOJ/SEC compliance guidance, the canonical interpretation document.
+### United States
+
+1. **DOJ FCPA Resource Guide** (document) — joint DOJ/SEC compliance guidance; canonical interpretation document.
    - https://www.justice.gov/criminal/criminal-fraud/fcpa-resource-guide
-2. **DOJ Corporate Enforcement Policy (JM 9-47.120)** — voluntary self-disclosure / cooperation / remediation framework.
+2. **DOJ Corporate Enforcement Policy (JM 9-47.120)** (document) — voluntary self-disclosure / cooperation / remediation framework.
    - https://www.justice.gov/jm/jm-9-47000-foreign-corrupt-practices-act-1977
-3. **DOJ Evaluation of Corporate Compliance Programs (ECCP)** — DOJ's framework for evaluating compliance programs in enforcement decisions.
+3. **DOJ Evaluation of Corporate Compliance Programs (ECCP)** (document) — DOJ's framework for evaluating compliance programs in enforcement decisions. PDF.
    - https://www.justice.gov/criminal-fraud/page/file/937501/download
-4. **JM 9-28.000 — Principles of Federal Prosecution of Business Organizations** — the broader corporate-prosecution principles that frame FCPA cases.
+4. **JM 9-28.000 — Principles of Federal Prosecution of Business Organizations** (document) — broader corporate-prosecution principles framing FCPA cases.
    - https://www.justice.gov/jm/jm-9-28000-principles-federal-prosecution-business-organizations
-
-## Enforcement and messaging — *event_list* sources
-
-Steady stream. New-entry detection on each poll.
-
-5. **DOJ FCPA enforcement actions list** — DOJ's curated list of cases.
+5. **DOJ FCPA enforcement actions list** (event_list) — DOJ's curated list of cases.
    - https://www.justice.gov/criminal/criminal-fraud/related-enforcement-actions
-6. **SEC FCPA enforcement actions** — SEC's enforcement-actions index for the FCPA Unit.
+6. **SEC FCPA enforcement actions** (event_list) — SEC's enforcement-actions index for the FCPA Unit.
    - https://www.sec.gov/spotlight/fcpa/fcpa-cases.shtml
-7. **DOJ FCPA Opinion Procedure releases** — DOJ's formal opinion responses to industry inquiries.
+7. **DOJ FCPA Opinion Procedure releases** (event_list) — DOJ's formal opinion responses to industry inquiries.
    - https://www.justice.gov/criminal/criminal-fraud/foreign-corrupt-practices-act/opinion-procedure-releases
-8. **DOJ press releases (FCPA-filtered)** — RSS or topic-tagged feed; ranked lower than the curated enforcement list because of higher noise.
+8. **DOJ press releases (FCPA-filtered)** (event_list) — RSS or topic-tagged feed; ranked lower than the curated enforcement list because of higher noise.
    - https://www.justice.gov/news (filter)
-9. **DOJ senior-official speeches** — AG, DAG, AAG-Criminal Division. Primary surface for enforcement-priority and strategy announcements.
+9. **DOJ senior-official speeches** (event_list) — AG, DAG, AAG-Criminal Division. Primary surface for enforcement-priority and strategy announcements.
    - https://www.justice.gov/speeches (filter to senior officials)
+
+### Australia
+
+10. **AFP foreign-bribery media releases** (event_list) — Australian Federal Police; primary investigative-stage announcements for foreign-bribery cases.
+    - https://www.afp.gov.au/news-centre/news (filter to fraud / foreign bribery) **(approximate)**
+11. **CDPP case reports** (event_list) — Commonwealth Director of Public Prosecutions; prosecutorial-stage announcements. Often paired with AFP item above on the same case at different stages.
+    - https://www.cdpp.gov.au/case-reports (filter to bribery / foreign bribery) **(approximate)**
+
+### Chile
+
+12. **Fiscalía Nacional — sala de prensa** (event_list, Spanish) — Chile's national prosecutor; press releases on cases. Adapter must filter for *cohecho / corrupción / soborno / Ley 20.393* keywords.
+    - https://www.fiscaliadechile.cl/Fiscalia/sala_prensa **(approximate)**
+13. **Contraloría General de la República — dictámenes / pronunciamientos** (event_list, Spanish) — comptroller-general findings on public-administration compliance and corruption.
+    - https://www.contraloria.cl **(approximate; specific section TBD)**
+
+## Category 2 — Multilateral / cross-jurisdictional indexes
+
+14. **OECD Working Group on Bribery — country evaluation reports** (document, low-frequency) — gold-standard assessments of OECD-member enforcement vigor against the OECD Anti-Bribery Convention. Years between reports per country, but extremely high signal for trend-watching. Pilot countries (US, Australia, Chile) are all OECD members.
+    - https://www.oecd.org/corruption/anti-bribery (specific country-report index path **approximate**)
+15. **World Bank sanctions / debarred firms list** (event_list) — debarments for fraud/corruption in World-Bank-financed projects; cross-jurisdictional.
+    - https://www.worldbank.org/en/about/unit/sanctions-system/debarred-firms **(approximate)**
+
+## Category 3 — Curated aggregator
+
+16. **FCPA Blog** (event_list, RSS) — practitioner-focused aggregator covering global anti-corruption news despite the name. Single most efficient source for breadth across jurisdictions; free.
+    - https://fcpablog.com  (RSS feed at https://fcpablog.com/feed/ **approximate**)
 
 ## Out of scope — pilot
 
-- The FCPA statute itself (15 U.S.C. §§ 78dd-1 et seq.) and the FEPA statute (18 U.S.C. § 1352). Statutory text changes are not Ellen's signal.
+- The FCPA statute itself (15 U.S.C. §§ 78dd-1 et seq.), FEPA (18 U.S.C. § 1352), Australia's Criminal Code Division 70 (foreign bribery), and Chile's Ley 20.393 (corporate criminal liability). Statutory text changes are not Ellen's signal.
 - Domestic bribery (18 U.S.C. § 201), honest-services fraud, AML Act / Corporate Transparency Act, Magnitsky / OFAC SDN updates. File future ROADMAP items if the pilot expands.
-- Non-US jurisdictions (UK Bribery Act, EU directives, OECD anti-bribery work).
-
-## Future — trusted third-party sources
-
-Tom plans to provide an approved list — large law-firm client-alert pages, FCPA Blog, Stanford FCPA Clearinghouse, etc. The adapter framework is built so these slot in as additional `event_list` (or `document`) sources without schema changes.
-
-When the list arrives, file as a separate ROADMAP item rather than appending here — keeping pilot vs. expansion separate makes scope creep visible.
+- Other jurisdictions with active anti-corruption enforcement: UK (SFO, FCA), France (PNF, AFA), Germany (state-level prosecutors), Brazil (MPF, CGU), Switzerland (OAG), Netherlands (OM, FIOD), Italy (ANAC, Milan/Rome prosecutors), Singapore (CPIB), Hong Kong (ICAC). These are the priority post-pilot expansions — see architecture note's "Future scope" list.
+- Paid aggregators (Global Investigations Review). High signal but subscription-gated; pilot stays free.
+- Law-firm client alerts (Latham, Skadden, Gibson Dunn, Cleary, Debevoise, WilmerHale, Hogan Lovells, Freshfields). Will arrive with item 15 once Tom finalizes the approved list.
 
 ## Implementation order
 
-When the source-adapter framework lands (item 3), build it against **source #5 (DOJ FCPA enforcement actions list)** as the anchor adapter — single highest-signal source for Ellen, and exercises the `event_list` shape end to end. Items 6–9 follow with the same shape; items 1–4 (`document` shape) come after the event-list pattern is proven.
+When the source-adapter framework lands (item 3), build it against **source #5 (DOJ FCPA enforcement actions list)** as the anchor adapter — well-structured English-language government primary source, validates the `event_list` shape end to end. Subsequent adapters in priority order:
+
+1. **Source 16 (FCPA Blog)** — proves the RSS / aggregator pattern, low effort, gives global coverage immediately.
+2. **Source 10 (AFP)** — proves non-US English-language event_list against an agency site.
+3. **Source 12 (Fiscalía Chile)** — proves Spanish-language extraction with keyword filtering.
+4. **Sources 6–9** — fill out US event_list coverage (SEC, DOJ press releases, opinion procedure, senior speeches).
+5. **Sources 11, 13, 15** — CDPP, Contraloría, World Bank sanctions.
+6. **Source 14 (OECD WGB)** — document-kind once item 4 (storage + change detection) is in.
+7. **Sources 1–4** — US document-kind compliance guidance (Resource Guide, JM 9-47.120, ECCP, JM 9-28.000), once the document path is proven.
+
+## Future — expansion candidates
+
+When the pilot proves out, the adapter framework absorbs additional sources without schema change:
+
+- Per-jurisdiction: UK SFO + FCA, French PNF + AFA, German state prosecutors, Brazilian MPF + CGU, Swiss OAG, Dutch OM + FIOD, Italian ANAC, Singapore CPIB, Hong Kong ICAC, Australian ASIC.
+- Paid: Global Investigations Review (subscription).
+- Law-firm alerts: Tom's approved list — file as item 15.
+- Academic: Stanford FCPA Clearinghouse, Harvard Anticorruption Blog.
+
+When ready, file each as a separate ROADMAP item rather than appending here — keeping pilot vs. expansion separate makes scope creep visible.

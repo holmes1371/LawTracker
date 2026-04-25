@@ -18,12 +18,12 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25**
+**2026-04-25 (later)**
 
-- Items 1 and 2 closed (`[x]` ceec7ec) — architecture + pilot source inventory signed off; full prose moved to `COMPLETED.md`.
-- New standing rule added under "For future agents": items requiring Tom to set up external services include a complete click-by-click setup walkthrough in the design note.
-- Next pickup is item 3 (source adapter framework + first adapter, anchored on the DOJ FCPA enforcement actions list). First code-touching session — load the `karpathy-guidelines` skill at start.
-- Nothing else in flight.
+- Pilot scope widened from US-only to global: now covers US + Australia + Chile, plus multilateral indexes (OECD WGB, World Bank sanctions) and one curated aggregator (FCPA Blog). See updated `design/sources.md` and `design/architecture.md`.
+- Item 3 anchor unchanged — still DOJ FCPA enforcement actions (source 5); framework-proof decision was independent of jurisdictional scope. FCPA Blog moved out of item 15's "future" list and into the pilot inventory.
+- `EventRecord` schema settled in conversation: universal six fields (`dedup_key`, `source_id`, `event_date`, `title`, `primary_actor`, `summary`, `url`) + `metadata: dict`. `magnitude_usd` not promoted; `country` stays in metadata as a placeholder for non-US sources.
+- Pending: design note for item 3 still unwritten (plan-and-wait cycle ongoing); Tom to verify exact URLs for non-US primary sources (AFP, CDPP, Fiscalía, Contraloría) before those adapters are built.
 
 ## For future agents
 
@@ -107,7 +107,7 @@ Magic-link email login. User-level subscription model: pick which sources to fol
 
 ### 15. [ ] Trusted third-party sources
 
-Add adapters for Tom's approved third-party trackers (law-firm client-alert pages, FCPA Blog, Stanford FCPA Clearinghouse, etc.) once Tom provides the list. Pure adapter work — schema unchanged from the framework established in item 3.
+Add adapters for Tom's approved third-party trackers (law-firm client-alert pages, Stanford FCPA Clearinghouse, paid aggregators like Global Investigations Review, Harvard Anticorruption Blog, etc.) once Tom provides the list. Pure adapter work — schema unchanged from the framework established in item 3. (FCPA Blog was originally listed here; moved into pilot inventory on 2026-04-25.)
 
 ## Descoped / on hold
 
