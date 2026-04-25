@@ -14,4 +14,4 @@ class GlobalAnticorruptionBlogAdapter(RssFeedAdapter):
     source_id = "global_anticorruption_blog"
     kind = "event_list"
     url = "https://globalanticorruptionblog.com/feed/"
-    country = None
+    country = "US"

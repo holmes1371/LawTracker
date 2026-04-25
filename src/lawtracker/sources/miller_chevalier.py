@@ -46,7 +46,7 @@ class MillerChevalierFcpaAdapter(SourceAdapter):
     source_id = "miller_chevalier_fcpa"
     kind = "event_list"
     url = f"{_SEARCH_BASE}&content_types%5B0%5D=publication"
-    country = None
+    country = "US"
     use_curl_cffi = True
 
     @property

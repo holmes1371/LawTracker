@@ -19,19 +19,19 @@ English / Spanish ones below.
 
 import re
 
-# English-language anti-corruption + adjacent regimes (AML, sanctions,
-# export controls). Used by law-firm blogs and other broad-topic feeds.
+# English-language anti-corruption keyword set.
+# Used by law-firm blogs and other broad-topic feeds.
 # What it catches:
 #   - FCPA, FEPA (US foreign-bribery statutes)
-#   - foreign bribery / anti-bribery / anti-corruption / bribery / corruption
+#   - foreign bribery / anti-bribery / anti-corruption / bribery
 #   - kleptocracy, foreign official, public official
-#   - AML / anti-money laundering / money laundering
-#   - sanctions, OFAC (often co-discussed with anti-corruption enforcement)
-#   - ITAR, export controls (related compliance domain — see Volkov coverage)
+#   - cartel (added 2026-04-25 per Ellen — DOJ has been emphasizing
+#     cartel-adjacent enforcement as part of its anti-corruption push)
 #
-# What it deliberately does NOT catch: generic "fraud" or "white collar"
-# without an anti-corruption / sanctions hook, since law-firm blogs publish
-# heavy volumes of unrelated white-collar content.
+# Edits 2026-04-25 from Ellen's review: removed AML / money laundering /
+# OFAC / SDN / sanctions / ITAR / export controls. They're related
+# compliance domains but pulled too much off-topic content from law-firm
+# feeds. If signal-to-noise needs adjustment again, edit here.
 ANTI_CORRUPTION_EN = re.compile(
     r"\b(?:"
     r"fcpa|fepa"
@@ -42,11 +42,7 @@ ANTI_CORRUPTION_EN = re.compile(
     r"|brib(?:e|ery|ing)"
     r"|kleptocracy"
     r"|foreign\s+official|public\s+official"
-    r"|anti-?money\s+laundering|aml"
-    r"|money\s+laundering"
-    r"|ofac|sdn\s+list"
-    r"|sanctions(?:\s+enforcement)?"
-    r"|itar|export\s+controls?"
+    r"|cartels?"
     r")\b",
     re.IGNORECASE,
 )

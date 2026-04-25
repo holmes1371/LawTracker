@@ -39,7 +39,7 @@ def test_parses_search_results_and_tags_content_type():
 
     for event in result.events:
         assert event.source_id == "miller_chevalier_fcpa"
-        assert event.country is None
+        assert event.country == "US"
         assert event.url.startswith("https://www.millerchevalier.com/")
         assert event.dedup_key == event.url
         assert event.metadata.get("content_type") == "publication"

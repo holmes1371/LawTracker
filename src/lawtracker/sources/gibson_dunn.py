@@ -17,6 +17,6 @@ class GibsonDunnAdapter(RssFeedAdapter):
     source_id = "gibson_dunn"
     kind = "event_list"
     url = "https://www.gibsondunn.com/feed/"
-    country = None
+    country = "US"
     keyword_filter = ANTI_CORRUPTION_EN
     use_curl_cffi = True

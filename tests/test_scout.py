@@ -126,6 +126,23 @@ def test_xlsx_has_universal_columns_and_metadata_union(tmp_path: Path):
     assert ws.freeze_panes == "A2"
 
 
+def test_xlsx_title_column_has_hyperlink_to_url(tmp_path: Path):
+    """Ellen 2026-04-25: clicking the title in Excel should open the source URL."""
+    run([_OkAdapter, _OtherOkAdapter], tmp_path)
+
+    wb = load_workbook(tmp_path / "events.xlsx")
+    ws = wb.active
+    headers = [c.value for c in ws[1]]
+    title_idx = headers.index("title") + 1
+    url_idx = headers.index("url") + 1
+
+    for row_num in range(2, ws.max_row + 1):
+        title_cell = ws.cell(row=row_num, column=title_idx)
+        url_value = ws.cell(row=row_num, column=url_idx).value
+        assert title_cell.hyperlink is not None, "title cell should be hyperlinked"
+        assert title_cell.hyperlink.target == url_value
+
+
 def test_jsonl_one_line_per_event(tmp_path: Path):
     run([_OkAdapter, _OtherOkAdapter], tmp_path)
     lines = (tmp_path / "events.jsonl").read_text(encoding="utf-8").strip().splitlines()

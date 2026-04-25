@@ -30,7 +30,7 @@ def _client_for(fixture_name: str) -> httpx.Client:
 def test_gibson_dunn_uses_anti_corruption_filter():
     """Mixed-topic firm feed must drop non-FCPA items via the keyword filter."""
     assert GibsonDunnAdapter.keyword_filter is ANTI_CORRUPTION_EN
-    assert GibsonDunnAdapter.country is None
+    assert GibsonDunnAdapter.country == "US"
     assert GibsonDunnAdapter.url.endswith("/feed/")
 
     with _client_for("gibson_dunn.xml") as client:
@@ -51,7 +51,7 @@ def test_gibson_dunn_uses_anti_corruption_filter():
 def test_foley_llp_uses_anti_corruption_filter_and_curl_cffi():
     assert FoleyLlpAdapter.keyword_filter is ANTI_CORRUPTION_EN
     assert FoleyLlpAdapter.use_curl_cffi is True
-    assert FoleyLlpAdapter.country is None
+    assert FoleyLlpAdapter.country == "US"
 
     with _client_for("foley_llp.xml") as client:
         result = FoleyLlpAdapter().poll(client=client)
@@ -61,12 +61,14 @@ def test_foley_llp_uses_anti_corruption_filter_and_curl_cffi():
         haystack = (event.title + " " + (event.summary or "")).lower()
         keywords = (
             "fcpa",
+            "fepa",
             "bribery",
-            "corruption",
-            "sanctions",
-            "aml",
-            "money laundering",
-            "ofac",
+            "bribe",
+            "anti-corruption",
+            "kleptocracy",
+            "foreign official",
+            "public official",
+            "cartel",
         )
         assert any(kw in haystack for kw in keywords), (
             f"event passed filter without anti-corruption keyword: {event.title}"
@@ -87,7 +89,7 @@ def test_harvard_corpgov_fcpa_no_filter_curl_cffi():
 
 def test_global_anticorruption_blog_no_filter_all_on_topic():
     assert GlobalAnticorruptionBlogAdapter.keyword_filter is None
-    assert GlobalAnticorruptionBlogAdapter.country is None
+    assert GlobalAnticorruptionBlogAdapter.country == "US"
 
     with _client_for("global_anticorruption_blog.xml") as client:
         result = GlobalAnticorruptionBlogAdapter().poll(client=client)

@@ -135,6 +135,18 @@ def _write_xlsx(events: list[EventRecord], path: Path) -> None:
             row.append(value)
         ws.append(row)
 
+    # Hyperlink the title column to each event's URL so Ellen can click through
+    # straight from the spreadsheet (Ellen's review 2026-04-25).
+    title_idx = columns.index("title") + 1
+    url_idx = columns.index("url") + 1
+    link_font = Font(color="0563C1", underline="single")
+    for row_num in range(2, ws.max_row + 1):
+        url_cell = ws.cell(row=row_num, column=url_idx)
+        title_cell = ws.cell(row=row_num, column=title_idx)
+        if url_cell.value:
+            title_cell.hyperlink = url_cell.value
+            title_cell.font = link_font
+
     for i, _ in enumerate(columns, start=1):
         letter = get_column_letter(i)
         max_len = max(

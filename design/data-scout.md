@@ -123,13 +123,17 @@ broad-topic feed. Matches (case-insensitive):
 - bribery / bribe / briber / bribing
 - kleptocracy
 - foreign official, public official
-- AML, anti-money-laundering, money laundering
-- OFAC, SDN list, sanctions, sanctions enforcement
-- ITAR, export controls
+- cartel / cartels (added 2026-04-25 per Ellen)
 
-Currently used by: `GibsonDunnAdapter`. Volkov Law and Global Anticorruption
-Blog are single-topic outlets (every post is on-topic), so they run *without*
-the filter.
+Edits 2026-04-25 from Ellen's first review: removed AML / money laundering /
+OFAC / SDN list / sanctions / ITAR / export controls — they pulled too much
+off-topic content from broad firm feeds.
+
+Currently used by: `GibsonDunnAdapter`, `FoleyLlpAdapter`, `MillerChevalierFcpaAdapter`
+(M&C is filtered server-side via the FCPA practice-area parameter, but
+event/news content can still drift). Volkov Law, Global Anticorruption
+Blog, and Harvard CorpGov FCPA tag are single-topic outlets (every post
+is on-topic), so they run *without* the filter.
 
 **`ANTI_CORRUPTION_ES`** — applied to Spanish-language broad-topic feeds.
 Matches:

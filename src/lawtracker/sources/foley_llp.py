@@ -16,6 +16,6 @@ class FoleyLlpAdapter(RssFeedAdapter):
     source_id = "foley_llp"
     kind = "event_list"
     url = "https://www.foley.com/feed/"
-    country = None
+    country = "US"
     keyword_filter = ANTI_CORRUPTION_EN
     use_curl_cffi = True

@@ -26,7 +26,7 @@ def test_volkov_subclass_just_declares_url():
     assert VolkovLawAdapter.source_id == "volkov_law"
     assert VolkovLawAdapter.kind == "event_list"
     assert VolkovLawAdapter.url.endswith("/feed/")
-    assert VolkovLawAdapter.country is None
+    assert VolkovLawAdapter.country == "US"
 
 
 def test_parses_rss_items_into_event_records():
@@ -38,7 +38,7 @@ def test_parses_rss_items_into_event_records():
 
     for event in result.events:
         assert event.source_id == "volkov_law"
-        assert event.country is None
+        assert event.country == "US"
         assert event.url.startswith("https://blog.volkovlaw.com/")
         assert event.dedup_key == event.url
         assert event.title

@@ -18,14 +18,16 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 wave 7: chunker + CI mypy fix; item 19 filed)**
+**2026-04-25 (item 17 wave 8: Ellen's first review feedback applied)**
 
-- Tom flagged two issues from his push: (1) MyMemory returned "QUERY LENGTH LIMIT EXCEEDED. MAX ALLOWED QUERY : 500 CHARS" on a couple Consejo summaries, (2) GitHub Actions mypy failed with "Need type annotation for 'session'" on `base.py:119`.
-- **Chunker fix**: long sentences without internal `.!?` were passed whole. Added `_word_split` fallback in `translate._chunk` and dropped the per-request limit from 500 → 450 chars (margin for URL-encoding inflation in MyMemory's server-side count). Regression test added.
-- **CI mypy fix**: explicit `session: Any` annotation on the curl_cffi Session assignment in `SourceAdapter.poll()`. CI mypy version is stricter than local about Any-typed-import inference.
-- **New item 19 (Anthropic-API-backed prose interpretation)** filed in the backlog, deferred behind item 18 (scout review). Captures SEC FCPA prose parsing, per-event summary generation, classification, and FCPA-aware translation as candidate LLM uses; each adds `anthropic` SDK + API key when prioritized.
-- Live scout: 106 events from 10 adapters. Suite: 48 tests passing. Ruff + mypy clean.
-- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff after Ellen reviews the data.
+- Ellen reviewed the scout output and sent five items. Four addressed this turn:
+  - **Country populated**: outlets that were previously `country=None` (Volkov, Gibson Dunn, GAB, M&C, Foley LLP, Harvard CorpGov) now set to `"US"` (their home jurisdiction). Excel column populates.
+  - **Filters tightened**: dropped AML / money laundering / OFAC / SDN / sanctions / ITAR / export controls from `ANTI_CORRUPTION_EN`; added `cartel(s)`. Doc updated in `design/data-scout.md` "Keyword filters in use".
+  - **Excel hyperlinks**: title column is now a clickable link to the source URL. Blue-underlined font, hyperlink target = event URL.
+  - **Item 19 reordered**: Ellen's primary LLM ask is post-aggregation trend analysis (what should compliance professionals / risk-and-audit committee boards care about?). Promoted to priority #1 in the item; SEC FCPA cases (her #5, scoped to last 1-2 years) is #2.
+- **Open ask for Tom**: SEC + Ellen's analysis use case both need the `anthropic` SDK. Proceeding with item 19 needs Tom's go-ahead the same way `curl_cffi` did.
+- Live scout: 96 events from working adapters (DOJ 6, AFP 9, Consejo 0 this run/intermittent, Volkov 10 US, GD 1 US, GAB 10 US, M&C 60 US, Foley 0, Harvard 0, Fiscalía 0). Country column fully populated for non-zero sources. Suite: 49 tests passing. Ruff + mypy clean.
+- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff after Ellen's full sign-off.
 
 ## For future agents
 
@@ -154,27 +156,31 @@ Tom + Ellen review `data/scout/events.xlsx` and `summary.txt` produced by items 
 
 Adjustments fall out as new items (schema changes, source list edits, adapter refinements). Item 4 (storage) lands after this checkpoint; on landing, item 4's scope expands to include a one-shot `lawtracker ingest-scout` to load the JSONL files from the pilot into the new DB so pilot data isn't lost. Items 5 (poll loop), 6+ (web app) follow item 4 as before.
 
-### 19. [ ] Anthropic-API-backed prose interpretation
+### 19. [ ] Anthropic-API-backed analysis + prose interpretation
 
-Per Tom's standing rule (deterministic work in Python; LLM does judgment / interpretation), several places in the pipeline benefit from a Claude call. This item adds a small `src/lawtracker/llm.py` helper plus the `anthropic` SDK as a runtime dep, then wires LLM calls in priority order driven by what Ellen flags at item 18.
+Per Tom's standing rule (deterministic work in Python; LLM does judgment / interpretation), several places in the pipeline benefit from a Claude call. This item adds a small `src/lawtracker/llm.py` helper plus the `anthropic` SDK as a runtime dep, then wires LLM calls in priority order.
 
-Candidate uses, in priority order:
+Priority order updated 2026-04-25 from Ellen's first-review feedback:
 
-- **SEC FCPA cases adapter** (highest value; the open item Tom parked 2026-04-25). The page is a single long narrative — year headers + bolded company names + free-text paragraphs. Regex would be brittle; Claude can read it and emit structured `EventRecord`s.
-- **Per-event summary generation** when sources don't provide one (DOJ list page, AFP search results, Miller & Chevalier entries). Claude reads the linked detail page and writes a one-line "why this matters" — biggest dashboard UX win for Ellen.
-- **Industry / resolution-type classification** on DOJ press releases. Upgrade from current keyword regex.
-- **FCPA-aware Spanish translation.** Upgrade from MyMemory if Ellen flags translation quality issues at item 18.
-- **Cross-source dedup** — defer until storage (item 4) lands.
+1. **Post-aggregation trend analysis** (Ellen's primary ask). After the scout collects all events into the Excel / JSONL, send the structured table to Claude with a prompt asking for: key themes, trend shifts (e.g. "fewer enforcement actions against companies than the prior 6 months"), industry concentration, what anti-corruption compliance professionals and lawyers should care about right now, what risk and audit committee boards need to know. Output written to `data/scout/analysis.md`. This is the **biggest single LLM win** because it produces the executive-summary view Ellen actually needs to drive her practice — the table is raw material; the analysis is the deliverable.
+
+2. **SEC FCPA cases adapter** (Ellen's confirmed ask). Scope reduced to the most recent 1-2 years per Ellen — only the recent slice is relevant for trend identification. The SEC page is a single long narrative — year headers + bolded company names + free-text paragraphs. LLM extracts structured `EventRecord`s for the 2024+2025+2026 sections only.
+
+3. **Per-event summary generation** when sources don't provide one (DOJ list page, AFP search results, Miller & Chevalier entries). Claude reads the linked detail page and writes a one-line "why this matters" — populates the `summary` column for Ellen's row-level triage.
+
+4. **Industry / resolution-type classification** on DOJ press releases. Upgrade from current keyword regex.
+
+5. **FCPA-aware Spanish translation.** Upgrade from MyMemory if Ellen flags translation quality issues.
+
+6. **Cross-source dedup** — defer until storage (item 4) lands.
 
 Operational requirements:
 
 - Add `anthropic` SDK to runtime deps.
-- `ANTHROPIC_API_KEY` env var (Tom locally; CI secret).
-- Fail-soft: LLM failure falls back to whatever the deterministic path can do (no events lost).
+- `ANTHROPIC_API_KEY` env var (Tom locally; CI secret if/when LLM calls run in CI).
+- Fail-soft: LLM failure falls back to whatever the deterministic path can do (no events lost; analysis just isn't produced if API call fails).
 - Cost: pilot scale ~cents per scout run; document expected costs in `design/data-scout.md` once measured.
-- Captured in `design/data-scout.md` "LLM-API opportunities" section.
-
-Deferred behind item 18 — Ellen reviews the deterministic-only output first and tells us which LLM uses are essential vs. nice-to-have.
+- Use prompt caching for the analysis call when the input gets large (table + prompt cached so repeated runs amortize cost).
 
 ## Descoped / on hold
 

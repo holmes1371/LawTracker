@@ -15,5 +15,5 @@ class HarvardCorpGovFcpaAdapter(RssFeedAdapter):
     source_id = "harvard_corpgov_fcpa"
     kind = "event_list"
     url = "https://corpgov.law.harvard.edu/category/foreign-corrupt-practices-act/feed/"
-    country = None
+    country = "US"
     use_curl_cffi = True
