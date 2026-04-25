@@ -18,12 +18,12 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (roadmap pivot for data-scout pilot)**
+**2026-04-25 (item 16 — code complete; item 17 next)**
 
-- Plan pivoted: items 16 (data scout CLI + Excel export), 17 (pilot adapters + DOJ link-following enrichment), 18 (scout review checkpoint) inserted with priority *before* items 4–15. Goal: validate the data shape via a one-shot scout before investing in storage / poll loop / web app. See priority note above item 16. No hourly-polling concern at this stage.
-- Tom approved option (b) for DOJ FCPA actions: scout-time link-following enrichment (industry / defendant / penalty / resolution_type from each press-release page). Lands with item 17. Excel chosen over CSV; `openpyxl` will be added as a runtime dep with item 16.
-- Item 3 still `[~]` — code complete (`d75d1b9`), pending Tom's manual signoff. Next session can flip to `[x]` once Tom confirms.
-- Next: plan-and-wait cycle for item 16 (data scout CLI). Plan posted in the same turn as this commit; awaiting approval before writing code.
+- Item 16 (`[~]`) code complete: `lawtracker scout` runs every adapter in `PILOT_ADAPTERS` and writes `data/scout/events.xlsx` + `events.jsonl` + `summary.txt`. End-to-end smoke against live DOJ produced one row (the 2026 Ferrera case) with a clean Excel + summary. 16 tests, ruff + mypy clean. Design note at `design/data-scout.md`.
+- Items 3 + 16 both `[~]` pending Tom's manual signoff.
+- Next: item 17 (pilot adapters + DOJ link-following enrichment). Tom pre-approved proceeding; no further plan-and-wait cycle. Order I'll work in: (a) FCPA Blog RSS, (b) AFP foreign-bribery, (c) Fiscalía Chile, (d) DOJ historical-year support, (e) DOJ press-release enrichment. Each adapter is its own commit; design notes updated as decisions land.
+- Risks flagged: source URLs marked `(approximate)` in `design/sources.md` may need correction; DOJ press-release HTML structure unknown (highest brittleness risk for the enrichment commit).
 
 ## For future agents
 
@@ -115,7 +115,7 @@ Add adapters for Tom's approved third-party trackers (law-firm client-alert page
 
 ---
 
-### 16. [ ] Data scout CLI + Excel export
+### 16. [~] Data scout CLI + Excel export
 
 One-shot data scout: a `lawtracker scout` CLI that runs every configured adapter, collects `EventRecord`s, and writes them to disk for Tom + Ellen to review. No DB, no scheduling, no state between runs — each invocation is a fresh snapshot.
 
