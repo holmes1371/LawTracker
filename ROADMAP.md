@@ -18,14 +18,14 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 wave 3: law-firm RSS audit + 2 new adapters)**
+**2026-04-25 (item 17 wave 4: Miller & Chevalier HTML adapter)**
 
-- Audited ~60 law-firm RSS URLs from `possibleSources.txt` plus alternates. Only **Gibson Dunn** had working RSS (intermittent — Cloudflare blocks httpx in some runs). Most firms hide behind enterprise CMS without RSS, or behind CDN bot rules (Sidley, Skadden, Debevoise, Dentons, HSF, Foley, Covington, Ropes & Gray, etc.).
-- Added: `GibsonDunnAdapter` (with `ANTI_CORRUPTION_EN` keyword filter, since the firm's `/feed/` is mixed-topic) and `GlobalAnticorruptionBlogAdapter` (Harvard's academic blog, no filter — single-topic).
-- Centralized keyword filters at `src/lawtracker/sources/_filters.py` so Ellen can review/tweak in one place without touching adapter code. Two regexes — `ANTI_CORRUPTION_EN` (FCPA/FEPA/bribery/anti-corruption/AML/OFAC/sanctions/ITAR) and `ANTI_CORRUPTION_ES` (cohecho/corrupción/soborno/lavado/Ley 20.393/funcionario público) — documented in `design/data-scout.md` "Keyword filters in use" section.
-- Live scout: 45 events (DOJ 6, AFP 9, Fiscalía 0, Consejo 10, Volkov 10, Gibson Dunn 0 CF-blocked this run, GAB 10). Suite: 33 passing. Ruff + mypy clean. CI workflow already in place.
-- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff. Items 4 / 5 / 6+ still queued behind item 18 (scout review).
-- Next: Ellen reviews the Excel + the keyword-filters section in `design/data-scout.md`. Adjustments either tweak `_filters.py` or add new RSS subclasses; firms on the blocked list need a different access strategy (headless browser, `curl_cffi`, email subscriptions).
+- Tom pointed at a path I'd missed: HTML practice-area / filtered-search pages on firms that don't expose RSS. Built `MillerChevalierFcpaAdapter` against M&C's `/search?related_practice=8965&content_types[0]=publication|news|event` endpoint via the multi-URL `urls` property. Fixture has 20 publications including the FCPA Winter Review 2026 and Autumn Review 2025.
+- **Same Cloudflare TLS-fingerprint block** that hits Gibson Dunn intermittently also blocks Miller & Chevalier at scout time (200 to curl during fixture capture, 403 to httpx live). The block is on JA3 hash, not User-Agent or HTTP headers.
+- Three unblock options surfaced for item 18 decision: (1) `curl_cffi` as runtime dep (drop-in httpx replacement, ~1 hour swap; *needs Tom's approval*), (2) Playwright headless browser (~half-day, also beats JS-rendered sites), (3) email-subscription parsing.
+- Live scout: still 45 events from working adapters; M&C currently joins Gibson Dunn in CF-blocked status. Suite: 36 passing. Ruff + mypy clean.
+- Items 3, 11, 16, 17 all `[~]` pending Tom's manual signoff.
+- Next: Tom decides on a TLS-unblock path so M&C, Gibson Dunn, and other Cloudflare-fingerprinted firms can poll reliably; or accepts the current set (DOJ + AFP + Fiscalía + Consejo + Volkov + GAB) for the first scout review with Ellen.
 
 ## For future agents
 

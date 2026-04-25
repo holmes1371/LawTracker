@@ -182,3 +182,14 @@ it through), loosen the regex or add new keywords there.
 - **Found one academic blog beyond `possibleSources.txt`**: **Global Anticorruption Blog** (Matthew Stephenson at Harvard, `globalanticorruptionblog.com/feed/`). Single-topic, runs without keyword filter, 10 items per refresh.
 - **Pattern**: most large law firms host on enterprise CMS (Sitecore / Vignette / custom) without standard RSS, OR sit behind aggressive bot protection. Subscription via firm email or scraping HTML pages directly with a headless browser are the realistic alternatives — defer for now and prioritize at item 18 review based on which firms Ellen actually wants to follow.
 - **Scout state at end of wave 3:** 6–7 working adapters depending on Gibson Dunn's mood. 45 events on this run. DOJ 6, AFP 9, Fiscalía 0, Consejo 10, Volkov 10, Gibson Dunn 0 (CF blocked this run), GAB 10.
+
+## Findings during item 17 wave 4 (2026-04-25, Miller & Chevalier HTML pattern)
+
+- **Tom flagged a path I'd missed**: many firms expose their FCPA-practice content via filterable HTML search pages even when they don't expose RSS. Miller & Chevalier's `/search?related_practice=8965&content_types[0]=publication` returns the firm's FCPA Winter / Autumn Reviews + client alerts cleanly.
+- **Built `MillerChevalierFcpaAdapter`** that fetches publications + news + events in one poll via the multi-URL `urls` property. Drupal-driven; clean `<div class="search_result">` cards with date / title / sub-type. Fixture-tested.
+- **Same Cloudflare TLS-fingerprint block** Gibson Dunn hits applies to Miller & Chevalier — returns 200 to curl during fixture capture, 403 to httpx at scout time. The block is on JA3 hash (TLS handshake fingerprint), not User-Agent or HTTP headers.
+- **Generalizable insight**: the 404-RSS firms in possibleSources.txt (WilmerHale, Paul Weiss, Latham, Cleary, Hogan Lovells, Freshfields, Allens, Clayton Utz, KWM, A&O Shearman, etc.) likely have similar HTML patterns. Per-firm investigation needed; defer until item 18 picks priority targets.
+- **Three unblock paths for Tom to choose at item 18**:
+  1. **`curl_cffi`** as a runtime dep (drop-in httpx replacement, mimics curl TLS fingerprint, ~1 hour swap). Most pragmatic.
+  2. **Playwright** headless browser (~half-day setup, beats CF + JS-rendered sites like ASIC).
+  3. **Email-subscription parsing** for firm distribution lists (operational, no scraping).

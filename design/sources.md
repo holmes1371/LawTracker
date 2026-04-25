@@ -65,16 +65,24 @@ URLs marked **(approximate)** were not verified during inventory drafting; the a
 19. **Global Anticorruption Blog (GAB)** (event_list, RSS, English) — Matthew Stephenson at Harvard Law School. Academic, single-topic, multi-jurisdictional. No keyword filter — every post is on-topic. Built via `RssFeedAdapter`.
     - Adapter URL: https://globalanticorruptionblog.com/feed/
 
-### Law-firm RSS feeds that could not be added (audited 2026-04-25)
+20. **Miller & Chevalier — FCPA & International Anti-Corruption practice search** (event_list, HTML, English) — Drupal-driven `/search` endpoint accepting filter parameters that pin results to the FCPA practice area (`related_practice=8965`). Adapter fetches three content types per poll (publications, news, events) by overriding `urls`. Publications are the Winter / Spring / Summer / Autumn FCPA Reviews Tom flagged; news is media mentions; events are speaking engagements.
+    - Adapter URL (publications): https://www.millerchevalier.com/search?search_term=&related_practice=8965&...&content_types%5B0%5D=publication
+    - **Live access intermittent**: returns 200 to curl during fixture capture but 403 to httpx (Cloudflare appears to fingerprint TLS, not just User-Agent). Same failure mode as Gibson Dunn. Reliable production access needs `curl_cffi`, Playwright, or a manual fixture refresh process.
+
+### Law-firm feeds that could not be added (audited 2026-04-25)
 
 These firms appeared in `possibleSources.txt` but offered no usable RSS from this environment:
 
-- **404 / no exposed feed**: Miller & Chevalier, WilmerHale, Paul Weiss, Latham & Watkins, Cleary Gottlieb, Hogan Lovells, Freshfields, Allens, Clayton Utz, King & Wood Mallesons (HTML, not RSS), Gilbert + Tobin (HTML, not RSS), A&O Shearman, King & Spalding.
-- **CDN bot block (HTTP 403, even with browser UA)**: Sidley, Skadden, Debevoise, Dentons, Herbert Smith Freehills, Foley LLP, Foley Hoag, Covington & Burling, Ropes & Gray, Harvard CorpGov Forum.
+- **404 / no exposed RSS feed**: WilmerHale, Paul Weiss, Latham & Watkins, Cleary Gottlieb, Hogan Lovells, Freshfields, Allens, Clayton Utz, King & Wood Mallesons (HTML, not RSS), Gilbert + Tobin (HTML, not RSS), A&O Shearman, King & Spalding. Many of these probably have HTML practice-area / search pages that work like Miller & Chevalier's — Tom found M&C's by clicking around the site. Pattern is per-firm investigation, not RSS-blanket; defer until item 18 surfaces which firms are worth the effort.
+- **CDN bot block (HTTP 403, even with browser UA)**: Sidley, Skadden, Debevoise, Dentons, Herbert Smith Freehills, Foley LLP, Foley Hoag, Covington & Burling, Ropes & Gray, Harvard CorpGov Forum. **Same TLS-fingerprint block** that affects Miller & Chevalier and Gibson Dunn intermittently.
 - **Rate-limited (HTTP 429)**: DLA Piper.
 - **JS-rendered (no inline data)**: ASIC.
 
-Path forward at item 18 review: subscription via firm email distribution lists, headless-browser scraping (Playwright), or a TLS-fingerprint-spoofing client (`curl_cffi`). Whichever path is chosen, the new adapters slot into `RssFeedAdapter` (or its document-kind sibling) without changing the framework.
+Three concrete paths to unblock the CDN-fingerprinted set (Tom decides at item 18):
+
+1. **`curl_cffi` runtime dep** — drop-in httpx replacement that mimics curl's TLS fingerprint. Beats Cloudflare's JA3 hash matching. ~1 hour to swap. New runtime dependency.
+2. **Headless browser (Playwright)** — beats both Cloudflare and JS-rendered sites (ASIC). ~half-day setup. Adds Chromium dep.
+3. **Email-subscription parsing** — most firms publish via mailing list; ingest forwarded mail. Operational work, no scraping fragility.
 
 ## Out of scope — pilot
 

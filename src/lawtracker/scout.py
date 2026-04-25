@@ -28,6 +28,7 @@ from lawtracker.sources.doj_fcpa_actions import DojFcpaActionsAdapter
 from lawtracker.sources.fiscalia_chile import FiscaliaChileAdapter
 from lawtracker.sources.gibson_dunn import GibsonDunnAdapter
 from lawtracker.sources.global_anticorruption_blog import GlobalAnticorruptionBlogAdapter
+from lawtracker.sources.miller_chevalier import MillerChevalierFcpaAdapter
 from lawtracker.sources.volkov_law import VolkovLawAdapter
 
 PILOT_ADAPTERS: list[type[SourceAdapter]] = [
@@ -38,6 +39,7 @@ PILOT_ADAPTERS: list[type[SourceAdapter]] = [
     VolkovLawAdapter,
     GibsonDunnAdapter,
     GlobalAnticorruptionBlogAdapter,
+    MillerChevalierFcpaAdapter,
     # Sources flagged blocked / JS-rendered / no-RSS: FCPA Blog (CDN 401),
     # SEC FCPA cases (CDN 403), OECD WGB (CDN 403), AUSTRAC / NACC / CDPP
     # (timeout — likely AU geo-block), ASIC (JS-rendered, no inline data),
