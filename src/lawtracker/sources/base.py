@@ -7,6 +7,7 @@ only the source-specific extraction in `parse()`.
 """
 
 import re
+import time
 from abc import ABC, abstractmethod
 from datetime import date
 from typing import Any, ClassVar, Literal
@@ -90,6 +91,14 @@ class SourceAdapter(ABC):
     url: ClassVar[str]
 
     timeout_seconds: ClassVar[float] = 30.0
+
+    # Retry policy for transient failures (5xx, network / timeout errors).
+    # Permanent failures (4xx, parse errors) are not retried — they won't
+    # change on the next attempt. Default 2 retries with 1s + 2s backoff =
+    # up to 3 attempts total, ~3s extra wait worst case. Override per
+    # adapter if a specific source is flakier than average.
+    retry_count: ClassVar[int] = 2
+    retry_backoff_seconds: ClassVar[float] = 1.0
     user_agent: ClassVar[str] = (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -158,6 +167,21 @@ class SourceAdapter(ABC):
         return PollResult(status=worst_status, events=all_events, error=first_error)
 
     def _fetch_one(self, client: Any, url: str) -> PollResult:
+        """Fetch + parse with retry on transient failures.
+
+        5xx / network / timeout failures retry up to `retry_count` times
+        with exponential backoff. 4xx and parse errors are permanent and
+        are not retried.
+        """
+        result = self._fetch_one_attempt(client, url)
+        for attempt in range(self.retry_count):
+            if result.status != "transient_failure":
+                return result
+            time.sleep(self.retry_backoff_seconds * (2 ** attempt))
+            result = self._fetch_one_attempt(client, url)
+        return result
+
+    def _fetch_one_attempt(self, client: Any, url: str) -> PollResult:
         try:
             response = client.get(url)
         except httpx.RequestError as exc:

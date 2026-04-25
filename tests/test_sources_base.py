@@ -17,6 +17,8 @@ class _FakeAdapter(SourceAdapter):
     source_id = "fake"
     kind = "event_list"
     url = "https://example.test/list"
+    # Skip backoff in tests so retry-path assertions don't add wall-clock seconds.
+    retry_backoff_seconds = 0.0
 
     def parse(self, html: str, client: httpx.Client) -> list[EventRecord]:
         if html == "boom":
@@ -94,6 +96,51 @@ def test_parse_error_is_permanent_failure():
     assert result.status == "permanent_failure"
     assert "parse error" in result.error
     assert "ValueError" in result.error
+
+
+def _sequence_handler(responses: list[Handler]) -> Handler:
+    """Returns each successive response in order; calls beyond list raise."""
+    iterator = iter(responses)
+
+    def h(request: httpx.Request) -> httpx.Response:
+        try:
+            return next(iterator)(request)
+        except StopIteration as exc:
+            raise AssertionError("more requests than expected") from exc
+
+    return h
+
+
+def test_transient_failure_retries_and_succeeds():
+    """Tom 2026-04-25: a 502 from Consejo's WordPress shouldn't kill the
+    whole source for the run. The base class retries transient failures."""
+    handler = _sequence_handler([_respond(502), _respond(200, "<html>ok</html>")])
+    with _client(handler) as client:
+        result = _FakeAdapter().poll(client=client)
+    assert result.status == "ok"
+    assert len(result.events) == 1
+
+
+def test_transient_failure_exhausts_retries():
+    handler = _sequence_handler([_respond(502), _respond(502), _respond(503)])
+    with _client(handler) as client:
+        result = _FakeAdapter().poll(client=client)
+    assert result.status == "transient_failure"
+    assert "503" in (result.error or "")
+
+
+def test_permanent_failure_not_retried():
+    """4xx errors won't change on retry; we should give up immediately."""
+    call_count = {"n": 0}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        call_count["n"] += 1
+        return httpx.Response(status_code=404)
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+        result = _FakeAdapter().poll(client=client)
+    assert result.status == "permanent_failure"
+    assert call_count["n"] == 1, "404 must not be retried"
 
 
 class _SpanishAdapter(SourceAdapter):
