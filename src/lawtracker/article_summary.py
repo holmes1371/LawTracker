@@ -86,6 +86,7 @@ def enrich_summaries(
     events: list[EventRecord],
     cache: JsonCache | None = None,
     fetch_article_text: Any = None,
+    on_event: Any = None,
 ) -> list[EventRecord]:
     """Populate `event.summary` from the cache or by calling the LLM.
 
@@ -96,6 +97,11 @@ def enrich_summaries(
 
     Original (pre-LLM) summary, if any, is preserved in
     `metadata["summary_source"]` for reference.
+
+    `on_event(event, status, detail="")` callback fires once per event
+    with status ∈ {`cached`, `cached-drop`, `llm-keep`, `llm-drop`,
+    `failed`, `off`}. Used by the scout for live progress output in
+    anthropic mode.
     """
     if cache is None:
         cache = JsonCache(DEFAULT_CACHE_PATH)
@@ -103,14 +109,21 @@ def enrich_summaries(
     fetch = fetch_article_text or _fetch_article_text
     mode = _current_mode()
 
+    def _notify(event: EventRecord, status: str, detail: str = "") -> None:
+        if on_event is not None:
+            on_event(event, status, detail)
+
     enriched: list[EventRecord] = []
     for event in events:
         if mode == "off":
+            _notify(event, "off")
             enriched.append(event)
             continue
 
         cache_key = summary_cache_key(event)
-        decision = _decision_from_cache(cache.get(cache_key))
+        cached_raw = cache.get(cache_key)
+        decision = _decision_from_cache(cached_raw)
+        from_cache = decision is not None
 
         if decision is None:
             decision = _generate_decision(event, fetch)
@@ -118,17 +131,21 @@ def enrich_summaries(
                 cache.put(cache_key, _decision_to_cache(decision, event.url, mode))
 
         if decision is None:
-            # Fail-soft: keep event with whatever summary it already had.
+            _notify(event, "failed", "fetch or LLM error; keeping prior summary")
             enriched.append(event)
             continue
 
         if decision.drop:
-            # LLM identified the article as event-noise; drop entirely.
+            label = "cached-drop" if from_cache else "llm-drop"
+            _notify(event, label, decision.reason or "")
             continue
 
         if decision.summary:
+            label = "cached" if from_cache else "llm-keep"
+            _notify(event, label)
             enriched.append(_apply_summary(event, decision.summary))
         else:
+            _notify(event, "failed", "no summary in decision")
             enriched.append(event)
     return enriched
 

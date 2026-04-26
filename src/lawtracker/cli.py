@@ -38,10 +38,14 @@ def main(argv: list[str] | None = None) -> int:
         if args.llm_mode is not None:
             os.environ["LAWTRACKER_LLM_MODE"] = args.llm_mode
 
-        from lawtracker.scout import PILOT_ADAPTERS, _print_report, run
+        from lawtracker.scout import PILOT_ADAPTERS, run
 
         report = run(PILOT_ADAPTERS, args.output_dir, source_filter=args.source)
-        _print_report(report)
+        print(
+            f"\nScout complete: {report['events_collected']} events written to "
+            f"{report['output_dir']}",
+            flush=True,
+        )
         return 0
 
     print("LawTracker — scaffolding in place. Implement tracking logic next.")

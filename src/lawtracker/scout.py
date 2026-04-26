@@ -77,8 +77,17 @@ def run(
     *,
     source_filter: str | None = None,
 ) -> dict[str, Any]:
-    """Run the scout end-to-end. Returns a small report for the CLI."""
+    """Run the scout end-to-end. Returns a small report for the CLI.
+
+    Prints live per-source progress as each adapter completes (Tom asked
+    2026-04-25 — useful in anthropic mode where the run takes minutes).
+    """
+    import os
+
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    mode = os.environ.get("LAWTRACKER_LLM_MODE", "stub").lower()
+    print(f"Scout starting (llm-mode={mode}). Polling adapters...", flush=True)
 
     poll_log: list[dict[str, Any]] = []
     all_events: list[EventRecord] = []
@@ -96,22 +105,33 @@ def run(
                 "error": result.error,
             }
         )
+        _print_adapter_status(cls.source_id, result)
         if result.status == "ok":
             all_events.extend(result.events)
 
-    all_events = _enrich_summaries(all_events, output_dir)
+    print(
+        f"\nEnriching summaries for {len(all_events)} events "
+        f"(mode={mode})...",
+        flush=True,
+    )
+    all_events = _enrich_summaries(all_events, output_dir, verbose=(mode == "anthropic"))
 
     # Re-apply event-noise filter after summary enrichment. Some entries
     # (e.g. M&C's "EMBARGOED!: South of the Border" podcast publications)
     # have innocuous titles that only reveal their podcast / webinar
     # nature once the LLM reads the article. The first filter pass at
     # parse time can't see that; this catches it.
+    pre_filter_count = len(all_events)
     all_events = [
         e
         for e in all_events
         if not matches_event_noise(e.title, e.summary, e.url)
     ]
+    dropped_post = pre_filter_count - len(all_events)
+    if dropped_post:
+        print(f"  Post-filter dropped {dropped_post} additional event-noise entries.", flush=True)
 
+    print(f"\nWriting outputs to {output_dir}/...", flush=True)
     _write_xlsx(all_events, output_dir / "events.xlsx")
     _write_jsonl(all_events, output_dir / "events.jsonl")
     _write_summary(all_events, poll_log, output_dir / "summary.txt")
@@ -124,23 +144,54 @@ def run(
     }
 
 
+def _print_adapter_status(source_id: str, result: Any) -> None:
+    suffix = f"  error: {result.error}" if result.error else ""
+    print(
+        f"  {source_id:<28} status={result.status:<22} count={len(result.events)}{suffix}",
+        flush=True,
+    )
+
+
 def _write_analysis(events: list[EventRecord], path: Path) -> None:
     from lawtracker.analysis import build_analysis
 
     path.write_text(build_analysis(events), encoding="utf-8")
 
 
-def _enrich_summaries(events: list[EventRecord], output_dir: Path) -> list[EventRecord]:
+def _enrich_summaries(
+    events: list[EventRecord], output_dir: Path, *, verbose: bool = False
+) -> list[EventRecord]:
     """Per-event summary enrichment with disk-backed cache.
 
     Cache lives under `output_dir/.cache/summaries.json` so it shares the
     same gitignored data tree as everything else the scout produces.
+
+    `verbose=True` enables per-event progress output — used in anthropic
+    mode where each event triggers an HTTP fetch + LLM call and the
+    aggregate run takes minutes. Stub mode is fast enough that quiet is
+    correct.
     """
     from lawtracker.article_summary import enrich_summaries
     from lawtracker.llm_cache import JsonCache
 
     cache = JsonCache(output_dir / ".cache" / "summaries.json")
-    return enrich_summaries(events, cache=cache)
+
+    if not verbose:
+        return enrich_summaries(events, cache=cache)
+
+    total = len(events)
+    counter = {"i": 0}
+
+    def on_event(event: EventRecord, status: str, detail: str = "") -> None:
+        counter["i"] += 1
+        suffix = f" — {detail}" if detail else ""
+        print(
+            f"  [{counter['i']:>3}/{total}] {status:<10} {event.source_id:<28} "
+            f"{event.title[:60]}{suffix}",
+            flush=True,
+        )
+
+    return enrich_summaries(events, cache=cache, on_event=on_event)
 
 
 def _write_xlsx(events: list[EventRecord], path: Path) -> None:
@@ -329,20 +380,12 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     report = run(PILOT_ADAPTERS, args.output_dir, source_filter=args.source)
-    _print_report(report)
-    return 0
-
-
-def _print_report(report: dict[str, Any]) -> None:
     print(
-        f"Scout complete: {report['events_collected']} events written to {report['output_dir']}"
+        f"\nScout complete: {report['events_collected']} events written to "
+        f"{report['output_dir']}",
+        flush=True,
     )
-    for entry in report["poll_log"]:
-        sid = entry["source_id"]
-        status = entry["status"]
-        count = entry["event_count"]
-        suffix = f"  error: {entry['error']}" if entry["error"] else ""
-        print(f"  {sid:<28} status={status:<22} count={count}{suffix}")
+    return 0
 
 
 if __name__ == "__main__":
