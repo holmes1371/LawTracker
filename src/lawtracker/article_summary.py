@@ -26,7 +26,9 @@ re-summarizes only what's missing in that mode's cache.
 
 from __future__ import annotations
 
+import json
 import os
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -40,16 +42,25 @@ from lawtracker.sources import EventRecord
 DEFAULT_CACHE_PATH = Path("data/scout/.cache/summaries.json")
 
 SUMMARY_SYSTEM = (
-    "You summarize FCPA / anti-corruption articles for senior compliance "
-    "lawyers and corporate risk-and-audit committee members. Read the "
-    "article and write 1-2 sentences capturing: who is involved, what "
-    "happened, why it matters for FCPA practitioners. Be specific with "
-    "names, industries, agencies, and dollar amounts when present. "
-    "No hedging. No filler. No preamble — return only the summary."
+    "You read FCPA / anti-corruption articles and either summarize them "
+    "or flag them as event-noise so they can be dropped from the table.\n\n"
+    "For each article:\n\n"
+    "1. If the article is PRIMARILY an advertisement, recording, or recap "
+    "of a non-substantive event — podcast episode, webinar, CLE webcast, "
+    "conference promo, networking gathering, panel discussion, fireside "
+    "chat, awards announcement, etc. — respond with:\n"
+    '   {"drop": true, "reason": "<short phrase>"}\n\n'
+    "2. Otherwise, write a 1-2 sentence summary capturing: who is "
+    "involved, what happened, why it matters for FCPA practitioners. Be "
+    "specific about names, industries, agencies, and dollar amounts when "
+    "present. No hedging, no filler. Respond with:\n"
+    '   {"drop": false, "summary": "<your summary>"}\n\n'
+    "Return ONLY the JSON object — no markdown fences, no prose before "
+    "or after."
 )
 
 SUMMARY_USER_TEMPLATE = """\
-Summarize the article below in 1-2 sentences for FCPA practitioners.
+Summarize this article or flag it as event-noise.
 
 Title: {title}
 Source: {source_id}{country_suffix}
@@ -58,7 +69,17 @@ Date: {event_date}
 Article body:
 
 {body}
+
+Respond with a single JSON object: either {{"drop": true, "reason": "..."}} \
+or {{"drop": false, "summary": "..."}}.
 """
+
+
+@dataclass(frozen=True)
+class _LlmDecision:
+    drop: bool
+    summary: str | None
+    reason: str | None
 
 
 def enrich_summaries(
@@ -68,9 +89,13 @@ def enrich_summaries(
 ) -> list[EventRecord]:
     """Populate `event.summary` from the cache or by calling the LLM.
 
-    Returns a new list with possibly-mutated `EventRecord`s. Cache is
-    written through inside this function. Original (pre-LLM) summary,
-    if any, is preserved in `metadata["summary_source"]` for reference.
+    The LLM also classifies each article as event-noise (podcast, webinar,
+    conference ad, etc.) — flagged events are dropped from the returned
+    list. Both decisions (keep + summary, or drop + reason) are cached so
+    repeat runs don't re-evaluate the same articles.
+
+    Original (pre-LLM) summary, if any, is preserved in
+    `metadata["summary_source"]` for reference.
     """
     if cache is None:
         cache = JsonCache(DEFAULT_CACHE_PATH)
@@ -85,32 +110,26 @@ def enrich_summaries(
             continue
 
         cache_key = summary_cache_key(event)
-        cached_entry = cache.get(cache_key)
-        cached_summary: str | None = None
-        if isinstance(cached_entry, dict):
-            value = cached_entry.get("summary")
-            if isinstance(value, str) and value.strip():
-                cached_summary = value
+        decision = _decision_from_cache(cache.get(cache_key))
 
-        if cached_summary is not None:
-            enriched.append(_apply_summary(event, cached_summary))
-            continue
+        if decision is None:
+            decision = _generate_decision(event, fetch)
+            if decision is not None:
+                cache.put(cache_key, _decision_to_cache(decision, event.url, mode))
 
-        new_summary = _generate_summary(event, fetch)
-        if new_summary is None:
+        if decision is None:
+            # Fail-soft: keep event with whatever summary it already had.
             enriched.append(event)
             continue
 
-        cache.put(
-            cache_key,
-            {
-                "summary": new_summary,
-                "mode": mode,
-                "generated_at": datetime.now().isoformat(timespec="seconds"),
-                "url": event.url,
-            },
-        )
-        enriched.append(_apply_summary(event, new_summary))
+        if decision.drop:
+            # LLM identified the article as event-noise; drop entirely.
+            continue
+
+        if decision.summary:
+            enriched.append(_apply_summary(event, decision.summary))
+        else:
+            enriched.append(event)
     return enriched
 
 
@@ -129,10 +148,12 @@ def _apply_summary(event: EventRecord, summary: str) -> EventRecord:
     return event.model_copy(update={"summary": summary, "metadata": new_metadata})
 
 
-def _generate_summary(event: EventRecord, fetch: Any) -> str | None:
+def _generate_decision(event: EventRecord, fetch: Any) -> _LlmDecision | None:
     mode = _current_mode()
     if mode == "stub":
-        return _stub_summary(event)
+        # Stub mode: no LLM call, no fetch. Always returns drop=False so
+        # the pipeline runs end-to-end during design iteration.
+        return _LlmDecision(drop=False, summary=_stub_summary(event), reason=None)
 
     body = fetch(event.url)
     if not body:
@@ -148,11 +169,91 @@ def _generate_summary(event: EventRecord, fetch: Any) -> str | None:
     raw = llm.complete(
         system=SUMMARY_SYSTEM,
         user=user_prompt,
-        stub=_stub_summary(event),
-        max_tokens=300,
+        stub=_stub_decision_json(event),
+        max_tokens=400,
     )
-    text = raw.strip()
-    return text or None
+    return _parse_decision(raw)
+
+
+def _stub_decision_json(event: EventRecord) -> str:
+    """JSON-shaped stub matching the real-mode response format."""
+    return json.dumps({"drop": False, "summary": _stub_summary(event)})
+
+
+def _parse_decision(raw: str) -> _LlmDecision | None:
+    """Parse a JSON `{"drop": ..., "summary"|"reason": ...}` response.
+
+    Tolerates a markdown code fence around the JSON (some models add one
+    despite instructions). On parse failure, treats the raw text as a
+    summary (fail-soft — don't lose the LLM's work to formatting issues).
+    """
+    text = _strip_code_fence(raw).strip()
+    if not text:
+        return None
+
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError:
+        return _LlmDecision(drop=False, summary=text, reason=None)
+
+    if not isinstance(data, dict):
+        return _LlmDecision(drop=False, summary=text, reason=None)
+
+    if data.get("drop") is True:
+        reason = data.get("reason")
+        return _LlmDecision(
+            drop=True,
+            summary=None,
+            reason=str(reason) if isinstance(reason, str) else None,
+        )
+
+    summary = data.get("summary")
+    if isinstance(summary, str) and summary.strip():
+        return _LlmDecision(drop=False, summary=summary.strip(), reason=None)
+
+    # Malformed: drop=false but no usable summary.
+    return _LlmDecision(drop=False, summary=text, reason=None)
+
+
+def _strip_code_fence(text: str) -> str:
+    stripped = text.strip()
+    if stripped.startswith("```"):
+        first_newline = stripped.find("\n")
+        if first_newline != -1:
+            stripped = stripped[first_newline + 1 :]
+        if stripped.endswith("```"):
+            stripped = stripped[:-3]
+    return stripped.strip()
+
+
+def _decision_from_cache(entry: Any) -> _LlmDecision | None:
+    """Read a cache entry into a decision. Backward-compatible with the
+    pre-drop-aware schema (entries with `summary` but no `drop` field)."""
+    if not isinstance(entry, dict):
+        return None
+    if entry.get("drop") is True:
+        return _LlmDecision(
+            drop=True,
+            summary=None,
+            reason=str(entry.get("reason") or "") or None,
+        )
+    summary = entry.get("summary")
+    if isinstance(summary, str) and summary.strip():
+        return _LlmDecision(drop=False, summary=summary, reason=None)
+    return None
+
+
+def _decision_to_cache(
+    decision: _LlmDecision, url: str, mode: str
+) -> dict[str, Any]:
+    base: dict[str, Any] = {
+        "mode": mode,
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "url": url,
+    }
+    if decision.drop:
+        return {**base, "drop": True, "reason": decision.reason}
+    return {**base, "drop": False, "summary": decision.summary}
 
 
 def _stub_summary(event: EventRecord) -> str:

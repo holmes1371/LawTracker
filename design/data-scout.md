@@ -215,6 +215,47 @@ Trade-offs of LLM steps (across all of the above):
 - Latency — each call adds 1-3s; 50 events with summaries = ~1-2 min added to scout time.
 - Auditability — Ellen sees the LLM's output, not the raw source. Need to keep raw source preserved for verification.
 
+## LLM-as-judge for event-noise (2026-04-25, Tom's wave-3 fix)
+
+Tom flagged that even with a widened regex + post-enrichment filter, M&C
+podcast publications like `EMBARGOED!: South of the Border` were still
+slipping through — the regex couldn't tell from the title alone. His
+suggestion: have the LLM, while it's already reading each article,
+classify whether the article is event-noise (podcast / webinar /
+conference / etc.) and flag it for drop.
+
+How it works now:
+
+1. The summary system prompt instructs Claude to return one of two
+   JSON shapes:
+   - `{"drop": true, "reason": "<short phrase>"}` — for podcast
+     episodes, webinars, CLE webcasts, conference promos, networking
+     gatherings, panel discussions, fireside chats, awards
+     announcements, etc.
+   - `{"drop": false, "summary": "<1-2 sentence summary>"}` — for
+     substantive enforcement / policy / case content.
+2. `enrich_summaries` parses the JSON, drops events with `drop=true`,
+   and uses the summary otherwise.
+3. Both decisions are cached so repeat runs skip the LLM call entirely.
+4. Backward-compatible with the previous cache format (entries without
+   a `drop` field are treated as `drop=false`).
+
+Three layers of event-noise filtering now stack:
+
+- **Parse-time regex** (cheapest, runs always): catches obvious patterns
+  in title / summary / URL — `webinar`, `podcast`, `Conference:`,
+  `RSVP`, `summit`, etc. Drops items before the LLM is even consulted,
+  saving API spend on obvious cases.
+- **LLM-as-judge** (most accurate, anthropic mode only): catches the
+  cases where the title is opaque but the article body reveals the
+  nature.
+- **Post-enrichment regex** (safety net): re-runs the parse-time regex
+  over LLM-generated summaries, catching anything where the LLM
+  mentions "podcast" but didn't return `drop=true`.
+
+In stub mode, the stub returns valid JSON `{"drop": false, "summary":
+"[STUB summary] ..."}` so the parser path is exercised end-to-end.
+
 ## Per-event summary + caching (2026-04-25, Ellen's wave-2 ask)
 
 Ellen: "The LLM will need to go into each of the articles and provide a

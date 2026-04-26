@@ -88,7 +88,10 @@ def test_anthropic_mode_uses_fetched_article(tmp_path: Path, monkeypatch) -> Non
 
     def fake_anthropic(system: str, user: str, max_tokens: int, model: str) -> str:
         captured["user"] = user
-        return "Acme Corp settled FCPA charges with $30M disgorgement."
+        return (
+            '{"drop": false, "summary": '
+            '"Acme Corp settled FCPA charges with $30M disgorgement."}'
+        )
 
     monkeypatch.setattr("lawtracker.llm._complete_anthropic", fake_anthropic)
 
@@ -102,7 +105,103 @@ def test_anthropic_mode_uses_fetched_article(tmp_path: Path, monkeypatch) -> Non
     assert captured["url"] == "https://example.test/acme"
     assert "Long article body" in captured["user"]
     assert enriched[0].summary == "Acme Corp settled FCPA charges with $30M disgorgement."
-    assert cache.get("anthropic|acme")["mode"] == "anthropic"
+    cached = cache.get("anthropic|acme")
+    assert cached["mode"] == "anthropic"
+    assert cached["drop"] is False
+
+
+def test_anthropic_drop_decision_drops_event_and_caches_reason(
+    tmp_path: Path, monkeypatch
+) -> None:
+    """Tom 2026-04-25: regex filter still misses event-noise. The LLM has
+    full article context; let it decide. drop=true → event dropped."""
+    monkeypatch.setenv("LAWTRACKER_LLM_MODE", "anthropic")
+
+    def fake_anthropic(system: str, user: str, max_tokens: int, model: str) -> str:
+        return '{"drop": true, "reason": "podcast episode"}'
+
+    monkeypatch.setattr("lawtracker.llm._complete_anthropic", fake_anthropic)
+
+    cache = JsonCache(tmp_path / "summaries.json")
+    enriched = enrich_summaries(
+        [_event(dedup_key="podcast1", title="EMBARGOED!: South of the Border")],
+        cache=cache,
+        fetch_article_text=lambda url: "Welcome to this episode of EMBARGOED!...",
+    )
+
+    assert enriched == [], "drop=true must remove the event from the result list"
+    cached = cache.get("anthropic|podcast1")
+    assert cached["drop"] is True
+    assert cached["reason"] == "podcast episode"
+
+
+def test_drop_decision_cached_so_repeat_runs_skip_llm(tmp_path: Path, monkeypatch) -> None:
+    """Cached drop decisions should drop the event without calling the LLM
+    again — preserves the article-skip guarantee Tom asked for."""
+    monkeypatch.setenv("LAWTRACKER_LLM_MODE", "anthropic")
+    cache = JsonCache(tmp_path / "summaries.json")
+    cache.put(
+        "anthropic|x",
+        {"drop": True, "reason": "webinar promo", "mode": "anthropic"},
+    )
+
+    fetch_called = [0]
+
+    def fetch_should_not_run(url: str) -> str:
+        fetch_called[0] += 1
+        return "body"
+
+    def llm_should_not_run(system, user, max_tokens, model):
+        raise AssertionError("LLM must not be called when cache is a drop")
+
+    monkeypatch.setattr("lawtracker.llm._complete_anthropic", llm_should_not_run)
+
+    enriched = enrich_summaries(
+        [_event(dedup_key="x")],
+        cache=cache,
+        fetch_article_text=fetch_should_not_run,
+    )
+
+    assert enriched == []
+    assert fetch_called[0] == 0
+
+
+def test_old_cache_format_without_drop_field_still_works(
+    tmp_path: Path, monkeypatch
+) -> None:
+    """Cache entries from before the drop-decision change look like
+    `{summary, mode, generated_at, url}` with no `drop` field. They must
+    continue to satisfy lookups as drop=false."""
+    monkeypatch.setenv("LAWTRACKER_LLM_MODE", "stub")
+    cache = JsonCache(tmp_path / "summaries.json")
+    cache.put(
+        "stub|legacy",
+        {"summary": "Legacy summary text.", "mode": "stub"},  # no `drop`
+    )
+
+    enriched = enrich_summaries([_event(dedup_key="legacy")], cache=cache)
+    assert len(enriched) == 1
+    assert enriched[0].summary == "Legacy summary text."
+
+
+def test_malformed_llm_response_falls_back_to_using_text_as_summary(
+    tmp_path: Path, monkeypatch
+) -> None:
+    """If the LLM returns prose instead of JSON, salvage the text as a
+    summary rather than losing the work entirely."""
+    monkeypatch.setenv("LAWTRACKER_LLM_MODE", "anthropic")
+
+    def fake_anthropic(system, user, max_tokens, model):
+        return "Acme Corp resolved the matter for $5M. (Forgot the JSON wrapper.)"
+
+    monkeypatch.setattr("lawtracker.llm._complete_anthropic", fake_anthropic)
+    cache = JsonCache(tmp_path / "summaries.json")
+    enriched = enrich_summaries(
+        [_event(dedup_key="m1")],
+        cache=cache,
+        fetch_article_text=lambda url: "body",
+    )
+    assert "Acme Corp resolved" in (enriched[0].summary or "")
 
 
 def test_anthropic_mode_failed_fetch_leaves_summary_unchanged(
