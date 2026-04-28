@@ -76,9 +76,20 @@ def test_anthropic_mode_without_api_key_raises_clear_error(
 ) -> None:
     """If anthropic mode is set but ANTHROPIC_API_KEY is missing, callers
     get a clear RuntimeError up front — not a buried SDK auth stack trace
-    after we've already loaded events and built the prompt."""
+    after we've already loaded events and built the prompt.
+
+    CI does not have `anthropic` installed (it's a runtime-optional dep),
+    so we inject a stub module via sys.modules so the import succeeds and
+    the API-key check is what raises."""
+    import sys
+    import types
+
     monkeypatch.setenv("LAWTRACKER_LLM_MODE", "anthropic")
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+
+    fake_module = types.ModuleType("anthropic")
+    fake_module.Anthropic = object  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "anthropic", fake_module)
 
     with pytest.raises(RuntimeError, match="ANTHROPIC_API_KEY is not set"):
         llm.complete(system="sys", user="user", stub="ignored")
