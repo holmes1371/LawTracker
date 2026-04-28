@@ -18,13 +18,13 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (session wrap — scout pilot feature-complete in stub mode, awaiting Ellen's review at item 18)**
+**2026-04-28 (session wrap — pipeline split into scout/analyze/render; static mockups landed at item 20; admin-app architecture pinned at item 21)**
 
-- **Scout runs end-to-end** against 11 adapters with live per-source / per-event progress output: DOJ FCPA actions (with link-following enrichment), SEC FCPA cases (LLM-extracted), AFP foreign-bribery, Fiscalía + Consejo Chile (Spanish auto-translated), Volkov Law, Gibson Dunn, Foley LLP, Global Anticorruption Blog, Harvard CorpGov FCPA, Miller & Chevalier FCPA practice. Outputs: `events.xlsx` (hyperlinked title column, country populated, summaries from cache or LLM), `events.jsonl`, `summary.txt`, `analysis.md`. 93 tests, ruff + mypy clean, CI green on Python 3.11 + 3.12.
-- **LLM (item 19) is stub-first** via `LAWTRACKER_LLM_MODE` env var or `--llm-mode={stub|anthropic|off}`. Stub is the default; flips to live by `pip install anthropic` + `ANTHROPIC_API_KEY` + `--llm-mode=anthropic`. Anthropic mode: per-event LLM calls return JSON `{"drop": true, "reason": ...}` or `{"drop": false, "summary": ...}`; both decisions cached under `data/scout/.cache/summaries.json` with mode-stamped keys. Three event-noise layers stack: parse-time regex, LLM-as-judge, post-enrichment regex.
-- **Items 3, 11, 16, 17, 19 all `[~]`** pending Tom's manual signoff after Ellen's review. **Active gate is item 18** (scout review); items 4 / 5 / 6+ wait for that.
-- **Open at item 18 review** (captured in `design/data-scout.md` "Findings"): (a) sources still blocked from this dev environment — OECD WGB / FCPA Blog / CDPP / NACC / AUSTRAC — likely need Playwright or residential proxy access; (b) translation backend swap if MyMemory quality issues surface (argostranslate / DeepL / Claude options); (c) Ellen's first wave of feedback is fully applied (country populated, filter narrowed + cartel added, hyperlinks, LLM analysis prompt centered on her trend questions).
-- **Cold-pickup pointers**: `design/data-scout.md` is the running design note for items 16/19 with the most current state; `design/sources.md` lists every adapter with adapter URLs and known blockers; `design/source-adapter-framework.md` covers item 3's framework decisions. To dry-run locally: `py -m lawtracker scout` (stub, ~5s, no API spend); to run live: `py -m lawtracker scout --llm-mode=anthropic` (~3-6 min, ~$0.20-0.40 per run with Sonnet 4.5).
+- **Pipeline split (Tom's directive)**: `lawtracker scout` produces raw `events.{xlsx,jsonl}` + `summary.txt` only; `lawtracker analyze` reads jsonl → calls Claude → writes `analysis.md`; `lawtracker render` builds static `analysis.html` + `sources.html`. Each step independently re-runnable; analyze is the only paid step, so prompt iteration is cheap. Per-event scout enrichment (summary, noise judgment) still runs at scout time and remains cached.
+- **LLM analysis prompt iterated live to per-country structure** for in-house corporate compliance professionals: US first (up to 5 bullets), other countries alpha (2-3 each, more if "major changes"). Bucket events by **enforcing authority** not jurisdiction-of-conduct (Tom's TIGO/Petrobras feedback): a US DOJ FCPA action involving Guatemalan officials goes under United States; a foreign jurisdiction gets its own section only when its government brought a coordinated action (Petrobras/Lava Jato, Airbus, etc.). Country grouping derived from event text, not from adapter `country` field.
+- **Item 20 [~] static HTML mockups landed**: Tailwind via CDN, no build step. Sources page groups by country (US first, alpha rest, reverse-chrono within); Analysis page is country-by-country blog style. Date format `dd MONTH yyyy`. Source IDs hidden on Sources page. 108 tests, ruff + mypy clean.
+- **Item 21 [~] admin-app architecture pinned** in `design/admin-app.md`: FastAPI + Jinja2 + HTMX, two-tier auth (shared password on public, magic-link to Tom on `/admin/*`), draft/public file split (`data/scout/draft/` vs `data/scout/public/`), exclusion JSON keyed by `dedup_key`, per-country edit textareas keyed by heading, re-run discards edits, publish copies draft → public locally (deploy hook deferred). Article-level exclusions remove from both Sources page and LLM input. Per-event summary editing not in scope.
+- **Active gate is now item 21 implementation** next session; **item 18** (Ellen's scout review) and Tom's signoff on items 3/11/16/17/19/20 still pending — closes deferred until manual verification. To dry-run mockups: `py -m lawtracker scout && py -m lawtracker analyze --llm-mode=anthropic && py -m lawtracker render && start data\scout\analysis.html`.
 
 ## For future agents
 
@@ -116,6 +116,8 @@ Add adapters for Tom's approved third-party trackers (law-firm client-alert page
 
 **Priority note (2026-04-25):** items 16–18 below land **before** items 4–15. The pilot was reframed from "build storage + poll loop + UI sequentially" to "validate the data shape via a one-shot scout before investing in storage / poll loop / web app." Items keep their numbers per the no-renumber discipline; the order is logical, not numeric. Effective working order: 3 (in flight) → 16 → 17 → 18 → 4 → 5 → 6 → … No hourly polling concern at this stage; the scout runs on demand.
 
+**Priority note (2026-04-28):** item 21 (FastAPI admin app with magic-link + shared-password gate + draft/publish workflow) is now the active build target. It subsumes substantial portions of items 6 (web app skeleton), 7 (dashboard view), and 14 (auth) — those items may be partially or fully closed by item 21's landing, depending on what scope item 21 actually covers; revisit after it ships rather than re-debating now. Updated working order: 18 (Ellen's scout review, gating) → 20 (static mockup signoff) → 21 (admin app) → 4 (storage) → 5 (poll loop) → revisit 6 / 7 / 8 / 14.
+
 ---
 
 ### 16. [~] Data scout CLI + Excel export
@@ -178,6 +180,36 @@ Operational requirements:
 - Fail-soft: LLM failure falls back to whatever the deterministic path can do (no events lost; analysis just isn't produced if API call fails).
 - Cost: pilot scale ~cents per scout run; document expected costs in `design/data-scout.md` once measured.
 - Use prompt caching for the analysis call when the input gets large (table + prompt cached so repeated runs amortize cost).
+
+### 20. [~] Static HTML preview mockups (`lawtracker render`)
+
+Pre-FastAPI mockup target so Tom + Ellen can react to layout / visual decisions before the live web app is built. Tailwind via CDN; no JS framework, no build tooling. Open the output files by double-click in Explorer.
+
+Two pages, both rendered from `data/scout/events.jsonl` + `data/scout/analysis.md`:
+
+- **`analysis.html`** — country-by-country sections, blog-style. United States first; remaining countries alphabetical; cross-jurisdictional last if present. Bullets render with bold/italic/links; LLM blockquote stub-markers stripped; horizontal-rule separators between LLM-emitted country sections collapsed silently.
+- **`sources.html`** — events grouped by country (US first, alpha rest, "(uncategorized)" last). Within each country, reverse-chronological by `event_date`. Each event shows: date in `dd MONTH yyyy` format, primary actor (when present), title (clickable to source URL), summary. Source IDs hidden per Tom 2026-04-28.
+
+Pages link to each other via a shared top nav. Cold pickup: `src/lawtracker/preview.py`, CLI subcommand `lawtracker render` in `src/lawtracker/cli.py`, tests in `tests/test_preview.py`. Markup is intentionally Jinja2-friendly so it carries forward into item 21.
+
+Landed 2026-04-28 across multiple commits this session; awaiting Tom's signoff after final review of mockups against full live-mode scout output.
+
+### 21. [~] FastAPI admin app with two-tier auth + draft/publish workflow
+
+Pulls items 6 + 7 + (subset of) 14 forward into a single coherent build, because the curation loop Tom wants — manually drop noisy articles → re-run LLM → review → publish — only works with a server.
+
+Architecture pinned 2026-04-28 in `design/admin-app.md`. Highlights:
+
+- **Two-tier auth**: shared password on public pages (cookie-gated; Tom shares the password with Ellen + clients verbally); magic-link to Tom's email on `/admin/*` (single-admin allowlist).
+- **Draft / public file split**: `data/scout/draft/` is the admin's working state (latest scout output, current exclusions, current edits, latest LLM draft); `data/scout/public/` is what the public pages render from. Publish copies draft → public.
+- **Article-level exclusions**, keyed by `dedup_key`, applied to both Sources page rendering and LLM analysis input.
+- **Per-country edit textareas** on the admin Analysis page, keyed by exact country heading text. Edits persist until the next re-run; re-run discards edits (simpler model — re-edit if needed).
+- **Re-run** on click triggers `analyze` against the filtered events. No cost-estimate prompt; just runs.
+- **Publish in dev mode** = local file copy of `draft/` → `public/`. **Publish in prod mode** (post-deploy) will additionally trigger a deploy hook; structured so the second mode is one function to swap in later.
+- **Per-event summary editing**: out of scope for this item; per-event summaries on the Sources page render as-is.
+- **External-service dependency**: magic-link emails require an email-sending account (Resend or Postmark). Tom does not have one yet; the design note walks through Resend setup step by step (account, domain verification, API key, env var).
+
+Plan approved 2026-04-25 (web app general scope) and 2026-04-28 (admin/draft/publish + auth specifics). No code yet; design note is the first artifact.
 
 ## Descoped / on hold
 

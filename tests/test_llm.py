@@ -69,3 +69,16 @@ def test_anthropic_mode_without_sdk_raises_clear_error(
 
     with pytest.raises(RuntimeError, match="anthropic SDK is not installed"):
         llm.complete(system="sys", user="user", stub="ignored")
+
+
+def test_anthropic_mode_without_api_key_raises_clear_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """If anthropic mode is set but ANTHROPIC_API_KEY is missing, callers
+    get a clear RuntimeError up front — not a buried SDK auth stack trace
+    after we've already loaded events and built the prompt."""
+    monkeypatch.setenv("LAWTRACKER_LLM_MODE", "anthropic")
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+
+    with pytest.raises(RuntimeError, match="ANTHROPIC_API_KEY is not set"):
+        llm.complete(system="sys", user="user", stub="ignored")

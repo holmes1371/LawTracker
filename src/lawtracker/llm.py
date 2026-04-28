@@ -66,6 +66,15 @@ def _complete_anthropic(system: str, user: str, max_tokens: int, model: str) -> 
             "iteration)."
         ) from exc
 
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        raise RuntimeError(
+            "LAWTRACKER_LLM_MODE=anthropic but ANTHROPIC_API_KEY is not set. "
+            "In PowerShell:  $env:ANTHROPIC_API_KEY = \"sk-ant-...\"  "
+            "(persistent: [Environment]::SetEnvironmentVariable("
+            "\"ANTHROPIC_API_KEY\", \"sk-ant-...\", \"User\")). "
+            "Or set --llm-mode=stub for design iteration without API spend."
+        )
+
     client = Anthropic()
     message = client.messages.create(
         model=model,

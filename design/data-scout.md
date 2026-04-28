@@ -336,3 +336,47 @@ The stub-first design is preserved — tests use stub mode by default via `tests
   1. **`curl_cffi`** as a runtime dep (drop-in httpx replacement, mimics curl TLS fingerprint, ~1 hour swap). Most pragmatic.
   2. **Playwright** headless browser (~half-day setup, beats CF + JS-rendered sites like ASIC).
   3. **Email-subscription parsing** for firm distribution lists (operational, no scraping).
+
+## Analysis output structure (2026-04-28, Tom's directive)
+
+Reframed the priority-1 LLM analysis (`analysis.md`) for a tighter audience and a per-country output:
+
+- **Audience**: anti-corruption compliance professionals working *inside* corporate compliance functions. Drops the previous "lawyers + risk-and-audit-committee" framing — write for the in-house operator: what to watch, do, or escalate.
+- **Structure**: per-country sections of "trends or takeaways."
+  - **United States first**, then remaining countries by event volume (highest first).
+  - **2-3 bullets per country**, except **United States gets up to 5**.
+  - "Major changes" (new statute, headline-level enforcement action, agency restructuring) may exceed the cap with an explicit reason.
+  - Skip a country with <2 events and nothing notable.
+  - Optional final `## Cross-jurisdictional` section only if global commentary materially adds to the country-level picture.
+- **Replaces** the previous structure (Headline takeaways / Volume and trend / Industry concentration / What compliance professionals... / What risk and audit committees...). Volume and industry observations now fold into the per-country bullets where they matter, instead of standing as cross-cutting sections.
+- Stub output mirrors the new shape so prompt iteration in stub mode (`--llm-mode=stub`) shows the right structure without burning API spend.
+
+Implementation: prompt + stub rewritten in `src/lawtracker/analysis.py`. Tests in `tests/test_analysis.py` unchanged (deterministic-stats assertions still apply; the system-prompt phrase "FCPA / global anti-corruption analyst" is preserved).
+
+## LLM-derived country (2026-04-28, Tom's follow-up)
+
+The adapter-level `country` field is unreliable — a US law-firm blog covering a Brazilian case gets tagged `US` because the publisher is American, even though the substance is Brazil. Rather than re-engineer every adapter to look at content, the analysis prompt now:
+
+- Treats `country` in the JSON as a **best-effort hint from the source adapter**, not authoritative.
+- Instructs the LLM to derive each event's effective country from the event text (title, summary, primary_actor) — the jurisdiction whose enforcement, statute, or conduct the event actually concerns.
+- Uses that derived country for the per-country grouping in the output.
+
+No code change to adapters; the adapter `country` value remains as a hint and as a deterministic fallback for stub mode. If accuracy of the derived country becomes a concern at scale, a future iteration could ask the LLM to emit a structured `derived_country` per event, but the current narrative grouping satisfies the audience need.
+
+## Analyze step decoupled from scout (2026-04-28, Tom's directive)
+
+The scout previously wrote `events.xlsx` + `events.jsonl` + `summary.txt` + `analysis.md` in a single command. Tom asked for a two-step pipeline so the spreadsheet can be reviewed before the analysis call runs:
+
+- **Step 1**: `lawtracker scout` polls every adapter, writes `events.xlsx` / `events.jsonl` / `summary.txt`. **No LLM analysis call.** Per-event LLM enrichment (summary generation, noise judgment) still runs at scout time — those are adapter-level operations, distinct from the post-aggregation narrative analysis.
+- **Step 2**: `lawtracker analyze` reads `data/scout/events.jsonl`, calls the LLM analysis, writes `data/scout/analysis.md`. Re-runnable while iterating on the prompt without re-polling adapters. Supports `--input-dir`, `--output`, `--llm-mode={stub,anthropic,off}`.
+
+CLI usage:
+
+```
+py -m lawtracker scout                           # collect, no analysis
+# (review events.xlsx)
+py -m lawtracker analyze --llm-mode=anthropic    # generate analysis.md
+# (review analysis.md; re-run after prompt edits — no re-poll needed)
+```
+
+Implementation: `analyze_from_jsonl(jsonl_path, output_path)` in `src/lawtracker/analysis.py`; new `analyze` subcommand in `src/lawtracker/cli.py`; scout's `_write_analysis` removed.

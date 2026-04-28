@@ -3,6 +3,12 @@
 Runs every adapter in `PILOT_ADAPTERS` once, collects EventRecords, writes
 them to disk for human review. No DB, no scheduling, no state between runs.
 
+Outputs `events.xlsx`, `events.jsonl`, `summary.txt`. The narrative LLM
+analysis is decoupled — run `lawtracker analyze` after reviewing the xlsx
+to produce `analysis.md`. Tom split these steps 2026-04-28 so the
+spreadsheet can be eyeballed before paying for the analysis call, and so
+the prompt can be iterated without re-polling every adapter.
+
 Three invocation styles:
     lawtracker scout
     python -m lawtracker scout
@@ -135,7 +141,6 @@ def run(
     _write_xlsx(all_events, output_dir / "events.xlsx")
     _write_jsonl(all_events, output_dir / "events.jsonl")
     _write_summary(all_events, poll_log, output_dir / "summary.txt")
-    _write_analysis(all_events, output_dir / "analysis.md")
 
     return {
         "events_collected": len(all_events),
@@ -150,12 +155,6 @@ def _print_adapter_status(source_id: str, result: Any) -> None:
         f"  {source_id:<28} status={result.status:<22} count={len(result.events)}{suffix}",
         flush=True,
     )
-
-
-def _write_analysis(events: list[EventRecord], path: Path) -> None:
-    from lawtracker.analysis import build_analysis
-
-    path.write_text(build_analysis(events), encoding="utf-8")
 
 
 def _enrich_summaries(

@@ -1,7 +1,16 @@
 """Post-scout trend analysis — Ellen's primary LLM ask 2026-04-25.
 
 After the scout collects every event, this module produces an
-`analysis.md` file for Ellen with:
+`analysis.md` file for the target audience: anti-corruption compliance
+professionals working in corporate compliance functions.
+
+Output structure (per Tom's direction 2026-04-28):
+
+- Per-country sections of "trends or takeaways."
+- Cap of 2-3 bullets per country, unless major changes warrant more.
+- United States gets up to 5 bullets.
+
+The file itself contains:
 
 1. Deterministic source-data summary stats (computed in Python; always
    accurate regardless of LLM mode).
@@ -9,14 +18,6 @@ After the scout collects every event, this module produces an
    prompt design without burning API spend).
 3. Either a stub placeholder analysis or a real Claude analysis,
    depending on `LAWTRACKER_LLM_MODE`.
-
-Ellen's questions, baked into the prompt:
-- Are there fewer enforcement actions against companies than the prior
-  6 months?
-- Are cases concentrated in a particular industry?
-- What should anti-corruption compliance professionals and lawyers
-  care about right now?
-- What will risk and audit committee boards need to know?
 """
 
 from __future__ import annotations
@@ -24,41 +25,60 @@ from __future__ import annotations
 import json
 from collections import Counter
 from datetime import date, datetime
+from pathlib import Path
 from typing import Any
 
 from lawtracker import llm
 from lawtracker.sources import EventRecord
 
 ANALYSIS_SYSTEM = (
-    "You are an FCPA / global anti-corruption analyst writing for senior "
-    "compliance lawyers and corporate risk-and-audit committee members. "
-    "Read the structured event table the user provides and produce a "
-    "concise markdown analysis. Be specific — name companies, industries, "
-    "agencies, and amounts when the data supports it. Avoid hedging."
+    "You are an FCPA / global anti-corruption analyst writing for "
+    "anti-corruption compliance professionals working inside corporate "
+    "compliance functions. Read the structured event table the user "
+    "provides and produce a concise markdown analysis organized by "
+    "country. Be specific — name companies, industries, agencies, and "
+    "amounts when the data supports it. Avoid hedging. Write for an "
+    "in-house audience: emphasize what they should do, watch, or escalate."
 )
 
 ANALYSIS_USER_TEMPLATE = """\
-Below is a JSON list of recent anti-corruption enforcement events from {n_sources} sources \
-covering the past ~24 months. Produce a markdown analysis with these sections, in order:
+Below is a JSON list of recent anti-corruption enforcement and policy events from \
+{n_sources} sources covering the past ~24 months.
 
-## Headline takeaways
-3-5 bullets capturing the most important things a senior FCPA practitioner should notice now.
+Produce a markdown analysis organized by country. The target audience is \
+anti-corruption compliance professionals working inside companies.
 
-## Volume and trend
-Are there fewer enforcement actions against companies than the prior 6 months? Compare the most \
-recent 6-month window to the 6 months before it (using `event_date`). Call out where the data is \
-too thin to support a confident answer.
+Rules:
 
-## Industry concentration
-Which industries are over-represented? Use the `industry` field where present; otherwise infer \
-from titles / summaries. Name the top 3 with example cases.
-
-## What compliance professionals and lawyers should care about right now
-Specific, concrete: what guidance should they read, which case patterns matter, what is shifting \
-in DOJ / SEC / cross-jurisdictional posture?
-
-## What risk and audit committees need to know
-1-3 board-level talking points. Practical, decision-oriented. No jargon.
+- **Derive each event's effective country from the event text** (title, summary, primary_actor). \
+The `country` field in the JSON is a best-effort hint from the source adapter and is often the \
+country of the *publisher* (e.g. a US law-firm blog covering a Brazilian enforcement action is \
+tagged `US` even though the substance is Brazil). Trust the text over the field.
+- **Bucket each event under the jurisdiction whose authorities brought the action**, not the \
+country where the underlying conduct or bribes occurred. A US DOJ FCPA action against TIGO for \
+payments in Guatemala goes under **United States** — Guatemala does *not* get its own section \
+just because foreign officials were involved. Mention the foreign locus of conduct as *context \
+inside the US bullet* (e.g. "DOJ resolved a $XM FCPA case against Acme involving payments to \
+Guatemalan officials").
+- **The exception**: when a single matter is resolved through **coordinated enforcement actions \
+by multiple governments' authorities** (e.g. Petrobras / Lava Jato — DOJ + Brazilian MPF/CGU + \
+Swiss OAG; Airbus — DOJ + UK SFO + French PNF), give the foreign jurisdiction its own section \
+with a summary of that country's role in the resolution. The trigger is *that government's own \
+action*, not US-only enforcement that happened to involve foreign conduct.
+- Order sections with `## United States` first, then remaining countries by event volume \
+(highest first).
+- Under each country heading, write the most important **trends or takeaways** as bullets:
+  - **United States: up to 5 bullets.**
+  - **All other countries: 2-3 bullets**, unless there have been *major* changes in that \
+jurisdiction (new statute, headline-level enforcement action, agency restructuring, etc.) — \
+in which case you may exceed 3 bullets and explicitly note why.
+- Each bullet should be specific: name the agency, company, statute, industry, dollar amount, \
+or resolution type when the data supports it. A bullet that could apply to any jurisdiction in \
+any year is not a takeaway — drop it.
+- Skip a country entirely if it has fewer than 2 events AND nothing notable to say.
+- If global commentary genuinely concerns no specific jurisdiction, place it under a final \
+`## Cross-jurisdictional` section only if it materially adds to the country-level picture; \
+otherwise drop it.
 
 Events table (JSON):
 
@@ -73,31 +93,29 @@ Set `LAWTRACKER_LLM_MODE=anthropic` (or pass `--llm-mode=anthropic` to the scout
 and install the anthropic SDK to get a real analysis. Tom is iterating on prompt \
 design before turning on live API calls._
 
-## Headline takeaways
-- **[STUB]** Recent enforcement skews toward US DOJ FCPA actions, with a notable cluster of \
-medical-device and aerospace cases.
-- **[STUB]** Cross-jurisdictional posture is active: French (PNF), Brazilian, and Chinese \
-counterparts appear repeatedly in DOJ press releases.
-- **[STUB]** Practitioner commentary (Volkov, GAB, Miller & Chevalier reviews) is focused on \
-voluntary self-disclosure under the Corporate Enforcement Policy.
+## United States
+- **[STUB]** DOJ FCPA Unit continues to favor declinations under the Corporate Enforcement \
+Policy when companies self-disclose; recent medical-device resolutions illustrate the pattern.
+- **[STUB]** Aerospace and defense remain a concentrated risk area, with multiple DPA / NPA \
+resolutions involving foreign sales-agent payments.
+- **[STUB]** SEC FCPA accounting-provisions enforcement is up sharply year-over-year, driven \
+by books-and-records cases against issuers with foreign subsidiaries.
+- **[STUB]** DOJ pilot programs on whistleblower awards and individual accountability are \
+shifting expectations for compliance program design.
+- **[STUB]** Cross-border coordination with French (PNF) and Brazilian (CGU / MPF) \
+authorities is producing parallel resolutions with credit-sharing arrangements.
 
-## Volume and trend
-**[STUB]** Real analysis would compare the most recent 6 months to the prior 6 using \
-`event_date`. The deterministic stats above show monthly counts per source.
+## Chile
+- **[STUB]** Fiscalía Nacional has opened multiple investigations under Ley 20.393 targeting \
+mid-size construction firms; corporate liability is the operative theory.
+- **[STUB]** Consejo para la Transparencia activity suggests heightened public-records \
+scrutiny of municipal procurement.
 
-## Industry concentration
-**[STUB]** Top three industries (real LLM would extract from `metadata.industry` and titles): \
-1. Medical devices, 2. Aerospace, 3. Financial services.
-
-## What compliance professionals and lawyers should care about right now
-**[STUB]** Real Claude output would be substantive here. Examples of what we'd expect:
-- Watch for declination patterns under the Corporate Enforcement Policy.
-- Industry-specific risk in cross-jurisdictional supply chains.
-- New AAG / DAG speeches signaling priority shifts.
-
-## What risk and audit committees need to know
-**[STUB]** 1-3 board-level talking points would land here. Real LLM output expected to be \
-short, decision-oriented, and free of jargon.
+## Australia
+- **[STUB]** AFP foreign-bribery prosecutions remain rare in absolute terms but the \
+recently-passed corporate-failure-to-prevent offense is reshaping board-level expectations.
+- **[STUB]** AUSTRAC enforcement against financial institutions continues to be the more \
+active enforcement channel for compliance practitioners to monitor.
 """
 
 
@@ -112,6 +130,28 @@ def build_analysis(events: list[EventRecord]) -> str:
         max_tokens=2048,
     )
     return _assemble_markdown(stats, user_prompt, llm_text)
+
+
+def analyze_from_jsonl(jsonl_path: Path, output_path: Path) -> int:
+    """Read a scout's events.jsonl, run the LLM analysis, write the .md file.
+
+    Pipeline split (Tom 2026-04-28): scout writes the raw outputs (xlsx /
+    jsonl / summary) and stops; this is the separate step that turns them
+    into analysis.md. Re-runnable while iterating on the prompt without
+    re-polling adapters.
+
+    Returns the number of events analyzed.
+    """
+    events: list[EventRecord] = []
+    with jsonl_path.open(encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            events.append(EventRecord.model_validate_json(line))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(build_analysis(events), encoding="utf-8")
+    return len(events)
 
 
 def _deterministic_stats(events: list[EventRecord]) -> dict[str, Any]:
@@ -213,10 +253,10 @@ def _assemble_markdown(
     lines.append(ANALYSIS_SYSTEM)
     lines.append("```")
     lines.append("")
-    lines.append("**User (truncated to 2000 chars in this preview):**")
+    lines.append("**User (truncated to 8000 chars in this preview):**")
     lines.append("")
     lines.append("```")
-    lines.append(user_prompt[:2000] + ("…" if len(user_prompt) > 2000 else ""))
+    lines.append(user_prompt[:8000] + ("…" if len(user_prompt) > 8000 else ""))
     lines.append("```")
     lines.append("")
     lines.append("</details>")
