@@ -18,15 +18,13 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-25 (item 17 wave 10 — Ellen feedback wave 3 + per-event summaries)**
+**2026-04-25 (session wrap — scout pilot feature-complete in stub mode, awaiting Ellen's review at item 18)**
 
-- Ellen's wave-2 feedback addressed across two commits this turn:
-  - **Translation cache + email param**: MyMemory was silently rate-limiting (5K chars/day per IP) so Spanish translation stopped firing. Disk cache at `data/scout/.cache/translations.json` plus a `de` email param (50K/day) fix it. Live: Consejo entries arrive in English again with Spanish in `metadata.title_es` / `summary_es`.
-  - **Event-noise filter**: `EVENT_NOISE` regex in `_filters.py` matches webinar / podcast / networking / speaking-engagement / register / save-the-date / CLE / etc. Applied as `SourceAdapter.exclude_filter` ClassVar (default ON; per-adapter override). Plus M&C drops the `event` content type entirely. Live drop: 108 → 83 events.
-  - **Per-event summaries with disk cache**: `src/lawtracker/llm_cache.py` (generic JsonCache) + `src/lawtracker/article_summary.py` (enrich_summaries). Stub mode synthesizes deterministic placeholders; anthropic mode fetches the article via curl_cffi and asks Claude for 1-2 sentences. Cache keyed by `mode|dedup_key` so stub and anthropic don't mix. Verified: second run produces 0 LLM regenerations across all 83 events (full cache hit).
-- CI mypy fix bundled: `anthropic.*` added to `ignore_missing_imports` overrides (lazy-imported in llm.py was failing CI mypy).
-- Live scout: 83 events from 8 working adapters; Spanish back in English; conference/webinar ads dropped; per-event summary placeholders cached. Suite: 84 tests passing. Ruff + mypy clean.
-- Items 3, 11, 16, 17, 19 still `[~]` pending Tom's signoff after Ellen's next review pass.
+- **Scout runs end-to-end** against 11 adapters with live per-source / per-event progress output: DOJ FCPA actions (with link-following enrichment), SEC FCPA cases (LLM-extracted), AFP foreign-bribery, Fiscalía + Consejo Chile (Spanish auto-translated), Volkov Law, Gibson Dunn, Foley LLP, Global Anticorruption Blog, Harvard CorpGov FCPA, Miller & Chevalier FCPA practice. Outputs: `events.xlsx` (hyperlinked title column, country populated, summaries from cache or LLM), `events.jsonl`, `summary.txt`, `analysis.md`. 93 tests, ruff + mypy clean, CI green on Python 3.11 + 3.12.
+- **LLM (item 19) is stub-first** via `LAWTRACKER_LLM_MODE` env var or `--llm-mode={stub|anthropic|off}`. Stub is the default; flips to live by `pip install anthropic` + `ANTHROPIC_API_KEY` + `--llm-mode=anthropic`. Anthropic mode: per-event LLM calls return JSON `{"drop": true, "reason": ...}` or `{"drop": false, "summary": ...}`; both decisions cached under `data/scout/.cache/summaries.json` with mode-stamped keys. Three event-noise layers stack: parse-time regex, LLM-as-judge, post-enrichment regex.
+- **Items 3, 11, 16, 17, 19 all `[~]`** pending Tom's manual signoff after Ellen's review. **Active gate is item 18** (scout review); items 4 / 5 / 6+ wait for that.
+- **Open at item 18 review** (captured in `design/data-scout.md` "Findings"): (a) sources still blocked from this dev environment — OECD WGB / FCPA Blog / CDPP / NACC / AUSTRAC — likely need Playwright or residential proxy access; (b) translation backend swap if MyMemory quality issues surface (argostranslate / DeepL / Claude options); (c) Ellen's first wave of feedback is fully applied (country populated, filter narrowed + cartel added, hyperlinks, LLM analysis prompt centered on her trend questions).
+- **Cold-pickup pointers**: `design/data-scout.md` is the running design note for items 16/19 with the most current state; `design/sources.md` lists every adapter with adapter URLs and known blockers; `design/source-adapter-framework.md` covers item 3's framework decisions. To dry-run locally: `py -m lawtracker scout` (stub, ~5s, no API spend); to run live: `py -m lawtracker scout --llm-mode=anthropic` (~3-6 min, ~$0.20-0.40 per run with Sonnet 4.5).
 
 ## For future agents
 
