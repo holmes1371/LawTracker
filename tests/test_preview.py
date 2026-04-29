@@ -33,7 +33,7 @@ def _write_analysis_md(path: Path, narrative: str) -> None:
     )
 
 
-def test_render_writes_both_pages(tmp_path: Path) -> None:
+def test_render_writes_all_four_pages(tmp_path: Path) -> None:
     _write_jsonl(
         tmp_path / "events.jsonl",
         [
@@ -54,9 +54,11 @@ def test_render_writes_both_pages(tmp_path: Path) -> None:
         tmp_path / "analysis.md",
         "## United States\n- DOJ resolved a case.\n",
     )
-    out_a, out_s = render_pages(tmp_path)
-    assert out_a.exists() and out_a.name == "analysis.html"
-    assert out_s.exists() and out_s.name == "sources.html"
+    out_pa, out_ps, out_aa, out_as = render_pages(tmp_path)
+    assert out_pa.exists() and out_pa.name == "analysis.html"
+    assert out_ps.exists() and out_ps.name == "sources.html"
+    assert out_aa.exists() and out_aa.parent.name == "admin"
+    assert out_as.exists() and out_as.parent.name == "admin"
 
 
 def test_render_errors_when_no_jsonl(tmp_path: Path) -> None:
@@ -252,6 +254,118 @@ def test_pages_link_to_each_other(tmp_path: Path) -> None:
     s_html = (tmp_path / "sources.html").read_text(encoding="utf-8")
     assert 'href="sources.html"' in a_html
     assert 'href="analysis.html"' in s_html
+
+
+def test_admin_sources_has_hide_buttons_per_article(tmp_path: Path) -> None:
+    """Admin Sources page shows a 'Hide article' button per event so
+    Ellen can flag noise before re-running analysis."""
+    _write_jsonl(
+        tmp_path / "events.jsonl",
+        [
+            EventRecord(
+                dedup_key="k1",
+                source_id="s",
+                event_date=date(2026, 1, 1),
+                title="Event 1",
+                primary_actor=None,
+                summary=None,
+                url="https://example.test/1",
+                country="US",
+                metadata={},
+            ),
+            EventRecord(
+                dedup_key="k2",
+                source_id="s",
+                event_date=date(2026, 1, 2),
+                title="Event 2",
+                primary_actor=None,
+                summary=None,
+                url="https://example.test/2",
+                country="US",
+                metadata={},
+            ),
+        ],
+    )
+    render_pages(tmp_path)
+    admin_sources = (tmp_path / "admin" / "sources.html").read_text(encoding="utf-8")
+    # Two events → two Hide buttons.
+    assert admin_sources.count("Hide article") == 2
+    # Public Sources page must NOT have hide buttons.
+    public_sources = (tmp_path / "sources.html").read_text(encoding="utf-8")
+    assert "Hide article" not in public_sources
+
+
+def test_admin_analysis_has_edit_textarea_per_country(tmp_path: Path) -> None:
+    """Each country section on the admin Analysis page has a textarea
+    pre-populated with the markdown source so Ellen can edit before
+    publishing."""
+    _write_jsonl(tmp_path / "events.jsonl", [])
+    _write_analysis_md(
+        tmp_path / "analysis.md",
+        "## United States\n- US bullet to edit.\n\n"
+        "## Brazil\n- Brazil bullet.\n",
+    )
+    render_pages(tmp_path)
+    admin_analysis = (tmp_path / "admin" / "analysis.html").read_text(encoding="utf-8")
+    # Two countries → two textareas + two Save buttons.
+    assert admin_analysis.count("<textarea") == 2
+    assert "Save United States" in admin_analysis
+    assert "Save Brazil" in admin_analysis
+    # Markdown source is pre-populated in the textarea (escaped).
+    assert "US bullet to edit." in admin_analysis
+    # Public analysis page must NOT have textareas.
+    public_analysis = (tmp_path / "analysis.html").read_text(encoding="utf-8")
+    assert "<textarea" not in public_analysis
+
+
+def test_admin_pages_have_generate_and_publish_buttons(tmp_path: Path) -> None:
+    """Header on every admin page shows Generate-new-analysis +
+    Publish-to-site buttons."""
+    _write_jsonl(tmp_path / "events.jsonl", [])
+    render_pages(tmp_path)
+    for page in ("admin/analysis.html", "admin/sources.html"):
+        html_text = (tmp_path / page).read_text(encoding="utf-8")
+        assert "Generate new analysis" in html_text, page
+        assert "Publish to site" in html_text, page
+
+
+def test_admin_uses_ellen_friendly_terminology(tmp_path: Path) -> None:
+    """Ellen, not a developer, drives the admin dashboard. Surface
+    plain-language labels and avoid jargon. Locks in: 'Articles'
+    instead of 'Sources', 'Hide article' instead of 'Exclude',
+    'Generate new analysis' instead of 'Re-run'."""
+    _write_jsonl(
+        tmp_path / "events.jsonl",
+        [
+            EventRecord(
+                dedup_key="k",
+                source_id="s",
+                event_date=date(2026, 1, 1),
+                title="t",
+                primary_actor=None,
+                summary=None,
+                url="https://example.test",
+                country="US",
+                metadata={},
+            )
+        ],
+    )
+    render_pages(tmp_path)
+    admin_sources = (tmp_path / "admin" / "sources.html").read_text(encoding="utf-8")
+    assert "Articles" in admin_sources
+    assert "Hide article" in admin_sources
+    assert "Exclude" not in admin_sources
+    assert "dedup_key" not in admin_sources
+
+
+def test_admin_pages_link_back_to_public(tmp_path: Path) -> None:
+    """Admin pages need a way out — a 'View public site' link in the
+    nav. Cross-links go up one directory because admin/ is a subdir."""
+    _write_jsonl(tmp_path / "events.jsonl", [])
+    render_pages(tmp_path)
+    admin_analysis = (tmp_path / "admin" / "analysis.html").read_text(encoding="utf-8")
+    assert 'href="../analysis.html"' in admin_analysis
+    assert "View public site" in admin_analysis
 
 
 def test_event_url_is_clickable_in_sources_page(tmp_path: Path) -> None:

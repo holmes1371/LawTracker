@@ -130,11 +130,12 @@ def main(argv: list[str] | None = None) -> int:
         from lawtracker.preview import render_pages
 
         try:
-            out_a, out_s = render_pages(args.input_dir)
+            paths = render_pages(args.input_dir)
         except RuntimeError as exc:
             print(f"Error: {exc}", flush=True)
             return 1
-        print(f"Wrote {out_a}\nWrote {out_s}", flush=True)
+        for p in paths:
+            print(f"Wrote {p}", flush=True)
         return 0
 
     print("LawTracker — scaffolding in place. Implement tracking logic next.")

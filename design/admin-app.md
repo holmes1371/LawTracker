@@ -1,7 +1,16 @@
 # Admin app — design note (item 21)
 
 Living design note for the FastAPI admin app. Tom approved the architecture
-2026-04-28; no code yet. This note is the first artifact for item 21.
+2026-04-28; admin-side static mockups landed the same day at
+`data/scout/admin/{analysis,sources}.html`. Live FastAPI buildout is the
+next major work block.
+
+**Primary admin user is Ellen** (clarified by Tom 2026-04-28). She does the
+review, edits, and publishes — the dashboard must be intuitive for a
+non-developer. Tom retains admin access too (co-admin model). UX language
+in the mockup uses plain English ("Hide article", "Generate new analysis",
+"Publish to site") rather than developer terminology ("exclude", "re-run",
+"deploy").
 
 ## Why this exists
 
@@ -50,11 +59,14 @@ continues via CDN during pilot; bundle later if performance demands it.
   the password with Ellen + clients out-of-band (Signal, verbal,
   whatever). Anyone he shares with can re-share; no per-user
   revocation. Acceptable for pilot.
-- **Admin** (`/admin/*`): magic-link to Tom's email only. Single-admin
-  allowlist hardcoded in env (`ADMIN_EMAIL=tom@...`). User enters
-  email → server emails a one-time URL with a token → clicking sets
-  an admin session cookie (longer-lived than public, e.g. 7 days).
-  Token is single-use, 15-minute expiry.
+- **Admin** (`/admin/*`): magic-link to allowlisted emails. Allowlist
+  is `ADMIN_EMAILS` env var (comma-separated) — currently Ellen
+  (primary) and Tom (co-admin). User enters email at the login page;
+  if the email is on the allowlist, server emails a one-time URL
+  with a token; clicking sets an admin session cookie (longer-lived
+  than public, e.g. 7 days). Token is single-use, 15-minute expiry.
+  Magic-link emails go through Resend (see "External-service
+  walkthrough" below).
 
 Local-dev mode (`LAWTRACKER_DEV=1`): both gates disabled so iteration is
 fast; we verify auth manually before deploy.
@@ -145,24 +157,53 @@ Confirmation step: publish shows a diff summary first ("publishing 87
 events; 12 excluded; 4 country sections, 2 with edits") and requires
 explicit click-to-confirm. Avoids accidental publish.
 
-### 7. UI sketch
+### 7. UI / UX
 
-Admin nav: Sources / Analysis / Re-run / Publish.
+Admin-side static mockups landed 2026-04-28 at
+`data/scout/admin/{analysis,sources}.html`. Open by double-click;
+buttons are non-functional (`alert()` stubs explain what they would
+do). The mockup is the visual + UX spec for the live FastAPI build.
 
-- **Admin Sources** (`/admin/sources`): same layout as the static
-  mockup, plus per-row "exclude" / "restore" toggle. Excluded rows
-  are dimmed but still visible. Sticky banner at top: "N excluded;
-  K stale exclusions [clean up]".
-- **Admin Analysis** (`/admin/analysis`): same country-by-country
-  layout, but each country section has a textarea below the rendered
-  preview. Save button per section (or auto-save on blur — TBD at
-  build time). Top of page: "Last LLM run: <timestamp>; <K> events
-  fed to LLM; <N> edits pending".
-- **Admin Re-run** (`POST /admin/rerun`): button that fires the
-  analyze pipeline. Shows a spinner; on completion, redirects back to
-  `/admin/analysis` with a flash message.
-- **Admin Publish** (`/admin/publish`): preview/diff page (what would
-  change in `public/`); "Publish" button to commit.
+Header (every admin page):
+
+- Brand: `LawTracker · Admin`
+- Tabs: **Analysis** / **Articles** (note: "Articles" not "Sources" —
+  plain language for Ellen). Underlined when active.
+- Right-side action buttons: **Generate new analysis** (slate
+  outline) / **Publish to site** (emerald solid).
+- Trailing crumb: `View public site →` for quick switch out.
+
+**Admin Articles** (`/admin/sources`): country-grouped feed (same
+ordering as public). Banner at top: "{N} articles available · {K}
+currently hidden". Help text: "Hide articles that aren't relevant or
+might dilute the analysis. Hidden articles won't appear on the public
+site or be sent to the analysis." Each article card has a right-side
+**Hide article** button. Live wiring: button POSTs to
+`/admin/exclude/{dedup_key}`, page re-renders with the article dimmed
+and the button changed to **Restore**.
+
+**Admin Analysis** (`/admin/analysis`): country sections in a
+two-column layout — left column shows the rendered preview (what
+readers will see); right column is a markdown textarea pre-filled with
+the section source. Per-country **Save** button (amber). Banner at
+top: "Analysis ready for review · {N} articles fed · {K} edits saved
+· not yet published". Help text explains the workflow. Live wiring:
+Save POSTs to `/admin/edit/{country}`; textarea remains the source of
+truth until next re-run.
+
+**Generate new analysis** (header button, every admin page): POSTs to
+`/admin/rerun`. Shows a spinner; on completion redirects back to
+`/admin/analysis`. Flash message confirms event count fed to the LLM
+and warns that any pending edits were discarded.
+
+**Publish to site** (header button, every admin page): GETs
+`/admin/publish` which renders a confirmation page summarizing what's
+about to change ("publishing 87 articles, 12 hidden; 4 country
+sections, 2 edited"). Confirm button POSTs and bakes draft → public.
+
+Container width: `max-w-6xl` on admin (vs. `max-w-4xl` on public) to
+make room for the side-by-side preview/edit columns on the Analysis
+page.
 
 ### 8. Defaults and answers to Tom's earlier questions
 
@@ -204,10 +245,10 @@ Tom has not set up an email-sending service. Resend is the simplest fit
 
    Close + reopen PowerShell. Verify: `$env:RESEND_API_KEY` echoes the
    key.
-5. **Set the admin email allowlist**:
+5. **Set the admin email allowlist** (Ellen + Tom; comma-separated):
 
    ```powershell
-   [Environment]::SetEnvironmentVariable("ADMIN_EMAIL", "tom@...", "User")
+   [Environment]::SetEnvironmentVariable("ADMIN_EMAILS", "ellen@...,tom@...", "User")
    ```
 
 6. **Set the public shared password** (same env-var pattern):

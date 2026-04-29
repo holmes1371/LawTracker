@@ -1,17 +1,25 @@
 """HTML mockup renderer for the scout outputs.
 
-Produces two static pages from `events.jsonl` + `analysis.md`:
+Produces four static pages from `events.jsonl` + `analysis.md`:
 
-- `analysis.html` — country-by-country narrative analysis, blog-style.
-  Alphabetical, US first.
-- `sources.html` — event feed grouped by country (US first, rest alpha),
-  reverse-chronological within each country. Title + summary per event.
+- `analysis.html` (public) — country-by-country narrative, blog-style.
+- `sources.html` (public) — event feed grouped by country.
+- `admin/analysis.html` — admin variant with per-country edit textareas
+  + Save buttons; status banner with last LLM run + edit count;
+  Re-run / Publish controls in the header.
+- `admin/sources.html` — admin variant with per-event "Exclude"
+  buttons; status banner with event/exclusion counts; Re-run / Publish
+  controls in the header.
 
-Both pages are self-contained: Tailwind via CDN, no JS framework, no
-build step. Open by double-click in Explorer or via `start
-data\\scout\\analysis.html` in PowerShell. Final hosting will be on
-lawmasolutions.com (item 9 / 10) — markup carries forward into the
-Jinja2 templates when item 6 lands.
+All four pages are self-contained: Tailwind via CDN, no JS framework
+beyond a couple of `alert()` stubs on the admin action buttons (the
+mockup demonstrates UI shape; interactions wire up in item 21's live
+FastAPI buildout). Tom + Ellen open by double-click in Explorer or
+`start data\\scout\\analysis.html` in PowerShell.
+
+The admin / public split mirrors the URL split planned for the live
+app (`/admin/*` vs `/`), so markup carries forward into Jinja2
+templates with minimal rework.
 """
 
 from __future__ import annotations
@@ -24,10 +32,11 @@ from pathlib import Path
 from lawtracker.sources import EventRecord
 
 
-def render_pages(input_dir: Path) -> tuple[Path, Path]:
-    """Render analysis.html and sources.html from input_dir contents.
+def render_pages(input_dir: Path) -> tuple[Path, Path, Path, Path]:
+    """Render the four mockup pages from input_dir contents.
 
-    Returns (analysis_path, sources_path).
+    Returns (public_analysis, public_sources, admin_analysis,
+    admin_sources) paths.
     """
     analysis_md = input_dir / "analysis.md"
     jsonl = input_dir / "events.jsonl"
@@ -36,25 +45,45 @@ def render_pages(input_dir: Path) -> tuple[Path, Path]:
             f"No events.jsonl at {jsonl}. Run `lawtracker scout` first."
         )
 
-    analysis_html = _render_analysis_page(analysis_md)
-    sources_html = _render_sources_page(jsonl)
+    events = _load_events(jsonl)
+    analysis_md_text = (
+        analysis_md.read_text(encoding="utf-8") if analysis_md.exists() else ""
+    )
+    sections = _extract_country_sections(analysis_md_text)
 
-    out_a = input_dir / "analysis.html"
-    out_s = input_dir / "sources.html"
-    out_a.write_text(analysis_html, encoding="utf-8")
-    out_s.write_text(sources_html, encoding="utf-8")
-    return out_a, out_s
+    public_analysis_html = _render_public_analysis(sections)
+    public_sources_html = _render_public_sources(events)
+    admin_analysis_html = _render_admin_analysis(sections, events)
+    admin_sources_html = _render_admin_sources(events)
+
+    out_pa = input_dir / "analysis.html"
+    out_ps = input_dir / "sources.html"
+    admin_dir = input_dir / "admin"
+    admin_dir.mkdir(parents=True, exist_ok=True)
+    out_aa = admin_dir / "analysis.html"
+    out_as = admin_dir / "sources.html"
+
+    out_pa.write_text(public_analysis_html, encoding="utf-8")
+    out_ps.write_text(public_sources_html, encoding="utf-8")
+    out_aa.write_text(admin_analysis_html, encoding="utf-8")
+    out_as.write_text(admin_sources_html, encoding="utf-8")
+    return out_pa, out_ps, out_aa, out_as
 
 
-# ---- Analysis page ------------------------------------------------------
+def _load_events(jsonl_path: Path) -> list[EventRecord]:
+    events: list[EventRecord] = []
+    with jsonl_path.open(encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                events.append(EventRecord.model_validate_json(line))
+    return events
 
 
-def _render_analysis_page(analysis_md_path: Path) -> str:
-    if analysis_md_path.exists():
-        sections = _extract_country_sections(analysis_md_path.read_text(encoding="utf-8"))
-    else:
-        sections = {}
+# ---- Analysis page (public) ---------------------------------------------
 
+
+def _render_public_analysis(sections: dict[str, str]) -> str:
     if not sections:
         body = (
             "<p class='text-slate-600'>No analysis available. Run "
@@ -64,7 +93,7 @@ def _render_analysis_page(analysis_md_path: Path) -> str:
     else:
         body = _render_country_articles(_sort_country_sections(sections))
 
-    return _wrap_html("Analysis", "analysis", body)
+    return _wrap_html("Analysis", "analysis", body, mode="public")
 
 
 def _extract_country_sections(md: str) -> dict[str, str]:
@@ -202,17 +231,32 @@ def _inline(text: str) -> str:
     return text
 
 
-# ---- Sources page -------------------------------------------------------
+# ---- Sources page (public) ----------------------------------------------
 
 
-def _render_sources_page(jsonl_path: Path) -> str:
-    events: list[EventRecord] = []
-    with jsonl_path.open(encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if line:
-                events.append(EventRecord.model_validate_json(line))
+def _render_public_sources(events: list[EventRecord]) -> str:
+    by_country = _group_events_by_country(events)
+    body_parts = [
+        _render_country_section(country, items, admin=False)
+        for country, items in by_country
+    ]
 
+    if not body_parts:
+        body = (
+            "<p class='text-slate-600'>No events. Run "
+            "<code class='bg-slate-100 px-1 rounded'>lawtracker scout</code> "
+            "first.</p>"
+        )
+    else:
+        body = "\n".join(body_parts)
+    return _wrap_html("Sources", "sources", body, mode="public")
+
+
+def _group_events_by_country(
+    events: list[EventRecord],
+) -> list[tuple[str, list[EventRecord]]]:
+    """Group events by country (US first, alpha rest, '(uncategorized)' last);
+    reverse-chrono within each country."""
     grouped: dict[str, list[EventRecord]] = {}
     for e in events:
         bucket = e.country or "(uncategorized)"
@@ -226,27 +270,18 @@ def _render_sources_page(jsonl_path: Path) -> str:
             return (2, lower)
         return (1, lower)
 
-    sorted_countries = sorted(grouped.keys(), key=country_key)
-
-    body_parts = []
-    for country in sorted_countries:
+    out: list[tuple[str, list[EventRecord]]] = []
+    for country in sorted(grouped.keys(), key=country_key):
         items = grouped[country]
         items.sort(key=lambda e: e.event_date or date.min, reverse=True)
-        body_parts.append(_render_country_section(country, items))
-
-    if not body_parts:
-        body = (
-            "<p class='text-slate-600'>No events. Run "
-            "<code class='bg-slate-100 px-1 rounded'>lawtracker scout</code> "
-            "first.</p>"
-        )
-    else:
-        body = "\n".join(body_parts)
-    return _wrap_html("Sources", "sources", body)
+        out.append((country, items))
+    return out
 
 
-def _render_country_section(country: str, events: list[EventRecord]) -> str:
-    items_html = "\n".join(_render_event_card(e) for e in events)
+def _render_country_section(
+    country: str, events: list[EventRecord], *, admin: bool
+) -> str:
+    items_html = "\n".join(_render_event_card(e, admin=admin) for e in events)
     return f"""<section class="mb-12">
   <h2 class="text-2xl font-semibold text-slate-900 mb-5 pb-2 border-b border-slate-300">
     {html.escape(country)}
@@ -258,7 +293,7 @@ def _render_country_section(country: str, events: list[EventRecord]) -> str:
 </section>"""
 
 
-def _render_event_card(e: EventRecord) -> str:
+def _render_event_card(e: EventRecord, *, admin: bool) -> str:
     # Display format Tom set 2026-04-28: "dd MONTH yyyy", no dashes
     # (e.g. "15 March 2026"). %d is zero-padded; full month name via %B.
     date_str = e.event_date.strftime("%d %B %Y") if e.event_date else "—"
@@ -286,6 +321,33 @@ def _render_event_card(e: EventRecord) -> str:
     meta_html = (
         f'<div class="text-sm text-slate-500">{date_str}{actor_html}</div>'
     )
+
+    hide_button_html = ""
+    if admin:
+        # Plain-language button for Ellen. Non-functional in the static
+        # mockup; the alert() makes that clear without needing a
+        # separate footer note for every interaction.
+        hide_button_html = (
+            '<button type="button" '
+            'onclick="alert(\'In the live app, this would hide the article '
+            'from the public site and the next analysis. Static mockup — '
+            'no action taken.\');" '
+            'class="text-sm text-slate-500 hover:text-red-600 '
+            'border border-slate-300 hover:border-red-400 rounded px-3 py-1 '
+            'whitespace-nowrap self-start">'
+            "Hide article</button>"
+        )
+
+    if admin:
+        return f"""    <article class="flex gap-4 items-start">
+      <div class="flex-1 min-w-0">
+        {meta_html}
+        <h3 class="font-semibold text-slate-900 mt-1 leading-snug">{title_html}</h3>
+        {summary_html}
+      </div>
+      {hide_button_html}
+    </article>"""
+
     return f"""    <article>
       {meta_html}
       <h3 class="font-semibold text-slate-900 mt-1 leading-snug">{title_html}</h3>
@@ -293,14 +355,187 @@ def _render_event_card(e: EventRecord) -> str:
     </article>"""
 
 
+# ---- Admin pages --------------------------------------------------------
+
+
+def _render_admin_sources(events: list[EventRecord]) -> str:
+    """Admin variant of the Sources page. Each article gets a
+    "Hide article" button. Status banner up top + plain-language help."""
+    by_country = _group_events_by_country(events)
+    n_total = len(events)
+
+    banner = f"""<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+  <div class="text-amber-900 font-semibold">{n_total} articles available</div>
+  <div class="text-sm text-amber-800 mt-1">0 currently hidden &middot; last analysis run not yet performed</div>
+</div>"""
+
+    help_text = """<p class="text-slate-600 mb-8 leading-relaxed">
+Review the articles below. <strong>Hide</strong> any that aren't relevant or
+that might dilute the analysis &mdash; medium-quality commentary, off-topic
+posts, items duplicated across other sources. Hidden articles will not appear
+on the public site, and they will not be sent to the analysis when you click
+<strong>Generate new analysis</strong>.
+</p>"""
+
+    body_parts = [
+        _render_country_section(country, items, admin=True)
+        for country, items in by_country
+    ]
+    if not body_parts:
+        sections_html = (
+            "<p class='text-slate-600'>No articles. Run "
+            "<code class='bg-slate-100 px-1 rounded'>lawtracker scout</code> "
+            "first.</p>"
+        )
+    else:
+        sections_html = "\n".join(body_parts)
+
+    body = banner + help_text + sections_html
+    return _wrap_html("Articles", "sources", body, mode="admin")
+
+
+def _render_admin_analysis(
+    sections: dict[str, str], events: list[EventRecord]
+) -> str:
+    """Admin variant of the Analysis page. Each country section shows
+    the rendered preview AND an editable textarea pre-filled with the
+    markdown source. Save button per section (visual only)."""
+    n_events = len(events)
+
+    if not sections:
+        body = (
+            "<p class='text-slate-600'>No analysis yet. Click "
+            "<strong>Generate new analysis</strong> in the header to "
+            "produce one.</p>"
+        )
+        return _wrap_html("Analysis", "analysis", body, mode="admin")
+
+    banner = f"""<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+  <div class="text-amber-900 font-semibold">Analysis ready for review</div>
+  <div class="text-sm text-amber-800 mt-1">{n_events} articles fed to the analysis &middot; 0 edits saved &middot; not yet published</div>
+</div>"""
+
+    help_text = """<p class="text-slate-600 mb-8 leading-relaxed">
+Review each country's analysis below. The text on the left is what readers will
+see; the box on the right is editable. Make any changes you'd like &mdash;
+correct facts, soften phrasing, drop a bullet that doesn't quite work &mdash;
+then click <strong>Save</strong> for that country. When everything looks good,
+click <strong>Publish to site</strong> in the header.
+</p>"""
+
+    sorted_sections = _sort_country_sections(sections)
+    section_blocks = []
+    for country, body_md in sorted_sections:
+        section_blocks.append(_render_admin_country_block(country, body_md))
+
+    body = banner + help_text + "\n".join(section_blocks)
+    return _wrap_html("Analysis", "analysis", body, mode="admin")
+
+
+def _render_admin_country_block(country: str, body_md: str) -> str:
+    body_html = _md_to_html(body_md)
+    safe_country = html.escape(country)
+    safe_md = html.escape(body_md)
+    save_alert = (
+        "In the live app, this would save your edits for "
+        + country.replace("'", "")
+        + ". Static mockup — no action taken."
+    )
+    return f"""<section class="mb-10 pb-10 border-b border-slate-200 last:border-0">
+  <h2 class="text-2xl font-semibold text-slate-900 mb-4">{safe_country}</h2>
+  <div class="grid md:grid-cols-2 gap-6">
+    <div>
+      <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">Preview</div>
+      <div class="space-y-3 text-slate-800 leading-relaxed bg-white border border-slate-200 rounded-lg p-4">
+        {body_html}
+      </div>
+    </div>
+    <div>
+      <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">Edit</div>
+      <textarea class="w-full h-64 font-mono text-sm bg-white border border-slate-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-400">{safe_md}</textarea>
+      <div class="mt-2 flex justify-end">
+        <button type="button"
+          onclick="alert('{save_alert}');"
+          class="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded px-4 py-2">
+          Save {safe_country}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>"""
+
+
 # ---- Shared layout ------------------------------------------------------
 
 
-def _wrap_html(title: str, current_page: str, body: str) -> str:
+def _wrap_html(title: str, current_page: str, body: str, *, mode: str) -> str:
+    """Render a page in either `public` or `admin` mode.
+
+    Layout / Tailwind classes are shared; `mode` controls nav links
+    (admin pages live under `admin/`, so cross-links go up one level)
+    and whether action buttons (Generate / Publish) appear in the
+    header. Container width is wider on admin so side-by-side
+    preview/edit columns on the analysis page have room.
+    """
+    is_admin = mode == "admin"
+
     def nav_class(page: str) -> str:
         if page == current_page:
             return "font-semibold text-slate-900 border-b-2 border-slate-900 pb-1"
         return "text-slate-600 hover:text-slate-900 pb-1"
+
+    if is_admin:
+        analysis_href = "analysis.html"
+        sources_href = "sources.html"
+        cross_href = "../analysis.html"
+        cross_label = "View public site"
+        sources_label = "Articles"  # plain-language tab for Ellen
+        container_class = "max-w-6xl"
+        brand = "LawTracker · Admin"
+    else:
+        analysis_href = "analysis.html"
+        sources_href = "sources.html"
+        cross_href = "admin/analysis.html"
+        cross_label = "Admin"
+        sources_label = "Sources"
+        container_class = "max-w-4xl"
+        brand = "LawTracker"
+
+    actions_html = ""
+    if is_admin:
+        generate_alert = (
+            "In the live app, this would re-run the LLM analysis using "
+            "only the articles you have not hidden. Static mockup — no "
+            "action taken."
+        )
+        publish_alert = (
+            "In the live app, this would publish your reviewed/edited "
+            "analysis (and the visible articles) to the public site at "
+            "lawmasolutions.com. You would see a confirmation step "
+            "first. Static mockup — no action taken."
+        )
+        actions_html = f"""<div class="flex items-center gap-3">
+      <button type="button"
+        onclick="alert('{generate_alert}');"
+        class="text-sm font-medium text-slate-700 hover:text-slate-900 border border-slate-300 hover:border-slate-500 rounded px-4 py-2">
+        Generate new analysis
+      </button>
+      <button type="button"
+        onclick="alert('{publish_alert}');"
+        class="text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded px-4 py-2">
+        Publish to site
+      </button>
+    </div>"""
+
+    nav_html = f"""<nav class="flex items-center gap-6 text-sm">
+      <a href="{analysis_href}" class="{nav_class("analysis")}">Analysis</a>
+      <a href="{sources_href}" class="{nav_class("sources")}">{sources_label}</a>
+      <a href="{cross_href}" class="text-slate-400 hover:text-slate-700 text-xs">{cross_label} &rarr;</a>
+    </nav>"""
+
+    header_inner = f"""<a href="{analysis_href}" class="text-xl font-semibold tracking-tight">{brand}</a>
+    {nav_html}
+    {actions_html}"""
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -312,22 +547,17 @@ def _wrap_html(title: str, current_page: str, body: str) -> str:
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
 <header class="border-b border-slate-200 bg-white">
-  <div class="max-w-4xl mx-auto px-6 py-4 flex items-baseline justify-between">
-    <a href="analysis.html" class="text-xl font-semibold tracking-tight">LawTracker</a>
-    <nav class="space-x-6 text-sm">
-      <a href="analysis.html" class="{nav_class("analysis")}">Analysis</a>
-      <a href="sources.html" class="{nav_class("sources")}">Sources</a>
-    </nav>
+  <div class="{container_class} mx-auto px-6 py-4 flex items-center justify-between gap-6 flex-wrap">
+    {header_inner}
   </div>
 </header>
-<main class="max-w-4xl mx-auto px-6 py-10">
-  <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-10">{html.escape(title)}</h1>
+<main class="{container_class} mx-auto px-6 py-10">
+  <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-8">{html.escape(title)}</h1>
   {body}
 </main>
-<footer class="max-w-4xl mx-auto px-6 py-8 mt-10 text-sm text-slate-500 border-t border-slate-200">
-  Static mockup — generated by
-  <code class="bg-slate-100 px-1 rounded">lawtracker render</code>.
-  Production target: lawmasolutions.com.
+<footer class="{container_class} mx-auto px-6 py-8 mt-10 text-sm text-slate-500 border-t border-slate-200">
+  Static mockup — buttons are non-functional. Live functionality lands
+  with item 21 (FastAPI admin app). Production target: lawmasolutions.com.
 </footer>
 </body>
 </html>
