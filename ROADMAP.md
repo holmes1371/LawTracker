@@ -24,6 +24,7 @@ Strict rules for writing it:
 - **Admin-side mockups landed** for item 21 at `data/scout/admin/{analysis,sources}.html`. `lawtracker render` now produces all four pages (public + admin variants). Admin Analysis has side-by-side preview / markdown-edit columns per country with Save buttons; admin Sources has per-article Hide buttons; both pages have Generate-new-analysis + Publish-to-site buttons in the header. Buttons are non-functional `alert()` stubs — UX placement only, live wiring lands with the FastAPI buildout.
 - **Primary admin user is Ellen** (Tom clarified 2026-04-28); Tom retains co-admin access. Magic-link allowlist updated to include both emails (`ADMIN_EMAILS` env var, comma-separated). UX language across the admin pages is plain English ("Hide article", "Generate new analysis", "Publish to site") rather than developer terminology — locked in by tests in `tests/test_preview.py`.
 - **Item 21 active build target**: live FastAPI app implementing the admin mockups. First step is Tom completing the Resend setup walkthrough in `design/admin-app.md` (account + DNS + API key); FastAPI scaffold + auth gates + admin routes follow. Items 3, 11 remain `[~]`; items 4 / 5 / 6 / 7 / 8 / 14 deferred until 21 lands.
+- **Item 22 [ ] filed 2026-04-28**: adapter health monitoring + breakage alerts. Rough scope captured (silent-regression detection, daily email digest to Tom, per-adapter health.json baseline). Design needs more thought; cleanest landing is after item 4 (storage) + item 21 (email infra), or shipped earlier as a flat-file stopgap.
 - **Cold-pickup pointers**: `design/admin-app.md` (architecture + UX spec + Resend walkthrough); `COMPLETED.md` 16/17/19/20 (post-mortems); the static mockups themselves are runnable artifacts — `py -m lawtracker render && start data\scout\admin\analysis.html`.
 
 ## For future agents
@@ -155,6 +156,26 @@ Architecture pinned 2026-04-28 in `design/admin-app.md`. Highlights:
 - **External-service dependency**: magic-link emails require an email-sending account (Resend or Postmark). Tom does not have one yet; the design note walks through Resend setup step by step (account, domain verification, API key, env var).
 
 Plan approved 2026-04-25 (web app general scope) and 2026-04-28 (admin/draft/publish + auth specifics). No code yet; design note is the first artifact.
+
+### 22. [ ] Adapter health monitoring + breakage alerts
+
+What happens when a source site silently changes its layout and an adapter stops returning events without throwing? Filed 2026-04-28 from Tom's prompt — design needs more thought before implementation; this entry captures the rough scope so the next session has something to push against.
+
+Two failure modes to distinguish:
+
+- **Hard failures** (HTTP errors, parser exceptions, timeouts) — already visible in `summary.txt` per-adapter status, with auto-retry on transient errors. Gap is alerting: today you have to read the file to know.
+- **Silent regressions** (layout change → parser stops finding events but doesn't crash → returns 0) — far more dangerous. Adapter looks `ok` in summary; events just stop. Easy to miss for weeks unless someone's specifically watching count trends.
+
+Rough scope (revisit at design time):
+
+- **Per-adapter health metrics persisted between runs** — `data/scout/health.json` keyed by `source_id` with last successful run, recent event-count rolling baseline (e.g. last 8 runs), consecutive-failure count.
+- **Anomaly detection at scout end** — flag hard failures plus abrupt count drops vs. baseline. Per-adapter sensitivity matters: Fiscalía Chile's "0 most weeks" is signal, but DOJ's "0 this week after 12/week for a year" is not.
+- **Email alert to Tom only** (not Ellen — adapter-down is an ops concern, not curation). Daily digest, not per-failure spam. Piggybacks on the Resend setup that lands with item 21.
+- **Optional `/admin/health` dashboard** (later) showing each adapter's status + last poll + count trend.
+
+Sequencing: cleanest after item 4 (storage) for the rolling-baseline data and item 21 (email infra) for the alert transport. A flat-file `health.json` + anomaly detection in scout could ship earlier as a stopgap if Tom wants the silent-regression coverage before then.
+
+Out of scope (file separately if useful): snapshot-diffing of source HTML, field-level fill-rate health checks, circuit breaker on consecutive failures.
 
 ## Descoped / on hold
 
