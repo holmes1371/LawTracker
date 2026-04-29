@@ -18,13 +18,13 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-28 (session wrap — pipeline split into scout/analyze/render; static mockups landed at item 20; admin-app architecture pinned at item 21)**
+**2026-04-28 (session wrap — items 16/17/19/20 closed at SHA 35da4c8; admin-app mockups (item 21) is the active build target)**
 
-- **Pipeline split (Tom's directive)**: `lawtracker scout` produces raw `events.{xlsx,jsonl}` + `summary.txt` only; `lawtracker analyze` reads jsonl → calls Claude → writes `analysis.md`; `lawtracker render` builds static `analysis.html` + `sources.html`. Each step independently re-runnable; analyze is the only paid step, so prompt iteration is cheap. Per-event scout enrichment (summary, noise judgment) still runs at scout time and remains cached.
-- **LLM analysis prompt iterated live to per-country structure** for in-house corporate compliance professionals: US first (up to 5 bullets), other countries alpha (2-3 each, more if "major changes"). Bucket events by **enforcing authority** not jurisdiction-of-conduct (Tom's TIGO/Petrobras feedback): a US DOJ FCPA action involving Guatemalan officials goes under United States; a foreign jurisdiction gets its own section only when its government brought a coordinated action (Petrobras/Lava Jato, Airbus, etc.). Country grouping derived from event text, not from adapter `country` field.
-- **Item 20 [~] static HTML mockups landed**: Tailwind via CDN, no build step. Sources page groups by country (US first, alpha rest, reverse-chrono within); Analysis page is country-by-country blog style. Date format `dd MONTH yyyy`. Source IDs hidden on Sources page. 108 tests, ruff + mypy clean.
-- **Item 21 [~] admin-app architecture pinned** in `design/admin-app.md`: FastAPI + Jinja2 + HTMX, two-tier auth (shared password on public, magic-link to Tom on `/admin/*`), draft/public file split (`data/scout/draft/` vs `data/scout/public/`), exclusion JSON keyed by `dedup_key`, per-country edit textareas keyed by heading, re-run discards edits, publish copies draft → public locally (deploy hook deferred). Article-level exclusions remove from both Sources page and LLM input. Per-event summary editing not in scope.
-- **Active gate is now item 21 implementation** next session; **item 18** (Ellen's scout review) and Tom's signoff on items 3/11/16/17/19/20 still pending — closes deferred until manual verification. To dry-run mockups: `py -m lawtracker scout && py -m lawtracker analyze --llm-mode=anthropic && py -m lawtracker render && start data\scout\analysis.html`.
+- **Closed by Tom 2026-04-28**: items **16** (data scout CLI), **17** (pilot adapters + DOJ link-following), **19** (Claude-backed analysis with per-country structure, scout/analyze pipeline split), **20** (static HTML mockups). Full prose moved to `COMPLETED.md`; one-line stubs left in place at original numbers. Item 18 (Ellen's scout review) implicitly subsumed — Ellen's feedback is what drove the iterations that closed 16/17/19/20.
+- **Item 21 [~] admin-app architecture pinned** in `design/admin-app.md`: FastAPI + Jinja2 + HTMX, two-tier auth (shared password on public, magic-link to Tom on `/admin/*`), draft/public file split, article-level exclusions (Sources + LLM both filtered), per-country edit textareas, re-run discards edits, publish copies `draft/` → `public/` locally (deploy hook deferred). Per-event summary editing out of scope.
+- **Active build target**: admin-side static HTML mockups (admin Sources with click-to-exclude buttons, admin Analysis with edit textareas, re-run + publish controls). Same pattern as item 20 — static mockup first to align on layout/UX before the live FastAPI app. Once layout is approved, the mockup HTML carries forward into Jinja2 templates for the live app.
+- **Items 3, 11 still `[~]`** pending Tom's signoff (source-adapter framework + CI workflow). Items 4 (storage), 5 (poll loop), 6/7/8/14 (web app + auth) all deferred until item 21 lands; 6+7+(subset of 14) likely subsumed by 21.
+- **Cold-pickup pointers**: `design/admin-app.md` is the running design note for item 21 with all locked decisions; `COMPLETED.md` items 16/17/19/20 hold the post-mortems; `design/data-scout.md` "Findings" sections still capture the per-source state. To dry-run end-to-end: `py -m lawtracker scout && py -m lawtracker analyze --llm-mode=anthropic && py -m lawtracker render && start data\scout\analysis.html`.
 
 ## For future agents
 
@@ -116,33 +116,13 @@ Add adapters for Tom's approved third-party trackers (law-firm client-alert page
 
 **Priority note (2026-04-25):** items 16–18 below land **before** items 4–15. The pilot was reframed from "build storage + poll loop + UI sequentially" to "validate the data shape via a one-shot scout before investing in storage / poll loop / web app." Items keep their numbers per the no-renumber discipline; the order is logical, not numeric. Effective working order: 3 (in flight) → 16 → 17 → 18 → 4 → 5 → 6 → … No hourly polling concern at this stage; the scout runs on demand.
 
-**Priority note (2026-04-28):** item 21 (FastAPI admin app with magic-link + shared-password gate + draft/publish workflow) is now the active build target. It subsumes substantial portions of items 6 (web app skeleton), 7 (dashboard view), and 14 (auth) — those items may be partially or fully closed by item 21's landing, depending on what scope item 21 actually covers; revisit after it ships rather than re-debating now. Updated working order: 18 (Ellen's scout review, gating) → 20 (static mockup signoff) → 21 (admin app) → 4 (storage) → 5 (poll loop) → revisit 6 / 7 / 8 / 14.
+**Priority note (2026-04-28):** items 16, 17, 19, 20 closed by Tom 2026-04-28 at SHA 35da4c8. Item 21 (FastAPI admin app with magic-link + shared-password gate + draft/publish workflow) is the active build target — it subsumes substantial portions of items 6 (web app skeleton), 7 (dashboard view), and 14 (auth); those items may be partially or fully closed by item 21's landing, revisit after it ships. Updated working order: 21 (admin app — currently mocking up the admin-side HTML before live FastAPI) → 4 (storage) → 5 (poll loop) → revisit 6 / 7 / 8 / 14.
 
 ---
 
-### 16. [~] Data scout CLI + Excel export
+16\. [x] Data scout CLI + Excel export — 35da4c8 — see COMPLETED.md
 
-One-shot data scout: a `lawtracker scout` CLI that runs every configured adapter, collects `EventRecord`s, and writes them to disk for Tom + Ellen to review. No DB, no scheduling, no state between runs — each invocation is a fresh snapshot.
-
-Outputs under `data/scout/`:
-
-- `events.xlsx` — flat tabular (openpyxl). Universal columns first (`event_date`, `source_id`, `country`, `title`, `primary_actor`, `summary`, `url`); then per-source metadata keys as additional columns, sparse where a source doesn't populate them. Ellen can pivot, sort, filter without dev tooling.
-- `events.jsonl` — full-fidelity backup; preserves the `metadata` dict shape for cases where Excel flattening loses something.
-- `summary.txt` — counts directed at the trend questions Tom called out: events per month per source (last 24 months) for "more or less prosecutions over the last 6 months than the prior 6"; events per country; events per source; top 20 industries; top 20 primary_actors; per-source `last_event_date` and total count.
-
-Adds `openpyxl` to runtime deps. List-page-only initial scope; per-source extraction depth lands with the adapters in item 17 (DOJ specifically gets link-following enrichment there).
-
-### 17. [~] Pilot adapters + DOJ link-following enrichment
-
-Build the breadth needed for a meaningful first scout:
-
-- **Source 16 (FCPA Blog)** — RSS adapter; walks archive pagination back ~12 months for trend depth.
-- **Source 10 (AFP foreign-bribery media releases)** — non-US English-language agency. Depth limited by what AFP publishes on the recent-releases page.
-- **Source 12 (Fiscalía Nacional Chile)** — Spanish-language extraction with cohecho / corrupción / soborno / Ley 20.393 keyword filter.
-- **DOJ FCPA actions: historical-year support** — extend `DojFcpaActionsAdapter` with a `poll_year(year)` method (or equivalent); scout iterates 24 months back.
-- **DOJ FCPA actions: link-following enrichment** (option (b) approved by Tom 2026-04-25). For each list-page entry, fetch the linked press-release / case-detail page and extract `industry`, `defendant`, `defendant_type`, `penalty_usd`, `disgorgement_usd`, `resolution_type` (DPA / NPA / plea / etc.) where parseable. Industry is needed for the "cases focused on a particular industry" trend question. Brittleness expected; tests use committed press-release fixture(s) under `tests/fixtures/`.
-
-Each adapter follows the framework from item 3 (subclass `SourceAdapter`, parse the live page, commit a fixture, write parser tests).
+17\. [x] Pilot adapters + DOJ link-following enrichment — 35da4c8 — see COMPLETED.md
 
 ### 18. [ ] Scout review checkpoint
 
@@ -155,44 +135,9 @@ Tom + Ellen review `data/scout/events.xlsx` and `summary.txt` produced by items 
 
 Adjustments fall out as new items (schema changes, source list edits, adapter refinements). Item 4 (storage) lands after this checkpoint; on landing, item 4's scope expands to include a one-shot `lawtracker ingest-scout` to load the JSONL files from the pilot into the new DB so pilot data isn't lost. Items 5 (poll loop), 6+ (web app) follow item 4 as before.
 
-### 19. [~] Anthropic-API-backed analysis + prose interpretation
+19\. [x] Anthropic-API-backed analysis + prose interpretation — 35da4c8 — see COMPLETED.md
 
-Per Tom's standing rule (deterministic work in Python; LLM does judgment / interpretation), several places in the pipeline benefit from a Claude call. This item adds a small `src/lawtracker/llm.py` helper plus the `anthropic` SDK as a runtime dep, then wires LLM calls in priority order.
-
-Priority order updated 2026-04-25 from Ellen's first-review feedback:
-
-1. **Post-aggregation trend analysis** (Ellen's primary ask). After the scout collects all events into the Excel / JSONL, send the structured table to Claude with a prompt asking for: key themes, trend shifts (e.g. "fewer enforcement actions against companies than the prior 6 months"), industry concentration, what anti-corruption compliance professionals and lawyers should care about right now, what risk and audit committee boards need to know. Output written to `data/scout/analysis.md`. This is the **biggest single LLM win** because it produces the executive-summary view Ellen actually needs to drive her practice — the table is raw material; the analysis is the deliverable.
-
-2. **SEC FCPA cases adapter** (Ellen's confirmed ask). Scope reduced to the most recent 1-2 years per Ellen — only the recent slice is relevant for trend identification. The SEC page is a single long narrative — year headers + bolded company names + free-text paragraphs. LLM extracts structured `EventRecord`s for the 2024+2025+2026 sections only.
-
-3. **Per-event summary generation** when sources don't provide one (DOJ list page, AFP search results, Miller & Chevalier entries). Claude reads the linked detail page and writes a one-line "why this matters" — populates the `summary` column for Ellen's row-level triage.
-
-4. **Industry / resolution-type classification** on DOJ press releases. Upgrade from current keyword regex.
-
-5. **FCPA-aware Spanish translation.** Upgrade from MyMemory if Ellen flags translation quality issues.
-
-6. **Cross-source dedup** — defer until storage (item 4) lands.
-
-Operational requirements:
-
-- Add `anthropic` SDK to runtime deps.
-- `ANTHROPIC_API_KEY` env var (Tom locally; CI secret if/when LLM calls run in CI).
-- Fail-soft: LLM failure falls back to whatever the deterministic path can do (no events lost; analysis just isn't produced if API call fails).
-- Cost: pilot scale ~cents per scout run; document expected costs in `design/data-scout.md` once measured.
-- Use prompt caching for the analysis call when the input gets large (table + prompt cached so repeated runs amortize cost).
-
-### 20. [~] Static HTML preview mockups (`lawtracker render`)
-
-Pre-FastAPI mockup target so Tom + Ellen can react to layout / visual decisions before the live web app is built. Tailwind via CDN; no JS framework, no build tooling. Open the output files by double-click in Explorer.
-
-Two pages, both rendered from `data/scout/events.jsonl` + `data/scout/analysis.md`:
-
-- **`analysis.html`** — country-by-country sections, blog-style. United States first; remaining countries alphabetical; cross-jurisdictional last if present. Bullets render with bold/italic/links; LLM blockquote stub-markers stripped; horizontal-rule separators between LLM-emitted country sections collapsed silently.
-- **`sources.html`** — events grouped by country (US first, alpha rest, "(uncategorized)" last). Within each country, reverse-chronological by `event_date`. Each event shows: date in `dd MONTH yyyy` format, primary actor (when present), title (clickable to source URL), summary. Source IDs hidden per Tom 2026-04-28.
-
-Pages link to each other via a shared top nav. Cold pickup: `src/lawtracker/preview.py`, CLI subcommand `lawtracker render` in `src/lawtracker/cli.py`, tests in `tests/test_preview.py`. Markup is intentionally Jinja2-friendly so it carries forward into item 21.
-
-Landed 2026-04-28 across multiple commits this session; awaiting Tom's signoff after final review of mockups against full live-mode scout output.
+20\. [x] Static HTML preview mockups (`lawtracker render`) — 35da4c8 — see COMPLETED.md
 
 ### 21. [~] FastAPI admin app with two-tier auth + draft/publish workflow
 
