@@ -295,27 +295,53 @@ def test_admin_sources_has_hide_buttons_per_article(tmp_path: Path) -> None:
     assert "Hide article" not in public_sources
 
 
-def test_admin_analysis_has_edit_textarea_per_country(tmp_path: Path) -> None:
-    """Each country section on the admin Analysis page has a textarea
-    pre-populated with the markdown source so Ellen can edit before
-    publishing."""
+def test_admin_analysis_has_edit_textarea_per_entry(tmp_path: Path) -> None:
+    """Tom 2026-04-28: edit boxes are per-entry (one per bullet), not
+    per-country. Easier for Ellen to read each entry against its
+    source side-by-side."""
     _write_jsonl(tmp_path / "events.jsonl", [])
     _write_analysis_md(
         tmp_path / "analysis.md",
-        "## United States\n- US bullet to edit.\n\n"
+        "## United States\n- US bullet 1.\n- US bullet 2.\n- US bullet 3.\n\n"
         "## Brazil\n- Brazil bullet.\n",
     )
     render_pages(tmp_path)
     admin_analysis = (tmp_path / "admin" / "analysis.html").read_text(encoding="utf-8")
-    # Two countries → two textareas + two Save buttons.
-    assert admin_analysis.count("<textarea") == 2
-    assert "Save United States" in admin_analysis
-    assert "Save Brazil" in admin_analysis
-    # Markdown source is pre-populated in the textarea (escaped).
-    assert "US bullet to edit." in admin_analysis
+    # 3 US bullets + 1 Brazil bullet = 4 textareas, 4 Save buttons.
+    assert admin_analysis.count("<textarea") == 4
+    assert admin_analysis.count(">\n          Save\n        </button>") == 4
+    # Each bullet's source pre-populates its textarea.
+    for s in ("US bullet 1.", "US bullet 2.", "US bullet 3.", "Brazil bullet."):
+        assert s in admin_analysis
     # Public analysis page must NOT have textareas.
     public_analysis = (tmp_path / "analysis.html").read_text(encoding="utf-8")
     assert "<textarea" not in public_analysis
+
+
+def test_admin_analysis_textarea_does_not_include_leading_bullet_marker(
+    tmp_path: Path,
+) -> None:
+    """The textarea shows just the bullet's text content, not the
+    leading `- ` marker. The marker is implicit (every entry on this
+    page is a bullet); making Ellen edit around it would be friction."""
+    _write_jsonl(tmp_path / "events.jsonl", [])
+    _write_analysis_md(
+        tmp_path / "analysis.md",
+        "## United States\n- DOJ resolved a case.\n",
+    )
+    render_pages(tmp_path)
+    admin_analysis = (tmp_path / "admin" / "analysis.html").read_text(encoding="utf-8")
+    # Locate the textarea content. It should contain "DOJ resolved a case."
+    # but NOT "- DOJ resolved a case."
+    import re as _re
+
+    textarea_match = _re.search(
+        r'<textarea[^>]*>(.*?)</textarea>', admin_analysis, _re.DOTALL
+    )
+    assert textarea_match is not None
+    textarea_value = textarea_match.group(1)
+    assert "DOJ resolved a case." in textarea_value
+    assert not textarea_value.lstrip().startswith("- ")
 
 
 def test_admin_pages_have_generate_and_publish_buttons(tmp_path: Path) -> None:

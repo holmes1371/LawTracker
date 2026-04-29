@@ -433,36 +433,120 @@ click <strong>Publish to site</strong> in the header.
 
 
 def _render_admin_country_block(country: str, body_md: str) -> str:
-    body_html = _md_to_html(body_md)
+    """Render a country section with one edit card per entry (bullet or
+    paragraph). Tom 2026-04-28: per-entry editing is more readable than
+    one giant textarea per country.
+    """
     safe_country = html.escape(country)
-    safe_md = html.escape(body_md)
-    save_alert = (
-        "In the live app, this would save your edits for "
-        + country.replace("'", "")
-        + ". Static mockup — no action taken."
-    )
-    return f"""<section class="mb-10 pb-10 border-b border-slate-200 last:border-0">
+    entries = _split_body_into_entries(body_md)
+
+    if not entries:
+        return f"""<section class="mb-10 pb-10 border-b border-slate-200 last:border-0">
   <h2 class="text-2xl font-semibold text-slate-900 mb-4">{safe_country}</h2>
-  <div class="grid md:grid-cols-2 gap-6">
-    <div>
-      <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">Preview</div>
-      <div class="space-y-3 text-slate-800 leading-relaxed bg-white border border-slate-200 rounded-lg p-4">
-        {body_html}
-      </div>
-    </div>
-    <div>
-      <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">Edit</div>
-      <textarea class="w-full h-64 font-mono text-sm bg-white border border-slate-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-amber-400">{safe_md}</textarea>
-      <div class="mt-2 flex justify-end">
-        <button type="button"
-          onclick="alert('{save_alert}');"
-          class="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded px-4 py-2">
-          Save {safe_country}
-        </button>
-      </div>
-    </div>
+  <p class="text-slate-500 italic">No entries.</p>
+</section>"""
+
+    entry_blocks = "\n".join(
+        _render_admin_entry_card(country, idx, entry)
+        for idx, entry in enumerate(entries)
+    )
+    return f"""<section class="mb-12 pb-10 border-b border-slate-200 last:border-0">
+  <h2 class="text-2xl font-semibold text-slate-900 mb-5">{safe_country}</h2>
+  <div class="space-y-4">
+    {entry_blocks}
   </div>
 </section>"""
+
+
+def _render_admin_entry_card(country: str, idx: int, entry: dict[str, str]) -> str:
+    """One editable card per bullet/paragraph. Preview on top, textarea
+    + Save below. Save alerts so Ellen knows the static mockup isn't
+    actually persisting."""
+    kind = entry["kind"]
+    inline_md = entry["inline"]  # markdown stripped of leading "- " for the textarea
+
+    if kind == "bullet":
+        bullet_glyph = (
+            '<span class="text-slate-400 mt-0.5">&#8226;</span>'  # &bull;
+        )
+        preview_html = (
+            f'<div class="flex gap-3 items-start text-slate-800 leading-relaxed">'
+            f"{bullet_glyph}<span>{_inline(inline_md)}</span></div>"
+        )
+    else:  # paragraph
+        preview_html = (
+            f'<p class="text-slate-800 leading-relaxed">{_inline(inline_md)}</p>'
+        )
+
+    safe_country_id = re.sub(r"[^a-z0-9]+", "-", country.lower()).strip("-")
+    textarea_id = f"edit-{safe_country_id}-{idx}"
+    safe_textarea_value = html.escape(inline_md)
+
+    save_alert = (
+        "In the live app, this would save your edit for this entry "
+        + f"({html.escape(country)}, item {idx + 1}). "
+        + "Static mockup — no action taken."
+    ).replace("'", "&apos;")
+
+    return f"""    <div class="bg-white border border-slate-200 rounded-lg p-4">
+      <div class="mb-3">{preview_html}</div>
+      <div class="flex gap-3 items-start">
+        <textarea id="{textarea_id}"
+          class="flex-1 font-mono text-sm bg-slate-50 border border-slate-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+          rows="2">{safe_textarea_value}</textarea>
+        <button type="button"
+          onclick="alert('{save_alert}');"
+          class="bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded px-4 py-2 whitespace-nowrap self-stretch">
+          Save
+        </button>
+      </div>
+    </div>"""
+
+
+def _split_body_into_entries(body: str) -> list[dict[str, str]]:
+    """Split a country-section body into discrete entries: bullets and
+    paragraphs. Each entry has `kind` ('bullet'|'paragraph'), `markdown`
+    (the raw line(s) including any leading marker), and `inline` (the
+    text without the leading bullet marker, suitable for inline rendering
+    and for the per-entry textarea).
+
+    Skips horizontal rules (`---`), blockquotes (`>`-prefix lines used
+    by the stub LLM marker), and empty lines.
+    """
+    entries: list[dict[str, str]] = []
+    lines = body.splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        stripped = line.strip()
+
+        if stripped.startswith("- "):
+            inline = stripped[2:].rstrip()
+            entries.append({"kind": "bullet", "markdown": stripped, "inline": inline})
+            i += 1
+        elif stripped.startswith(">") or re.fullmatch(r"-{3,}", stripped):
+            i += 1  # skip blockquotes + horizontal rules
+        elif not stripped:
+            i += 1  # skip blank lines
+        else:
+            # Paragraph: gather contiguous non-empty, non-bullet lines.
+            para_lines = [stripped]
+            i += 1
+            while i < len(lines):
+                nxt = lines[i].strip()
+                if (
+                    not nxt
+                    or nxt.startswith("- ")
+                    or nxt.startswith(">")
+                    or re.fullmatch(r"-{3,}", nxt)
+                ):
+                    break
+                para_lines.append(nxt)
+                i += 1
+            joined = " ".join(para_lines)
+            entries.append({"kind": "paragraph", "markdown": joined, "inline": joined})
+
+    return entries
 
 
 # ---- Shared layout ------------------------------------------------------
