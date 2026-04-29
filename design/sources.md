@@ -4,7 +4,7 @@ Status: widened 2026-04-25 from US-only to global. Pilot scope is **anti-corrupt
 
 Each source has a kind: `document` (changes in place; hash + diff) or `event_list` (entries appear over time; new-entry detection). One Python module per source under `src/lawtracker/sources/`.
 
-Sources marked `[x]` are live in the scout (verify with `py -m lawtracker scout`). `[ ]` are deferred, blocked, or pending. **Source numbers are stable — never renumber** — they're referenced throughout the codebase, ROADMAP, and design notes (e.g. `Source 16 (FCPA Blog)`).
+Sources marked ✅ are live in the scout (verify with `py -m lawtracker scout`). ⬜ are deferred, blocked, or pending. **Source numbers are stable — never renumber** — they're referenced throughout the codebase, ROADMAP, and design notes (e.g. `Source 16 (FCPA Blog)`).
 
 URLs marked **(approximate)** were not verified during inventory drafting; the adapter implementer must confirm the exact path before wiring extraction. Spanish-language sources need a corruption / cohecho / soborno keyword filter inside the adapter to limit emissions to anti-corruption content.
 
@@ -27,92 +27,92 @@ Most outstanding sources are deferred — `document`-kind sources (1–4, 14) wa
 
 ### United States (2 of 9 onboarded)
 
-- [ ] **1. DOJ FCPA Resource Guide** — `document`. Joint DOJ/SEC compliance guidance; canonical interpretation document. Deferred until item 4 (storage + change detection) lands.
+- ⬜ **1. DOJ FCPA Resource Guide** — `document`. Joint DOJ/SEC compliance guidance; canonical interpretation document. Deferred until item 4 (storage + change detection) lands.
   - https://www.justice.gov/criminal/criminal-fraud/fcpa-resource-guide
 
-- [ ] **2. DOJ Corporate Enforcement Policy (JM 9-47.120)** — `document`. Voluntary self-disclosure / cooperation / remediation framework.
+- ⬜ **2. DOJ Corporate Enforcement Policy (JM 9-47.120)** — `document`. Voluntary self-disclosure / cooperation / remediation framework.
   - https://www.justice.gov/jm/jm-9-47000-foreign-corrupt-practices-act-1977
 
-- [ ] **3. DOJ Evaluation of Corporate Compliance Programs (ECCP)** — `document`. DOJ's framework for evaluating compliance programs in enforcement decisions. PDF.
+- ⬜ **3. DOJ Evaluation of Corporate Compliance Programs (ECCP)** — `document`. DOJ's framework for evaluating compliance programs in enforcement decisions. PDF.
   - https://www.justice.gov/criminal-fraud/page/file/937501/download
 
-- [ ] **4. JM 9-28.000 — Principles of Federal Prosecution of Business Organizations** — `document`. Broader corporate-prosecution principles framing FCPA cases.
+- ⬜ **4. JM 9-28.000 — Principles of Federal Prosecution of Business Organizations** — `document`. Broader corporate-prosecution principles framing FCPA cases.
   - https://www.justice.gov/jm/jm-9-28000-principles-federal-prosecution-business-organizations
 
-- [x] **5. DOJ FCPA enforcement actions — chronological list** — `event_list`. Anchor adapter for the framework; live with link-following enrichment that pulls `industry`, `defendant`, `defendant_type`, `penalty_usd`, `disgorgement_usd`, `resolution_type` from each press-release page. Historical-year support iterates 24 months back.
+- ✅ **5. DOJ FCPA enforcement actions — chronological list** — `event_list`. Anchor adapter for the framework; live with link-following enrichment that pulls `industry`, `defendant`, `defendant_type`, `penalty_usd`, `disgorgement_usd`, `resolution_type` from each press-release page. Historical-year support iterates 24 months back.
   - Adapter URL: https://www.justice.gov/criminal/criminal-fraud/case/related-enforcement-actions/2026 (current year; rolls over each January)
   - Landing (navigation only): https://www.justice.gov/criminal-fraud/related-enforcement-actions
   - Adapter: `src/lawtracker/sources/doj_fcpa_actions.py`
 
-- [x] **6. SEC FCPA enforcement actions** — `event_list`, LLM-extracted. SEC's enforcement-actions index for the FCPA Unit. The page is a single long narrative — year headers + bolded company names + free-text paragraphs — so Claude reads it and emits structured `EventRecord`s for the most recent 1-2 years (Ellen's slice).
+- ✅ **6. SEC FCPA enforcement actions** — `event_list`, LLM-extracted. SEC's enforcement-actions index for the FCPA Unit. The page is a single long narrative — year headers + bolded company names + free-text paragraphs — so Claude reads it and emits structured `EventRecord`s for the most recent 1-2 years (Ellen's slice).
   - https://www.sec.gov/spotlight/fcpa/fcpa-cases.shtml
   - Adapter: `src/lawtracker/sources/sec_fcpa_cases.py`
 
-- [ ] **7. DOJ FCPA Opinion Procedure releases** — `event_list`. DOJ's formal opinion responses to industry inquiries.
+- ⬜ **7. DOJ FCPA Opinion Procedure releases** — `event_list`. DOJ's formal opinion responses to industry inquiries.
   - https://www.justice.gov/criminal/criminal-fraud/foreign-corrupt-practices-act/opinion-procedure-releases
 
-- [ ] **8. DOJ press releases (FCPA-filtered)** — `event_list`. RSS or topic-tagged feed; ranked lower than the curated enforcement list because of higher noise.
+- ⬜ **8. DOJ press releases (FCPA-filtered)** — `event_list`. RSS or topic-tagged feed; ranked lower than the curated enforcement list because of higher noise.
   - https://www.justice.gov/news (filter)
 
-- [ ] **9. DOJ senior-official speeches** — `event_list`. AG, DAG, AAG-Criminal Division. Primary surface for enforcement-priority and strategy announcements.
+- ⬜ **9. DOJ senior-official speeches** — `event_list`. AG, DAG, AAG-Criminal Division. Primary surface for enforcement-priority and strategy announcements.
   - https://www.justice.gov/speeches (filter to senior officials)
 
 ### Australia (1 of 2 onboarded)
 
-- [x] **10. AFP foreign-bribery search** — `event_list`. Australian Federal Police site search keyed on "foreign bribery". Captures media releases that mention foreign bribery in title / body. Discovery during build (2026-04-25): the general media-releases page had zero foreign-bribery hits across 30 pages — AFP's foreign-bribery cases are sparse and the topic-tagged landing only highlights ~4 unrelated fraud items. The site search is the only viable surface.
+- ✅ **10. AFP foreign-bribery search** — `event_list`. Australian Federal Police site search keyed on "foreign bribery". Captures media releases that mention foreign bribery in title / body. Discovery during build (2026-04-25): the general media-releases page had zero foreign-bribery hits across 30 pages — AFP's foreign-bribery cases are sparse and the topic-tagged landing only highlights ~4 unrelated fraud items. The site search is the only viable surface.
   - Adapter URL: https://www.afp.gov.au/search?keys=foreign+bribery
   - Adapter: `src/lawtracker/sources/afp_foreign_bribery.py`
 
-- [ ] **11. CDPP case reports** — `event_list`. Commonwealth Director of Public Prosecutions; prosecutorial-stage announcements. Often paired with AFP item above on the same case at different stages. **Blocked**: timeout from this dev environment, likely AU geo-block. Revisit at item 18 review.
+- ⬜ **11. CDPP case reports** — `event_list`. Commonwealth Director of Public Prosecutions; prosecutorial-stage announcements. Often paired with AFP item above on the same case at different stages. **Blocked**: timeout from this dev environment, likely AU geo-block. Revisit at item 18 review.
   - https://www.cdpp.gov.au/case-reports (filter to bribery / foreign bribery) **(approximate)**
 
 ### Chile (2 of 3 onboarded)
 
-- [x] **12. Fiscalía Nacional — noticias nacionales** — `event_list`, Spanish. Chile's national prosecutor; news/press section. Discovery during build (2026-04-25): the URL the original inventory listed (`/Fiscalia/sala_prensa`) was 404; Fiscalía moved press to `/actualidad/noticias/nacionales`. Adapter applies a Spanish-language keyword filter (`cohecho`, `corrupci[oó]n`, `soborn`, `lavado`, `fraude al fisco`, `Ley 20.393`, `funcionario p[uú]blico`) over title + body so only anti-corruption-relevant items are emitted. Signal is sparse — most pages return zero matches — which is itself useful pilot signal.
+- ✅ **12. Fiscalía Nacional — noticias nacionales** — `event_list`, Spanish. Chile's national prosecutor; news/press section. Discovery during build (2026-04-25): the URL the original inventory listed (`/Fiscalia/sala_prensa`) was 404; Fiscalía moved press to `/actualidad/noticias/nacionales`. Adapter applies a Spanish-language keyword filter (`cohecho`, `corrupci[oó]n`, `soborn`, `lavado`, `fraude al fisco`, `Ley 20.393`, `funcionario p[uú]blico`) over title + body so only anti-corruption-relevant items are emitted. Signal is sparse — most pages return zero matches — which is itself useful pilot signal.
   - Adapter URL: https://www.fiscaliadechile.cl/actualidad/noticias/nacionales
   - Adapter: `src/lawtracker/sources/fiscalia_chile.py`
 
-- [ ] **13. Contraloría General de la República — dictámenes / pronunciamientos** — `event_list`, Spanish. Comptroller-general findings on public-administration compliance and corruption.
+- ⬜ **13. Contraloría General de la República — dictámenes / pronunciamientos** — `event_list`, Spanish. Comptroller-general findings on public-administration compliance and corruption.
   - https://www.contraloria.cl **(approximate; specific section TBD)**
 
-- [x] **13a. Consejo para la Transparencia (CPLT)** — `event_list`, Spanish, RSS. Chilean Council for Transparency; oversees the access-to-information regime under Law 20.285. Built via `RssFeedAdapter` since it's a WordPress site with a clean RSS 2.0 feed. No keyword filter — outlet's whole beat is transparency / probity.
+- ✅ **13a. Consejo para la Transparencia (CPLT)** — `event_list`, Spanish, RSS. Chilean Council for Transparency; oversees the access-to-information regime under Law 20.285. Built via `RssFeedAdapter` since it's a WordPress site with a clean RSS 2.0 feed. No keyword filter — outlet's whole beat is transparency / probity.
   - Adapter URL: https://www.consejotransparencia.cl/feed/
   - Adapter: `src/lawtracker/sources/consejo_transparencia_cl.py`
 
 ## Category 2 — Multilateral / cross-jurisdictional indexes (0 of 2 onboarded)
 
-- [ ] **14. OECD Working Group on Bribery — country evaluation reports** — `document`, low-frequency. Gold-standard assessments of OECD-member enforcement vigor against the OECD Anti-Bribery Convention. Years between reports per country, but extremely high signal for trend-watching. Pilot countries (US, Australia, Chile) are all OECD members. **Blocked**: CDN 403. Revisit with `curl_cffi` / Playwright at item 18.
+- ⬜ **14. OECD Working Group on Bribery — country evaluation reports** — `document`, low-frequency. Gold-standard assessments of OECD-member enforcement vigor against the OECD Anti-Bribery Convention. Years between reports per country, but extremely high signal for trend-watching. Pilot countries (US, Australia, Chile) are all OECD members. **Blocked**: CDN 403. Revisit with `curl_cffi` / Playwright at item 18.
   - https://www.oecd.org/corruption/anti-bribery (specific country-report index path **approximate**)
 
-- [ ] **15. World Bank sanctions / debarred firms list** — `event_list`. Debarments for fraud/corruption in World-Bank-financed projects; cross-jurisdictional.
+- ⬜ **15. World Bank sanctions / debarred firms list** — `event_list`. Debarments for fraud/corruption in World-Bank-financed projects; cross-jurisdictional.
   - https://www.worldbank.org/en/about/unit/sanctions-system/debarred-firms **(approximate)**
 
 ## Category 3 — Curated aggregator + practitioner blogs (6 of 7 onboarded)
 
-- [ ] **16. FCPA Blog** — `event_list`, RSS. Practitioner-focused aggregator covering global anti-corruption news despite the name. Single most efficient source for breadth across jurisdictions; free. **Blocked (2026-04-25):** all candidate URLs (`/`, `/feed/`, `/rss`, `/feed.xml`, `/atom.xml`, `/blog/`, www subdomain) return HTTP 401 with a Cloudflare "you have been blocked" page even from a realistic Chrome User-Agent. The site appears to require auth or has hardened CDN bot protection. Options: subscribe / acquire a credentialed feed, swap with a different aggregator (Harvard Anticorruption Blog, GIR if subscription is available), or scrape via headless browser.
+- ⬜ **16. FCPA Blog** — `event_list`, RSS. Practitioner-focused aggregator covering global anti-corruption news despite the name. Single most efficient source for breadth across jurisdictions; free. **Blocked (2026-04-25):** all candidate URLs (`/`, `/feed/`, `/rss`, `/feed.xml`, `/atom.xml`, `/blog/`, www subdomain) return HTTP 401 with a Cloudflare "you have been blocked" page even from a realistic Chrome User-Agent. The site appears to require auth or has hardened CDN bot protection. Options: subscribe / acquire a credentialed feed, swap with a different aggregator (Harvard Anticorruption Blog, GIR if subscription is available), or scrape via headless browser.
   - https://fcpablog.com  (RSS feed at https://fcpablog.com/feed/ **approximate**)
 
-- [x] **17. Volkov Law — Corruption, Crime & Compliance blog** — `event_list`, RSS. Michael Volkov's practitioner blog on FCPA / AML / sanctions. WordPress; standard RSS 2.0; English; multi-jurisdictional commentary so `country = None` (the LLM derives effective country from event text during analysis).
+- ✅ **17. Volkov Law — Corruption, Crime & Compliance blog** — `event_list`, RSS. Michael Volkov's practitioner blog on FCPA / AML / sanctions. WordPress; standard RSS 2.0; English; multi-jurisdictional commentary so `country = None` (the LLM derives effective country from event text during analysis).
   - Adapter URL: https://blog.volkovlaw.com/feed/
   - Adapter: `src/lawtracker/sources/volkov_law.py`
 
-- [x] **18. Gibson, Dunn & Crutcher — publications feed** — `event_list`, RSS, English. Major US law firm; `/feed/` returns ALL publications across practice areas, so `keyword_filter = ANTI_CORRUPTION_EN` keeps only FCPA / AML / sanctions items. Cloudflare TLS-fingerprint block bypassed via `use_curl_cffi = True`.
+- ✅ **18. Gibson, Dunn & Crutcher — publications feed** — `event_list`, RSS, English. Major US law firm; `/feed/` returns ALL publications across practice areas, so `keyword_filter = ANTI_CORRUPTION_EN` keeps only FCPA / AML / sanctions items. Cloudflare TLS-fingerprint block bypassed via `use_curl_cffi = True`.
   - Adapter URL: https://www.gibsondunn.com/feed/
   - Adapter: `src/lawtracker/sources/gibson_dunn.py`
 
-- [x] **19. Global Anticorruption Blog (GAB)** — `event_list`, RSS, English. Matthew Stephenson at Harvard Law School. Academic, single-topic, multi-jurisdictional. No keyword filter — every post is on-topic.
+- ✅ **19. Global Anticorruption Blog (GAB)** — `event_list`, RSS, English. Matthew Stephenson at Harvard Law School. Academic, single-topic, multi-jurisdictional. No keyword filter — every post is on-topic.
   - Adapter URL: https://globalanticorruptionblog.com/feed/
   - Adapter: `src/lawtracker/sources/global_anticorruption_blog.py`
 
-- [x] **20. Miller & Chevalier — FCPA & International Anti-Corruption practice search** — `event_list`, HTML, English. Drupal-driven `/search` endpoint accepting filter parameters that pin results to the FCPA practice area (`related_practice=8965`). Adapter fetches three content types per poll (publications, news, events) by overriding `urls`. Publications include the Winter / Spring / Summer / Autumn FCPA Reviews; news is media mentions; events are speaking engagements. `use_curl_cffi = True` (Cloudflare).
+- ✅ **20. Miller & Chevalier — FCPA & International Anti-Corruption practice search** — `event_list`, HTML, English. Drupal-driven `/search` endpoint accepting filter parameters that pin results to the FCPA practice area (`related_practice=8965`). Adapter fetches three content types per poll (publications, news, events) by overriding `urls`. Publications include the Winter / Spring / Summer / Autumn FCPA Reviews; news is media mentions; events are speaking engagements. `use_curl_cffi = True` (Cloudflare).
   - Adapter URL (publications): https://www.millerchevalier.com/search?search_term=&related_practice=8965&...&content_types%5B0%5D=publication
   - Adapter: `src/lawtracker/sources/miller_chevalier.py`
 
-- [x] **21. Foley & Lardner LLP — publications RSS** — `event_list`, RSS, English. Major US firm with a mixed-topic `/feed/`; adapter applies `ANTI_CORRUPTION_EN` to keep only FCPA / AML / sanctions items. `use_curl_cffi = True`.
+- ✅ **21. Foley & Lardner LLP — publications RSS** — `event_list`, RSS, English. Major US firm with a mixed-topic `/feed/`; adapter applies `ANTI_CORRUPTION_EN` to keep only FCPA / AML / sanctions items. `use_curl_cffi = True`.
   - Adapter URL: https://www.foley.com/feed/
   - Adapter: `src/lawtracker/sources/foley_llp.py`
 
-- [x] **22. Harvard Law School Forum on Corporate Governance — FCPA tag** — `event_list`, RSS, English. Academic / commentary outlet, FCPA-tag-restricted feed so single-topic (no filter). `use_curl_cffi = True`. Volume is low (commentary, not a case feed).
+- ✅ **22. Harvard Law School Forum on Corporate Governance — FCPA tag** — `event_list`, RSS, English. Academic / commentary outlet, FCPA-tag-restricted feed so single-topic (no filter). `use_curl_cffi = True`. Volume is low (commentary, not a case feed).
   - Adapter URL: https://corpgov.law.harvard.edu/category/foreign-corrupt-practices-act/feed/
   - Adapter: `src/lawtracker/sources/harvard_corpgov_fcpa.py`
 
