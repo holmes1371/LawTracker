@@ -344,6 +344,45 @@ def test_admin_analysis_textarea_does_not_include_leading_bullet_marker(
     assert not textarea_value.lstrip().startswith("- ")
 
 
+def test_admin_sources_has_hidden_drawer_and_toast_infrastructure(
+    tmp_path: Path,
+) -> None:
+    """Hide/Undo/Restore mockup wiring (Tom 2026-04-28). Each article
+    card carries its dedup_key, drawer + toast containers exist, and
+    the JS that ties them together is present."""
+    _write_jsonl(
+        tmp_path / "events.jsonl",
+        [
+            EventRecord(
+                dedup_key="https://example.test/case/1",
+                source_id="s",
+                event_date=date(2026, 1, 1),
+                title="Case 1",
+                primary_actor=None,
+                summary=None,
+                url="https://example.test/case/1",
+                country="US",
+                metadata={},
+            )
+        ],
+    )
+    render_pages(tmp_path)
+    admin_sources = (tmp_path / "admin" / "sources.html").read_text(encoding="utf-8")
+
+    # Article carries data-dedup-key so JS can match it on Hide.
+    assert 'data-dedup-key="https://example.test/case/1"' in admin_sources
+    # Hide button uses class-based wiring, not inline alert().
+    assert 'class="hide-btn ' in admin_sources
+    # Drawer + toast containers present.
+    assert 'id="hidden-drawer"' in admin_sources
+    assert 'id="drawer-list"' in admin_sources
+    assert 'id="toast"' in admin_sources
+    # Live JS handlers (sessionStorage + DOM wiring).
+    assert "sessionStorage" in admin_sources
+    assert "hideArticle" in admin_sources
+    assert "restoreArticle" in admin_sources
+
+
 def test_admin_pages_have_generate_and_publish_buttons(tmp_path: Path) -> None:
     """Header on every admin page shows Generate-new-analysis +
     Publish-to-site buttons."""

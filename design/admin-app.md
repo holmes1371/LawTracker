@@ -94,19 +94,55 @@ through `draft/exclusions.json`, writes `draft/analysis.md`. Render
 ### 4. Exclusion model
 
 Article-level only. One JSON file: `draft/exclusions.json` with shape
-`{"excluded": ["dedup_key_1", ...]}`. Applied to both:
+`{"excluded": [{"dedup_key": "...", "hidden_at": "ISO-8601"}, ...]}`.
+The `hidden_at` timestamp drives the 60-day auto-purge (see below).
 
-- **Sources rendering**: excluded events are visible on the admin
-  Sources page (with a "removed" badge + "restore" button) but hidden
-  on the public Sources page.
-- **LLM input**: excluded events are filtered out of the JSON payload
+Applied to both:
+
+- **Sources rendering**: hidden events are visually removed from the
+  main feed but appear in the "Hidden articles" drawer at the bottom
+  of the admin Articles page. The public Sources page hides them
+  outright.
+- **LLM input**: hidden events are filtered out of the JSON payload
   sent to Claude during `analyze`.
 
 `dedup_key` survives re-scouting (it's set by the adapter from the
 canonical URL or equivalent), so exclusions persist across scout runs.
-If an exclusion's `dedup_key` no longer appears in the event set,
-silently skip it; show a count in the admin UI of "stale exclusions" so
-Tom can clean up.
+If a hidden article's `dedup_key` no longer appears in the event set,
+silently skip it; show a count in the admin UI of "stale exclusions"
+so Ellen can clean up.
+
+#### Hide / Undo / Restore UX (Tom 2026-04-28)
+
+Live in the static mockup at `data/scout/admin/sources.html` using
+vanilla JS + `sessionStorage`. Live FastAPI version uses the same
+markup with click handlers POSTing to `/admin/exclude/{dedup_key}` and
+`/admin/restore/{dedup_key}`.
+
+- **Click Hide article** on any card → article fades out of its
+  country section.
+- **Toast** appears bottom-right for 10 seconds: _"'[Article title]'
+  hidden — Undo"_. Click Undo to restore immediately. (Toasts are
+  per-article; rapid Hides replace the previous toast.)
+- **Past the 10s window** → the article shows up in a "Hidden
+  articles ([N])" collapsible section at the bottom of the page
+  (collapsed when empty, expanded automatically when count > 0). Each
+  hidden item lists title + a Restore button.
+- **State persists** across page reloads in `sessionStorage` (mockup)
+  / server-side JSON (live).
+
+#### 60-day auto-purge
+
+In the live app, hidden articles are fully deleted after 60 days from
+`hidden_at`. Garbage control — Ellen doesn't need a permanent record
+of every article she ever dismissed. Implementation: a small startup
+hook (or scheduled cleanup task once item 5's poll loop lands) walks
+`exclusions.json` and drops entries older than 60 days. After purge,
+the underlying article may still appear in fresh scout output; if
+Ellen still doesn't want it, she hides it again.
+
+The 60-day window is per-`hidden_at`, not per-`scout-run`, so an
+article hidden today survives 60 days of repeated scouts.
 
 ### 5. Edit model
 

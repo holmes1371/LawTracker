@@ -322,30 +322,21 @@ def _render_event_card(e: EventRecord, *, admin: bool) -> str:
         f'<div class="text-sm text-slate-500">{date_str}{actor_html}</div>'
     )
 
-    hide_button_html = ""
     if admin:
-        # Plain-language button for Ellen. Non-functional in the static
-        # mockup; the alert() makes that clear without needing a
-        # separate footer note for every interaction.
-        hide_button_html = (
-            '<button type="button" '
-            'onclick="alert(\'In the live app, this would hide the article '
-            'from the public site and the next analysis. Static mockup — '
-            'no action taken.\');" '
-            'class="text-sm text-slate-500 hover:text-red-600 '
-            'border border-slate-300 hover:border-red-400 rounded px-3 py-1 '
-            'whitespace-nowrap self-start">'
-            "Hide article</button>"
-        )
-
-    if admin:
-        return f"""    <article class="flex gap-4 items-start">
+        # Hide button has no inline onclick — admin script wires up
+        # click handlers via querySelectorAll('.hide-btn') on
+        # DOMContentLoaded, which avoids quote-escaping `dedup_key`
+        # values into JS string literals.
+        safe_dedup = html.escape(e.dedup_key, quote=True)
+        return f"""    <article class="article-card flex gap-4 items-start" data-dedup-key="{safe_dedup}">
       <div class="flex-1 min-w-0">
         {meta_html}
         <h3 class="font-semibold text-slate-900 mt-1 leading-snug">{title_html}</h3>
         {summary_html}
       </div>
-      {hide_button_html}
+      <button type="button" class="hide-btn text-sm text-slate-500 hover:text-red-600 border border-slate-300 hover:border-red-400 rounded px-3 py-1 whitespace-nowrap self-start">
+        Hide article
+      </button>
     </article>"""
 
     return f"""    <article>
@@ -359,14 +350,18 @@ def _render_event_card(e: EventRecord, *, admin: bool) -> str:
 
 
 def _render_admin_sources(events: list[EventRecord]) -> str:
-    """Admin variant of the Sources page. Each article gets a
-    "Hide article" button. Status banner up top + plain-language help."""
+    """Admin variant of the Sources page. Each article gets a "Hide
+    article" button. Hidden articles move to a collapsible drawer at
+    the bottom of the page; a toast notification offers an immediate
+    Undo. State persists in sessionStorage across reloads (mockup
+    only; live app stores server-side and auto-deletes after 60 days
+    per Tom 2026-04-28)."""
     by_country = _group_events_by_country(events)
     n_total = len(events)
 
     banner = f"""<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
   <div class="text-amber-900 font-semibold">{n_total} articles available</div>
-  <div class="text-sm text-amber-800 mt-1">0 currently hidden &middot; last analysis run not yet performed</div>
+  <div class="text-sm text-amber-800 mt-1"><span id="hidden-count">0</span> currently hidden &middot; last analysis run not yet performed</div>
 </div>"""
 
     help_text = """<p class="text-slate-600 mb-8 leading-relaxed">
@@ -374,7 +369,9 @@ Review the articles below. <strong>Hide</strong> any that aren't relevant or
 that might dilute the analysis &mdash; medium-quality commentary, off-topic
 posts, items duplicated across other sources. Hidden articles will not appear
 on the public site, and they will not be sent to the analysis when you click
-<strong>Generate new analysis</strong>.
+<strong>Generate new analysis</strong>. If you hide one by mistake, click
+<strong>Undo</strong> in the notification or <strong>Restore</strong> from the
+"Hidden articles" section at the bottom.
 </p>"""
 
     body_parts = [
@@ -390,7 +387,20 @@ on the public site, and they will not be sent to the analysis when you click
     else:
         sections_html = "\n".join(body_parts)
 
-    body = banner + help_text + sections_html
+    drawer = """<section id="hidden-drawer" class="mt-12 pt-8 border-t border-slate-300 hidden">
+  <h2 class="text-xl font-semibold text-slate-900 mb-2">
+    Hidden articles
+    <span class="text-base font-normal text-slate-500">(<span id="drawer-count">0</span>)</span>
+  </h2>
+  <p class="text-sm text-slate-600 mb-4">
+    These articles are excluded from the public site and the next analysis.
+    Click <strong>Restore</strong> to bring one back. (Live app: hidden
+    articles are automatically purged after 60 days.)
+  </p>
+  <ul id="drawer-list" class="bg-white border border-slate-200 rounded-lg divide-y divide-slate-200"></ul>
+</section>"""
+
+    body = banner + help_text + sections_html + drawer
     return _wrap_html("Articles", "sources", body, mode="admin")
 
 
@@ -621,6 +631,12 @@ def _wrap_html(title: str, current_page: str, body: str, *, mode: str) -> str:
     {nav_html}
     {actions_html}"""
 
+    toast_html = ""
+    script_html = ""
+    if is_admin:
+        toast_html = """<div id="toast" class="fixed bottom-6 right-6 z-50 hidden"></div>"""
+        script_html = "<script>" + _ADMIN_JS + "</script>"
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -640,9 +656,185 @@ def _wrap_html(title: str, current_page: str, body: str, *, mode: str) -> str:
   {body}
 </main>
 <footer class="{container_class} mx-auto px-6 py-8 mt-10 text-sm text-slate-500 border-t border-slate-200">
-  Static mockup — buttons are non-functional. Live functionality lands
-  with item 21 (FastAPI admin app). Production target: lawmasolutions.com.
+  Static mockup — most buttons are non-functional placeholders. Hide /
+  Undo / Restore on the Articles page do work in this mockup
+  (sessionStorage). Live functionality lands with item 21
+  (FastAPI admin app). Production target: lawmasolutions.com.
 </footer>
+{toast_html}
+{script_html}
 </body>
 </html>
+"""
+
+
+_ADMIN_JS = r"""
+// Hide / Undo / Restore behavior for the admin Articles page.
+// Storage key is per-browser-session (sessionStorage); the live app
+// will replace this with server-side state that auto-purges after 60d.
+
+const HIDDEN_KEY = 'lawtracker.hiddenArticles';
+const TOAST_TIMEOUT_MS = 10000;
+
+let toastTimer = null;
+
+function getHidden() {
+  try {
+    return JSON.parse(sessionStorage.getItem(HIDDEN_KEY)) || [];
+  } catch (_) {
+    return [];
+  }
+}
+
+function setHidden(arr) {
+  sessionStorage.setItem(HIDDEN_KEY, JSON.stringify(arr));
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function findArticle(dedupKey) {
+  return document.querySelector(
+    'article.article-card[data-dedup-key="' +
+      (window.CSS && CSS.escape ? CSS.escape(dedupKey) : dedupKey) +
+      '"]'
+  );
+}
+
+function getTitleFor(dedupKey) {
+  const a = findArticle(dedupKey);
+  if (!a) return '(untitled)';
+  const h = a.querySelector('h3');
+  return (h && h.textContent.trim()) || '(untitled)';
+}
+
+function hideArticle(dedupKey, options) {
+  const opts = options || {};
+  const article = findArticle(dedupKey);
+  if (article) article.classList.add('hidden');
+
+  const list = getHidden();
+  if (!list.includes(dedupKey)) {
+    list.push(dedupKey);
+    setHidden(list);
+  }
+
+  addToDrawer(dedupKey);
+  refreshCounts();
+
+  if (opts.showToast !== false) {
+    showToast(dedupKey);
+  }
+}
+
+function restoreArticle(dedupKey) {
+  const article = findArticle(dedupKey);
+  if (article) article.classList.remove('hidden');
+
+  setHidden(getHidden().filter(function (k) { return k !== dedupKey; }));
+  removeFromDrawer(dedupKey);
+  refreshCounts();
+}
+
+function addToDrawer(dedupKey) {
+  const list = document.getElementById('drawer-list');
+  if (!list) return;
+  if (list.querySelector('[data-dedup-key="' +
+      (window.CSS && CSS.escape ? CSS.escape(dedupKey) : dedupKey) +
+      '"]')) {
+    return;  // already there
+  }
+  const title = getTitleFor(dedupKey);
+  const li = document.createElement('li');
+  li.dataset.dedupKey = dedupKey;
+  li.className = 'flex items-center justify-between gap-3 px-4 py-3';
+  li.innerHTML =
+    '<span class="text-sm text-slate-700 truncate">' + escapeHtml(title) + '</span>' +
+    '<button type="button" class="restore-btn text-sm font-medium text-blue-700 hover:text-blue-900 whitespace-nowrap">Restore</button>';
+  li.querySelector('.restore-btn').addEventListener('click', function () {
+    restoreArticle(dedupKey);
+  });
+  list.appendChild(li);
+}
+
+function removeFromDrawer(dedupKey) {
+  const list = document.getElementById('drawer-list');
+  if (!list) return;
+  const li = list.querySelector(
+    '[data-dedup-key="' +
+      (window.CSS && CSS.escape ? CSS.escape(dedupKey) : dedupKey) +
+      '"]'
+  );
+  if (li) li.remove();
+}
+
+function refreshCounts() {
+  const n = getHidden().length;
+  const drawer = document.getElementById('hidden-drawer');
+  const drawerCount = document.getElementById('drawer-count');
+  const hiddenCount = document.getElementById('hidden-count');
+  if (drawer) drawer.classList.toggle('hidden', n === 0);
+  if (drawerCount) drawerCount.textContent = String(n);
+  if (hiddenCount) hiddenCount.textContent = String(n);
+}
+
+function showToast(dedupKey) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  const title = getTitleFor(dedupKey);
+  const truncated = title.length > 60 ? title.slice(0, 60) + '…' : title;
+  toast.innerHTML =
+    '<div class="bg-slate-900 text-white rounded-lg shadow-lg px-4 py-3 flex items-center gap-4 max-w-md">' +
+    '<span class="text-sm">"<strong>' + escapeHtml(truncated) + '</strong>" hidden</span>' +
+    '<button type="button" id="toast-undo" class="text-sm font-semibold text-amber-300 hover:text-amber-200">Undo</button>' +
+    '</div>';
+  toast.classList.remove('hidden');
+  toast.querySelector('#toast-undo').addEventListener('click', function () {
+    restoreArticle(dedupKey);
+    hideToast();
+  });
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, TOAST_TIMEOUT_MS);
+}
+
+function hideToast() {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.classList.add('hidden');
+  if (toastTimer) {
+    clearTimeout(toastTimer);
+    toastTimer = null;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Restore any session-hidden articles into the hidden state +
+  // populate the drawer.
+  for (const key of getHidden()) {
+    const article = findArticle(key);
+    if (article) {
+      article.classList.add('hidden');
+      addToDrawer(key);
+    }
+  }
+  refreshCounts();
+
+  // Wire up Hide buttons. Each button sits inside an article card
+  // with a data-dedup-key attribute.
+  document.querySelectorAll('.hide-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const article = btn.closest('article.article-card');
+      if (!article) return;
+      const key = article.dataset.dedupKey;
+      if (!key) return;
+      hideArticle(key);
+    });
+  });
+});
 """
