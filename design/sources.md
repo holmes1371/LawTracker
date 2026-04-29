@@ -25,7 +25,7 @@ Most outstanding sources are deferred: `document`-kind sources wait on item 4 (s
 
 ## Category 1 — Primary government agencies
 
-### United States (2 of 9 onboarded)
+### United States 
 
 - ⬜ **DOJ FCPA Resource Guide** — `document`. Joint DOJ/SEC compliance guidance; canonical interpretation document. Deferred until item 4 (storage + change detection) lands.
   - https://www.justice.gov/criminal/criminal-fraud/fcpa-resource-guide
@@ -57,7 +57,7 @@ Most outstanding sources are deferred: `document`-kind sources wait on item 4 (s
 - ⬜ **DOJ senior-official speeches** — `event_list`. AG, DAG, AAG-Criminal Division. Primary surface for enforcement-priority and strategy announcements.
   - https://www.justice.gov/speeches (filter to senior officials)
 
-### Australia (1 of 2 onboarded)
+### Australia 
 
 - ✅ **AFP foreign-bribery search** — `event_list`. Australian Federal Police site search keyed on "foreign bribery". Captures media releases that mention foreign bribery in title / body. Discovery during build (2026-04-25): the general media-releases page had zero foreign-bribery hits across 30 pages — AFP's foreign-bribery cases are sparse and the topic-tagged landing only highlights ~4 unrelated fraud items. The site search is the only viable surface.
   - Adapter URL: https://www.afp.gov.au/search?keys=foreign+bribery
@@ -66,7 +66,11 @@ Most outstanding sources are deferred: `document`-kind sources wait on item 4 (s
 - ⬜ **CDPP case reports** — `event_list`. Commonwealth Director of Public Prosecutions; prosecutorial-stage announcements. Often paired with AFP item above on the same case at different stages. **Blocked**: timeout from this dev environment, likely AU geo-block. Revisit at item 18 review.
   - https://www.cdpp.gov.au/case-reports (filter to bribery / foreign bribery) **(approximate)**
 
-### Chile (2 of 3 onboarded)
+- ⬜ **Allens** — 
+  - https://www.allens.com.au/search/insights/?q=&sort=&tVals=154&t=154&d=All+dates&df=&dt= (search the entire list of articles matching the established filters)
+
+
+### Chile 
 
 - ✅ **Fiscalía Nacional — noticias nacionales** — `event_list`, Spanish. Chile's national prosecutor; news/press section. Discovery during build (2026-04-25): the URL the original inventory listed (`/Fiscalia/sala_prensa`) was 404; Fiscalía moved press to `/actualidad/noticias/nacionales`. Adapter applies a Spanish-language keyword filter (`cohecho`, `corrupci[oó]n`, `soborn`, `lavado`, `fraude al fisco`, `Ley 20.393`, `funcionario p[uú]blico`) over title + body so only anti-corruption-relevant items are emitted. Signal is sparse — most pages return zero matches — which is itself useful pilot signal.
   - Adapter URL: https://www.fiscaliadechile.cl/actualidad/noticias/nacionales
