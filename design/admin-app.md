@@ -8,13 +8,15 @@ next major work block.
 **Primary admin user is Ellen** (clarified by Tom 2026-04-28). She does the
 review, edits, and publishes — the dashboard must be intuitive for a
 non-developer. Tom retains admin access too (co-admin model). UX language
-in the mockup uses plain English ("Hide article", "Generate new analysis",
-"Publish to site") rather than developer terminology ("exclude", "re-run",
-"deploy").
+in the mockup uses plain English ("Hide Source Link", "Generate new
+analysis", "Publish to site") rather than developer terminology
+("exclude", "re-run", "deploy"). User-facing terminology updated by
+Tom 2026-04-28: "Source Link" replaces the earlier "article" wording
+across the admin UI.
 
 ## Why this exists
 
-The curation loop Tom wants — eyeball the raw events, manually drop articles
+The curation loop Tom wants — eyeball the raw events, manually drop Source Links
 that dilute the LLM analysis, re-run the LLM, review the new draft, edit
 country sections, publish — only works with a server. Static rendering
 (item 20) carried us through layout/visual feedback; this item turns the
@@ -25,7 +27,7 @@ mockup into an interactive admin experience.
 In-scope:
 
 - Two-tier auth: shared password (public), magic-link (admin).
-- Article-level exclusions persisted to disk; applied to both Sources
+- Source-Link-level exclusions persisted to disk; applied to both Sources
   rendering and LLM analysis input.
 - Per-country edit textareas on the admin Analysis page.
 - "Re-run analysis" button that calls `analyze` against the filtered
@@ -93,22 +95,22 @@ through `draft/exclusions.json`, writes `draft/analysis.md`. Render
 
 ### 4. Exclusion model
 
-Article-level only. One JSON file: `draft/exclusions.json` with shape
+Source-Link-level only (one Source Link = one event). One JSON file: `draft/exclusions.json` with shape
 `{"excluded": [{"dedup_key": "...", "hidden_at": "ISO-8601"}, ...]}`.
 The `hidden_at` timestamp drives the 60-day auto-purge (see below).
 
 Applied to both:
 
 - **Sources rendering**: hidden events are visually removed from the
-  main feed but appear in the "Hidden articles" drawer at the bottom
-  of the admin Articles page. The public Sources page hides them
-  outright.
+  main feed but appear in the "Hidden Source Links" drawer at the
+  bottom of the admin Source Links page. The public Sources page
+  hides them outright.
 - **LLM input**: hidden events are filtered out of the JSON payload
   sent to Claude during `analyze`.
 
 `dedup_key` survives re-scouting (it's set by the adapter from the
 canonical URL or equivalent), so exclusions persist across scout runs.
-If a hidden article's `dedup_key` no longer appears in the event set,
+If a hidden Source Link's `dedup_key` no longer appears in the event set,
 silently skip it; show a count in the admin UI of "stale exclusions"
 so Ellen can clean up.
 
@@ -119,13 +121,13 @@ vanilla JS + `sessionStorage`. Live FastAPI version uses the same
 markup with click handlers POSTing to `/admin/exclude/{dedup_key}` and
 `/admin/restore/{dedup_key}`.
 
-- **Click Hide article** on any card → article fades out of its
-  country section.
-- **Toast** appears bottom-right for 10 seconds: _"'[Article title]'
-  hidden — Undo"_. Click Undo to restore immediately. (Toasts are
-  per-article; rapid Hides replace the previous toast.)
-- **Past the 10s window** → the article shows up in a "Hidden
-  articles ([N])" collapsible section at the bottom of the page
+- **Click Hide Source Link** on any card → the Source Link fades out
+  of its country section.
+- **Toast** appears bottom-right for 10 seconds: _"'[Source Link
+  title]' hidden — Undo"_. Click Undo to restore immediately. (Toasts
+  are per-Source-Link; rapid Hides replace the previous toast.)
+- **Past the 10s window** → the Source Link shows up in a "Hidden
+  Source Links ([N])" collapsible section at the bottom of the page
   (collapsed when empty, expanded automatically when count > 0). Each
   hidden item lists title + a Restore button.
 - **State persists** across page reloads in `sessionStorage` (mockup)
@@ -133,16 +135,17 @@ markup with click handlers POSTing to `/admin/exclude/{dedup_key}` and
 
 #### 60-day auto-purge
 
-In the live app, hidden articles are fully deleted after 60 days from
-`hidden_at`. Garbage control — Ellen doesn't need a permanent record
-of every article she ever dismissed. Implementation: a small startup
-hook (or scheduled cleanup task once item 5's poll loop lands) walks
-`exclusions.json` and drops entries older than 60 days. After purge,
-the underlying article may still appear in fresh scout output; if
-Ellen still doesn't want it, she hides it again.
+In the live app, hidden Source Links are fully deleted after 60 days
+from `hidden_at`. Garbage control — Ellen doesn't need a permanent
+record of every Source Link she ever dismissed. Implementation: a
+small startup hook (or scheduled cleanup task once item 5's poll
+loop lands) walks `exclusions.json` and drops entries older than 60
+days. After purge, the underlying Source Link may still appear in
+fresh scout output; if Ellen still doesn't want it, she hides it
+again.
 
-The 60-day window is per-`hidden_at`, not per-`scout-run`, so an
-article hidden today survives 60 days of repeated scouts.
+The 60-day window is per-`hidden_at`, not per-`scout-run`, so a
+Source Link hidden today survives 60 days of repeated scouts.
 
 ### 5. Edit model
 
@@ -163,7 +166,7 @@ if a key matches; otherwise from the raw LLM output in
 **Re-run discards edits.** When Tom clicks "re-run analysis", the new
 LLM output overwrites `draft/analysis.md`, and `draft/edits.json` is
 truncated to `{}`. Rationale: re-running is usually because Tom removed
-noisy articles and wants the LLM to redo the analysis on the clean
+noisy Source Links and wants the LLM to redo the analysis on the clean
 set; whatever edits he'd made before don't necessarily apply. The
 simpler model is fewer footguns.
 
@@ -203,26 +206,27 @@ do). The mockup is the visual + UX spec for the live FastAPI build.
 Header (every admin page):
 
 - Brand: `LawTracker · Admin`
-- Tabs: **Analysis** / **Articles** (note: "Articles" not "Sources" —
-  plain language for Ellen). Underlined when active.
+- Tabs: **Analysis** / **Source Links** (note: "Source Links" not
+  "Sources" — Ellen-friendly plain-language label set by Tom
+  2026-04-28). Underlined when active.
 - Right-side action buttons: **Generate new analysis** (slate
   outline) / **Publish to site** (emerald solid).
 - Trailing crumb: `View public site →` for quick switch out.
 
-**Admin Articles** (`/admin/sources`): country-grouped feed (same
-ordering as public). Banner at top: "{N} articles available · {K}
-currently hidden". Help text: "Hide articles that aren't relevant or
-might dilute the analysis. Hidden articles won't appear on the public
-site or be sent to the analysis." Each article card has a right-side
-**Hide article** button. Live wiring: button POSTs to
-`/admin/exclude/{dedup_key}`, page re-renders with the article dimmed
-and the button changed to **Restore**.
+**Admin Source Links** (`/admin/sources`): country-grouped feed
+(same ordering as public). Banner at top: "{N} Source Links available
+· {K} currently hidden". Help text: "Hide Source Links that aren't
+relevant or might dilute the analysis. Hidden Source Links won't
+appear on the public site or be sent to the analysis." Each Source
+Link card has a right-side **Hide Source Link** button. Live wiring:
+button POSTs to `/admin/exclude/{dedup_key}`, page re-renders with
+the Source Link dimmed and the button changed to **Restore**.
 
 **Admin Analysis** (`/admin/analysis`): country sections in a
 two-column layout — left column shows the rendered preview (what
 readers will see); right column is a markdown textarea pre-filled with
 the section source. Per-country **Save** button (amber). Banner at
-top: "Analysis ready for review · {N} articles fed · {K} edits saved
+top: "Analysis ready for review · {N} Source Links fed · {K} edits saved
 · not yet published". Help text explains the workflow. Live wiring:
 Save POSTs to `/admin/edit/{country}`; textarea remains the source of
 truth until next re-run.
@@ -234,7 +238,7 @@ and warns that any pending edits were discarded.
 
 **Publish to site** (header button, every admin page): GETs
 `/admin/publish` which renders a confirmation page summarizing what's
-about to change ("publishing 87 articles, 12 hidden; 4 country
+about to change ("publishing 87 Source Links, 12 hidden; 4 country
 sections, 2 edited"). Confirm button POSTs and bakes draft → public.
 
 Container width: `max-w-6xl` on admin (vs. `max-w-4xl` on public) to
@@ -245,7 +249,7 @@ page.
 
 | Question | Answer |
 |---|---|
-| Exclusion granularity | Article-level only (drop from both Sources + LLM) |
+| Exclusion granularity | Source-Link-level only (drop from both Sources + LLM) |
 | Cost estimate before re-run | No; just run on click |
 | Publish target | Local file copy in dev; deploy hook in prod (deferred) |
 | Admin auth | Magic-link to Tom only |

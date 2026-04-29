@@ -335,7 +335,7 @@ def _render_event_card(e: EventRecord, *, admin: bool) -> str:
         {summary_html}
       </div>
       <button type="button" class="hide-btn text-sm text-slate-500 hover:text-red-600 border border-slate-300 hover:border-red-400 rounded px-3 py-1 whitespace-nowrap self-start">
-        Hide article
+        Hide Source Link
       </button>
     </article>"""
 
@@ -350,28 +350,29 @@ def _render_event_card(e: EventRecord, *, admin: bool) -> str:
 
 
 def _render_admin_sources(events: list[EventRecord]) -> str:
-    """Admin variant of the Sources page. Each article gets a "Hide
-    article" button. Hidden articles move to a collapsible drawer at
-    the bottom of the page; a toast notification offers an immediate
-    Undo. State persists in sessionStorage across reloads (mockup
-    only; live app stores server-side and auto-deletes after 60 days
-    per Tom 2026-04-28)."""
+    """Admin variant of the Sources page. Each Source Link gets a
+    "Hide Source Link" button. Hidden Source Links move to a
+    collapsible drawer at the bottom of the page; a toast notification
+    offers an immediate Undo. State persists in sessionStorage across
+    reloads (mockup only; live app stores server-side and auto-deletes
+    after 60 days per Tom 2026-04-28). Terminology "Source Link" set
+    by Tom 2026-04-28 — replaces the earlier "article" wording."""
     by_country = _group_events_by_country(events)
     n_total = len(events)
 
     banner = f"""<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
-  <div class="text-amber-900 font-semibold">{n_total} articles available</div>
+  <div class="text-amber-900 font-semibold">{n_total} Source Links available</div>
   <div class="text-sm text-amber-800 mt-1"><span id="hidden-count">0</span> currently hidden &middot; last analysis run not yet performed</div>
 </div>"""
 
     help_text = """<p class="text-slate-600 mb-8 leading-relaxed">
-Review the articles below. <strong>Hide</strong> any that aren't relevant or
-that might dilute the analysis &mdash; medium-quality commentary, off-topic
-posts, items duplicated across other sources. Hidden articles will not appear
-on the public site, and they will not be sent to the analysis when you click
-<strong>Generate new analysis</strong>. If you hide one by mistake, click
+Review the Source Links below. <strong>Hide</strong> any that aren't relevant
+or that might dilute the analysis &mdash; medium-quality commentary, off-topic
+posts, items duplicated across other sources. Hidden Source Links will not
+appear on the public site, and they will not be sent to the analysis when you
+click <strong>Generate new analysis</strong>. If you hide one by mistake, click
 <strong>Undo</strong> in the notification or <strong>Restore</strong> from the
-"Hidden articles" section at the bottom.
+"Hidden Source Links" section at the bottom.
 </p>"""
 
     body_parts = [
@@ -380,7 +381,7 @@ on the public site, and they will not be sent to the analysis when you click
     ]
     if not body_parts:
         sections_html = (
-            "<p class='text-slate-600'>No articles. Run "
+            "<p class='text-slate-600'>No Source Links. Run "
             "<code class='bg-slate-100 px-1 rounded'>lawtracker scout</code> "
             "first.</p>"
         )
@@ -389,19 +390,19 @@ on the public site, and they will not be sent to the analysis when you click
 
     drawer = """<section id="hidden-drawer" class="mt-12 pt-8 border-t border-slate-300 hidden">
   <h2 class="text-xl font-semibold text-slate-900 mb-2">
-    Hidden articles
+    Hidden Source Links
     <span class="text-base font-normal text-slate-500">(<span id="drawer-count">0</span>)</span>
   </h2>
   <p class="text-sm text-slate-600 mb-4">
-    These articles are excluded from the public site and the next analysis.
+    These Source Links are excluded from the public site and the next analysis.
     Click <strong>Restore</strong> to bring one back. (Live app: hidden
-    articles are automatically purged after 60 days.)
+    Source Links are automatically purged after 60 days.)
   </p>
   <ul id="drawer-list" class="bg-white border border-slate-200 rounded-lg divide-y divide-slate-200"></ul>
 </section>"""
 
     body = banner + help_text + sections_html + drawer
-    return _wrap_html("Articles", "sources", body, mode="admin")
+    return _wrap_html("Source Links", "sources", body, mode="admin")
 
 
 def _render_admin_analysis(
@@ -422,7 +423,7 @@ def _render_admin_analysis(
 
     banner = f"""<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
   <div class="text-amber-900 font-semibold">Analysis ready for review</div>
-  <div class="text-sm text-amber-800 mt-1">{n_events} articles fed to the analysis &middot; 0 edits saved &middot; not yet published</div>
+  <div class="text-sm text-amber-800 mt-1">{n_events} Source Links fed to the analysis &middot; 0 edits saved &middot; not yet published</div>
 </div>"""
 
     help_text = """<p class="text-slate-600 mb-8 leading-relaxed">
@@ -583,7 +584,7 @@ def _wrap_html(title: str, current_page: str, body: str, *, mode: str) -> str:
         sources_href = "sources.html"
         cross_href = "../analysis.html"
         cross_label = "View public site"
-        sources_label = "Articles"  # plain-language tab for Ellen
+        sources_label = "Source Links"  # plain-language tab for Ellen
         container_class = "max-w-6xl"
         brand = "LawTracker · Admin"
     else:
@@ -599,12 +600,12 @@ def _wrap_html(title: str, current_page: str, body: str, *, mode: str) -> str:
     if is_admin:
         generate_alert = (
             "In the live app, this would re-run the LLM analysis using "
-            "only the articles you have not hidden. Static mockup — no "
+            "only the Source Links you have not hidden. Static mockup — no "
             "action taken."
         )
         publish_alert = (
             "In the live app, this would publish your reviewed/edited "
-            "analysis (and the visible articles) to the public site at "
+            "analysis (and the visible Source Links) to the public site at "
             "lawmasolutions.com. You would see a confirmation step "
             "first. Static mockup — no action taken."
         )
@@ -657,7 +658,7 @@ def _wrap_html(title: str, current_page: str, body: str, *, mode: str) -> str:
 </main>
 <footer class="{container_class} mx-auto px-6 py-8 mt-10 text-sm text-slate-500 border-t border-slate-200">
   Static mockup — most buttons are non-functional placeholders. Hide /
-  Undo / Restore on the Articles page do work in this mockup
+  Undo / Restore on the Source Links page do work in this mockup
   (sessionStorage). Live functionality lands with item 21
   (FastAPI admin app). Production target: lawmasolutions.com.
 </footer>

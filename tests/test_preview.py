@@ -256,9 +256,11 @@ def test_pages_link_to_each_other(tmp_path: Path) -> None:
     assert 'href="analysis.html"' in s_html
 
 
-def test_admin_sources_has_hide_buttons_per_article(tmp_path: Path) -> None:
-    """Admin Sources page shows a 'Hide article' button per event so
-    Ellen can flag noise before re-running analysis."""
+def test_admin_sources_has_hide_buttons_per_source_link(tmp_path: Path) -> None:
+    """Admin Sources page shows a 'Hide Source Link' button per event
+    so Ellen can flag noise before re-running analysis. Terminology
+    "Source Link" set by Tom 2026-04-28 — replaces the earlier
+    "article" wording across the admin UI."""
     _write_jsonl(
         tmp_path / "events.jsonl",
         [
@@ -289,10 +291,10 @@ def test_admin_sources_has_hide_buttons_per_article(tmp_path: Path) -> None:
     render_pages(tmp_path)
     admin_sources = (tmp_path / "admin" / "sources.html").read_text(encoding="utf-8")
     # Two events → two Hide buttons.
-    assert admin_sources.count("Hide article") == 2
+    assert admin_sources.count("Hide Source Link") == 2
     # Public Sources page must NOT have hide buttons.
     public_sources = (tmp_path / "sources.html").read_text(encoding="utf-8")
-    assert "Hide article" not in public_sources
+    assert "Hide Source Link" not in public_sources
 
 
 def test_admin_analysis_has_edit_textarea_per_entry(tmp_path: Path) -> None:
@@ -396,8 +398,8 @@ def test_admin_pages_have_generate_and_publish_buttons(tmp_path: Path) -> None:
 
 def test_admin_uses_ellen_friendly_terminology(tmp_path: Path) -> None:
     """Ellen, not a developer, drives the admin dashboard. Surface
-    plain-language labels and avoid jargon. Locks in: 'Articles'
-    instead of 'Sources', 'Hide article' instead of 'Exclude',
+    plain-language labels and avoid jargon. Locks in: 'Source Links'
+    instead of 'Sources', 'Hide Source Link' instead of 'Exclude',
     'Generate new analysis' instead of 'Re-run'."""
     _write_jsonl(
         tmp_path / "events.jsonl",
@@ -417,8 +419,8 @@ def test_admin_uses_ellen_friendly_terminology(tmp_path: Path) -> None:
     )
     render_pages(tmp_path)
     admin_sources = (tmp_path / "admin" / "sources.html").read_text(encoding="utf-8")
-    assert "Articles" in admin_sources
-    assert "Hide article" in admin_sources
+    assert "Source Links" in admin_sources
+    assert "Hide Source Link" in admin_sources
     assert "Exclude" not in admin_sources
     assert "dedup_key" not in admin_sources
 
