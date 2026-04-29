@@ -54,6 +54,32 @@ Implementation order set: source #5 is the anchor adapter for item 3, exercising
 
 Future-expansion slot reserved (not pilot, not yet a ROADMAP item — filed as item 15 once the anchor adapter exists): trusted third-party trackers from Tom's approved list — large law-firm client-alert pages, FCPA Blog, Stanford FCPA Clearinghouse. Adapter framework is built so these slot in as additional `event_list` (or `document`) sources without schema changes.
 
+## 3. Source adapter framework + first adapter — d75d1b9
+
+Built the `SourceAdapter` ABC under `src/lawtracker/sources/base.py` plus the first concrete adapter — DOJ FCPA enforcement actions list — end to end. Closed by Tom 2026-04-29 after running clean across 11 adapters and many sessions of stable use.
+
+Framework shape (commit `0c7f0ea` for the ABC, `d75d1b9` for the first adapter):
+
+- **`SourceAdapter` abstract base class.** Each adapter declares its `source_id` (string slug), `kind` (`document` | `event_list` | `both`), and `url`. Concrete adapters implement `parse(html, client) -> list[EventRecord]` and inherit a default `poll()` that fetches + parses + wraps in `PollResult`.
+- **`PollResult`** — Pydantic model with `status: Literal["ok", "transient_failure", "permanent_failure"]`, `events: list[EventRecord]`, and an optional `error` string. Distinguishes "site is down today, retry later" from "the page changed and the parser is broken." Auto-retry layer (added 2026-04-25) handles transient failures inside `poll()` so adapter authors don't have to.
+- **`EventRecord`** — Pydantic model with the universal columns: `dedup_key` (set by the adapter, typically the canonical URL), `source_id`, `event_date`, `title`, `primary_actor`, `summary`, `url`, `country`, and an open `metadata: dict[str, Any]` for adapter-specific fields. The shape was the contract between scout / xlsx / jsonl / analysis layers and stayed stable through every adapter built on it.
+
+Open questions resolved in `design/source-adapter-framework.md` and locked into the framework:
+
+- **Poll-result shape vs. fetch failure.** Tom chose explicit status enum over exception-throwing. Easier to reason about in scout's per-adapter loop, easier to retry with judgment.
+- **Dedup-key strategy.** Adapter-controlled string, typically the canonical URL. Survives re-scouting; primary key for storage (item 4) when it lands; drives the admin app's hide/restore logic.
+- **Metadata persistence.** Sparse-union approach: `metadata` is an open dict; xlsx column union picks up keys on first appearance and never drops them. JSONL preserves the dict shape losslessly.
+- **`country` promoted to first-class `EventRecord` field** on Tom's call (was originally going to live in `metadata`). Adapter sets it as a best-effort hint; the LLM derives the effective country from event text during analysis (item 19).
+
+Validation: the framework supported 11 adapters across diverse shapes (HTML scraping, RSS, search-result pages, LLM-extracted prose) with no schema change. Auto-retry handled transient 5xx / network errors. The `use_curl_cffi = True` opt-in (added 2026-04-25) bypassed Cloudflare TLS-fingerprint blocks on Gibson Dunn / Miller & Chevalier / Foley / Harvard CorpGov without polluting the base API.
+
+Non-obvious decisions worth preserving:
+
+- **Default `poll()` implementation lives on the ABC**, not on each adapter, so adapter authors only think about `parse()`. The base handles HTTP, status mapping, retries, and `PollResult` construction. This kept the per-adapter modules small and consistent.
+- **`kind` is declarative metadata, not behavioral switching.** It tells the scout / storage layer which detection mode to use (hash-diff for `document`, set-reconciliation for `event_list`), but the adapter itself doesn't branch on it. Decouples adapter authoring from storage internals.
+- **No "framework" generality beyond what the first 2-3 adapters demanded.** Per Tom's standing rule on simplicity, we resisted adding hooks for "what if a future adapter needs X" until X actually showed up. Two examples of additions that came back later because real adapters needed them: `use_curl_cffi` flag (sites with TLS fingerprint blocks), `urls` override for multi-URL adapters (Miller & Chevalier's three content types).
+
+Follow-ups spun off into other items: storage + change detection (item 4); pilot adapters built on top (item 17, closed at 35da4c8).
 ## 16. Data scout CLI + Excel export — 35da4c8
 
 Landed `lawtracker scout` CLI plus the Excel / JSONL / summary outputs Ellen needs to review the pilot data without touching code. Closed by Tom 2026-04-28 alongside items 17, 19, 20.

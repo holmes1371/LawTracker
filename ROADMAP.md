@@ -23,7 +23,7 @@ Strict rules for writing it:
 - **Closed by Tom 2026-04-28**: items **16** (data scout), **17** (pilot adapters + DOJ enrichment), **19** (Claude analysis + scout/analyze split), **20** (static mockups) — all at SHA 35da4c8. Prose moved to `COMPLETED.md`; one-line stubs in ROADMAP. Item 18 (Ellen's scout review) implicitly subsumed.
 - **Admin-side mockups feature-complete** for item 21 at `data/scout/admin/{analysis,sources}.html`. Public + admin pages, per-entry edit cards on Analysis, per-Source-Link Hide buttons + functional Hide/Undo/Restore (sessionStorage in mockup; server-side in live app) on Source Links. Plain-language UX for Ellen as primary admin (Tom co-admin). Terminology locked: "Source Links" not "Articles", "Hide Source Link" not "Exclude". 115 tests, ruff + mypy clean.
 - **Tomorrow: lawmasolutions.com infrastructure setup**. Spans item 9 (Fly.io deploy: Dockerfile + fly.toml + persistent volume), item 10 (DNS at Squarespace), and item 21 implementation (FastAPI scaffold + magic-link auth via Resend + shared-password public gate + draft/publish workflow). First concrete steps: Tom completes the Resend account + domain verification walkthrough in `design/admin-app.md`; Fly.io account creation; FastAPI app skeleton; deploy a hello-world to confirm DNS + Fly + cert chain works before wiring features.
-- **Open backlog at session end**: item 21 `[~]` (active); items 3, 11 `[~]` (pending separate signoff); item 22 `[ ]` filed today (adapter health monitoring — design needs more thought, lands after items 4 + 21); items 4 / 5 / 6 / 7 / 8 / 14 / 15 deferred.
+- **Open backlog at session end**: item 21 `[~]` (active); item 11 `[~]` (CI workflow, pending separate signoff); item 22 `[ ]` filed (adapter health monitoring — design needs more thought, lands after items 4 + 21); items 4 / 5 / 6 / 7 / 8 / 14 / 15 deferred. Item 3 closed 2026-04-29 at d75d1b9.
 - **Cold-pickup pointers**: `design/admin-app.md` is the architecture + UX spec + Resend walkthrough — read first. `design/architecture.md` covers the original Fly.io + FastAPI + Jinja2 + HTMX + Tailwind stack decisions. The static mockups are runnable artifacts (`py -m lawtracker render && start data\scout\admin\analysis.html`) so the live FastAPI templates have concrete targets to match.
 
 ## For future agents
@@ -56,11 +56,7 @@ Status legend:
 
 2\. [x] Pilot source inventory — ceec7ec — see COMPLETED.md
 
-### 3. [~] Source adapter framework + first adapter
-
-Build the `SourceAdapter` ABC under `src/lawtracker/sources/base.py` plus the first concrete adapter — DOJ FCPA enforcement actions list — end to end. Adapter declares its kind (`document` | `event_list` | `both`) and emits Pydantic records the storage layer can persist. First adapter is the anchor that proves the `event_list` shape; items 6–9 in `design/sources.md` follow the same template.
-
-Plan approved 2026-04-25 — see `design/source-adapter-framework.md`. The three open questions (poll-result shape vs. fetch failure, dedup-key strategy, metadata persistence) are resolved in the design note. `country` promoted to a first-class `EventRecord` field on Tom's call.
+3\. [x] Source adapter framework + first adapter — d75d1b9 — see COMPLETED.md
 
 ### 4. [ ] Storage + change detection
 
