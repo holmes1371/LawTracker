@@ -18,13 +18,13 @@ Strict rules for writing it:
 4. **No cross-session carry-overs.** If something is still broken session-to-session, file it as a numbered ROADMAP item instead of repeating it here.
 5. **Replace in place.** Do not append a new block and archive the old one below.
 
-**2026-04-28 (session wrap — items 16/17/19/20 closed at 35da4c8; admin mockups feature-complete; next session = infrastructure setup for lawmasolutions.com)**
+**2026-04-29 (session wrap — full deploy stack live at lawmasolutions.com; next session = wire item 21 features into the deployed shell)**
 
-- **Closed by Tom 2026-04-28**: items **16** (data scout), **17** (pilot adapters + DOJ enrichment), **19** (Claude analysis + scout/analyze split), **20** (static mockups) — all at SHA 35da4c8. Prose moved to `COMPLETED.md`; one-line stubs in ROADMAP. Item 18 (Ellen's scout review) implicitly subsumed.
-- **Admin-side mockups feature-complete** for item 21 at `data/scout/admin/{analysis,sources}.html`. Public + admin pages, per-entry edit cards on Analysis, per-Source-Link Hide buttons + functional Hide/Undo/Restore (sessionStorage in mockup; server-side in live app) on Source Links. Plain-language UX for Ellen as primary admin (Tom co-admin). Terminology locked: "Source Links" not "Articles", "Hide Source Link" not "Exclude". 115 tests, ruff + mypy clean.
-- **Tomorrow: lawmasolutions.com infrastructure setup**. Spans item 9 (Fly.io deploy: Dockerfile + fly.toml + persistent volume), item 10 (DNS at Squarespace), and item 21 implementation (FastAPI scaffold + magic-link auth via Resend + shared-password public gate + draft/publish workflow). First concrete steps: Tom completes the Resend account + domain verification walkthrough in `design/admin-app.md`; Fly.io account creation; FastAPI app skeleton; deploy a hello-world to confirm DNS + Fly + cert chain works before wiring features.
-- **Open backlog at session end**: item 21 `[~]` (active); item 11 `[~]` (CI workflow, pending separate signoff); item 22 `[ ]` filed (adapter health monitoring — design needs more thought, lands after items 4 + 21); items 4 / 5 / 6 / 7 / 8 / 14 / 15 deferred. Item 3 closed 2026-04-29 at d75d1b9.
-- **Cold-pickup pointers**: `design/admin-app.md` is the architecture + UX spec + Resend walkthrough — read first. `design/architecture.md` covers the original Fly.io + FastAPI + Jinja2 + HTMX + Tailwind stack decisions. The static mockups are runnable artifacts (`py -m lawtracker render && start data\scout\admin\analysis.html`) so the live FastAPI templates have concrete targets to match.
+- **lawmasolutions.com is live** over HTTPS, serving a styled "Coming Soon" page. Stack: FastAPI app in a Docker container on Fly.io (`iad`, free tier, scales to zero), reachable at the apex + `www` via Squarespace DNS pointing at Fly's anycast IPs, Let's Encrypt cert auto-issued. Resend domain verified for sending; `RESEND_API_KEY` set as a Fly secret. Full walkthrough captured in `design/deployment.md`. Items 9 and 10 flipped to `[~]` (functionally complete; awaiting Tom's signoff. Item 9's persistent-volume piece deferred until item 4 lands).
+- **Item 3 closed** by Tom 2026-04-29 at SHA `d75d1b9` — source adapter framework + first adapter. Full prose in `COMPLETED.md`.
+- **Active build target now**: item 21 application work, on top of the deployed shell. The FastAPI app today serves a single HTML route at `/`; next session wires the public Analysis + Source Links pages (mockup → Jinja2 templates), then admin auth (magic-link via Resend), then the draft/publish workflow. Mockups at `data/scout/{,admin}/*.html` are the visual + UX targets.
+- **Open backlog at session end**: items 9, 10, 11, 21 `[~]` (deploy + DNS + CI all pending Tom's signoff; 21 active); item 22 `[ ]` filed (adapter health monitoring — design needs more thought); items 4 / 5 / 6 / 7 / 8 / 14 / 15 deferred. Items closed this week: 3 (d75d1b9), 16/17/19/20 (35da4c8).
+- **Cold-pickup pointers**: `design/deployment.md` is THE source of truth for the live infrastructure (account setup, DNS, secrets, day-to-day ops, troubleshooting). `design/admin-app.md` is the architecture + UX spec for item 21's application layer. To redeploy from local: `fly deploy`. To check live status: `fly status` / `fly logs`. To add a secret: `fly secrets set NAME=value` (auto-redeploys).
 
 ## For future agents
 
@@ -78,13 +78,17 @@ Reverse-chronological feed combining `LawChange` and `LawEvent` rows across all 
 
 Snapshot history for `document` sources with a unified diff between any two versions; entry list for `event_list` sources with deep links to the source URL.
 
-### 9. [ ] Deployment: Fly.io
+### 9. [~] Deployment: Fly.io
 
 Dockerfile, `fly.toml`, persistent volume for SQLite, secrets configuration, first deploy. Health check endpoint for Fly's load balancer.
 
-### 10. [ ] DNS: lawmasolutions.com → Fly
+Live as of 2026-04-29 (`5d8231d` scaffold + `397e890` fly.toml + `5c44d3c` Coming Soon page). Hello-world FastAPI app deployed at `lawtracker.fly.dev`, scales to zero when idle. `RESEND_API_KEY` set as a Fly secret. Health-check endpoint at `/health` polled every 30s. **Persistent volume for SQLite** is the remaining piece — defer until item 4 (storage) lands. Full walkthrough captured in `design/deployment.md`.
+
+### 10. [~] DNS: lawmasolutions.com → Fly
 
 `www` CNAME and apex A/AAAA records configured at Squarespace; Fly issues the HTTPS cert. Verify both `lawmasolutions.com` and `www.lawmasolutions.com` resolve and serve the app.
+
+Live as of 2026-04-29. Apex + www both serve the same Fly app over HTTPS via Let's Encrypt certs (90-day cycle, Fly auto-renews at the 60-day mark). Used Fly's shared anycast IPv4 (`66.241.125.32`) + dedicated IPv6 (`2a09:8280:1::10d:ecbc:0`); A and AAAA records at Squarespace for both apex and `www`. **Implementation choice that diverged from the original spec**: used A/AAAA for `www` instead of CNAME — Fly explicitly recommended A records and our use case doesn't benefit from CNAME indirection. Walkthrough in `design/deployment.md`.
 
 ### 11. [~] CI: pytest on push + PR
 
