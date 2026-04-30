@@ -1,0 +1,37 @@
+# Fly.io app config for LawTracker.
+#
+# App name `lawtracker` was auto-claimed during the first `fly launch`
+# attempt 2026-04-29; we kept it because the public domain
+# (lawmasolutions.com) is the user-facing surface — the Fly app name
+# is an internal handle.
+#
+# Free-tier sizing: 1 shared-CPU VM at 256MB memory, scaled to zero
+# when idle. First request after idle takes 1-2s to wake; acceptable
+# for a low-traffic admin dashboard.
+
+app = "lawtracker"
+primary_region = "iad"  # US East (Ashburn). Closest to NA users.
+
+[build]
+  # Empty section tells Fly to use the Dockerfile in the project root.
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"      # scale to zero when idle (free tier)
+  auto_start_machines = true       # wake on first request (~1-2s cold start)
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "get"
+    path = "/health"
+    protocol = "http"
+    timeout = "5s"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
