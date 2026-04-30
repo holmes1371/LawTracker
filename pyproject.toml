@@ -46,9 +46,11 @@ target-version = "py311"
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.ruff.lint.per-file-ignores]
-# preview.py renders Tailwind-heavy HTML; class strings inherently
-# exceed 100 chars and breaking them mid-string changes the output.
+# preview.py + web.py render Tailwind-heavy HTML; class strings
+# inherently exceed 100 chars and breaking them mid-string changes
+# the output.
 "src/lawtracker/preview.py" = ["E501"]
+"src/lawtracker/web.py" = ["E501"]
 
 [[tool.mypy.overrides]]
 module = ["openpyxl.*", "curl_cffi.*", "anthropic.*"]
