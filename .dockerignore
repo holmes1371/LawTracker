@@ -1,0 +1,25 @@
+# Files that should NOT be included in the Docker build context.
+# Mirrors .gitignore for the most part, plus build / test artifacts.
+
+.git
+.gitignore
+.venv
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Pilot scout outputs — the live app does not need them.
+data/
+
+# Local docs / IDE
+.vscode/
+.idea/
+*.md
+!README.md
+
+# Tests aren't shipped in the runtime image
+tests/
